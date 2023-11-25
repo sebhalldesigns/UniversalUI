@@ -4,11 +4,13 @@
 
 #include "../include/uWindowManager.h"
 
+#include "uCanvas.h"
+#include "uRenderNode.h"
+
 std::vector<uWindowStuffForManager> uWindowManager::windows;
 
 #include <cstdio>
 
-#include "uBitmap.h"
 
 #ifdef _WIN32
     const wchar_t CLASS_NAME[]  = L"UniversalUI Window";
@@ -171,8 +173,11 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
         stuffForManager.glRenderContextHandle = wglCreateContext(hdc);
         wglMakeCurrent(hdc, stuffForManager.glRenderContextHandle);
 
+        
         glEnable(GL_BLEND);  
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+        glEnable(GL_TEXTURE_2D);   
+        glEnable(GL_POINT_SMOOTH); 
 
         ReleaseDC(window->systemHandle, hdc);
 
@@ -298,21 +303,52 @@ void uWindowManager::SetWindowVisibility(uWindow* window, uWindowVisibility visi
 }
 
 
-void RenderView(uView view) {
+void RenderView(uView* view) {
 
     // Set color for the rectangle (for example, green)
-    glColor4f(view.backgroundColor.r, view.backgroundColor.g, view.backgroundColor.b, view.backgroundColor.a); // Green color
-
-    uRectangle frame = view.layoutNode->frame;
+    uRectangle frame = view->layoutNode->frame;
     // Draw rectangle based on view's frame
     glBegin(GL_QUADS);
+        glColor4f(view->backgroundColor.r, view->backgroundColor.g, view->backgroundColor.b, view->backgroundColor.a); // Green color
         glVertex2f(frame.x, frame.y);
         glVertex2f(frame.x + frame.width, frame.y);
         glVertex2f(frame.x + frame.width, frame.y + frame.height);
         glVertex2f(frame.x, frame.y + frame.height);
     glEnd();
+
+    uCanvas canvas(frame.width, frame.height);
+
+    view->Draw(canvas);
+
+    uRenderNode renderNode;
+    renderNode.UpdateRenderCommands(canvas);
+
+    for (uRenderCommand renderCommand : renderNode.renderCommands) {
+        switch (renderCommand.commandType) {
+            case BEGIN_POINTS: {
+                    glBegin(GL_POINTS);
+                    break;
+                }
+            case END_POINTS: {
+                    glEnd();
+                    break;
+                }
+            case VERTEX_2D: {
+                    glVertex2d(renderCommand.parameters[0], renderCommand.parameters[1]);
+                    break;
+                }
+            case POINT_SIZE: {
+                    glPointSize(renderCommand.parameters[0]);
+                    break;
+                }
+            case COLOR_4F: {
+                    glColor4d(renderCommand.parameters[0], renderCommand.parameters[1], renderCommand.parameters[2], renderCommand.parameters[3]);
+                    break;
+                }
+        }
+    }
     
-    for (uView subview : view.subviews) {
+    for (uView* subview : view->subviews) {
         RenderView(subview);
     }
 }
@@ -339,7 +375,7 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                         glViewport(0, 0, width, height);
                         wglMakeCurrent(NULL, NULL); // Optionally, make no context current  
 
-                        printf("RESIZE %d %d\n", width, height);
+                        //printf("RESIZE %d %d\n", width, height);
 
                         ReleaseDC(hwnd, hdc); // Release the device context
                         InvalidateRect(hwnd, NULL, FALSE); // Request a redraw
@@ -379,7 +415,7 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
                     glClear(GL_COLOR_BUFFER_BIT);
 
-                    RenderView(uWindowManager::windows[i].windowPointer->rootView);
+                    RenderView(&uWindowManager::windows[i].windowPointer->rootView);
 
                     SwapBuffers(hdc);
 
@@ -388,21 +424,7 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 
             
             }
-            
-
-            // Draw rectangle based on view's frame
-            
-
-            // Render the texture
-            /*glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, /* texture ID);   
-            glBegin(GL_QUADS);
-                glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 0.0f);
-                glTexCoord2f(1.0f, 1.0f); glVertex2f(ps.rcPaint.right, 0.0f);
-                glTexCoord2f(1.0f, 0.0f); glVertex2f(ps.rcPaint.right, ps.rcPaint.bottom);
-                glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, ps.rcPaint.bottom);
-            glEnd();
-            glDisable(GL_TEXTURE_2D);*/
+        
 
             return 0;
         }

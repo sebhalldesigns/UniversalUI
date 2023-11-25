@@ -33,12 +33,14 @@ add_executable(UniversalUI
         Core/source/UniversalUI.cpp
         Core/source/uApplication.cpp
         Windowing/source/uWindowManager.cpp
+        Rendering/source/uCanvas.cpp
+        Rendering/source/uRenderNode.cpp
 )
 
 target_include_directories(UniversalUI PUBLIC "./Core/include")
-target_include_directories(UniversalUI PUBLIC "./Bitmap/include")
 target_include_directories(UniversalUI PUBLIC "./Windowing/include")
 target_include_directories(UniversalUI PUBLIC "./Layout/include")
+target_include_directories(UniversalUI PUBLIC "./Rendering/include")
 
 
 if(WIN32)

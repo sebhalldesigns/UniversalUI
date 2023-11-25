@@ -143,13 +143,45 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.s"
 	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\sebam\Documents\UniversalUI\Windowing\source\uWindowManager.cpp -o CMakeFiles\UniversalUI.dir\Windowing\source\uWindowManager.s
 
+CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj: CMakeFiles/UniversalUI.dir/flags.make
+CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj: CMakeFiles/UniversalUI.dir/includes_CXX.rsp
+CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj: C:/Users/sebam/Documents/UniversalUI/Rendering/source/uCanvas.cpp
+CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj: CMakeFiles/UniversalUI.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\sebam\Documents\UniversalUI\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj"
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj -MF CMakeFiles\UniversalUI.dir\Rendering\source\uCanvas.obj.d -o CMakeFiles\UniversalUI.dir\Rendering\source\uCanvas.obj -c C:\Users\sebam\Documents\UniversalUI\Rendering\source\uCanvas.cpp
+
+CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.i"
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\sebam\Documents\UniversalUI\Rendering\source\uCanvas.cpp > CMakeFiles\UniversalUI.dir\Rendering\source\uCanvas.i
+
+CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.s"
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\sebam\Documents\UniversalUI\Rendering\source\uCanvas.cpp -o CMakeFiles\UniversalUI.dir\Rendering\source\uCanvas.s
+
+CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj: CMakeFiles/UniversalUI.dir/flags.make
+CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj: CMakeFiles/UniversalUI.dir/includes_CXX.rsp
+CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj: C:/Users/sebam/Documents/UniversalUI/Rendering/source/uRenderNode.cpp
+CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj: CMakeFiles/UniversalUI.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\sebam\Documents\UniversalUI\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj"
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj -MF CMakeFiles\UniversalUI.dir\Rendering\source\uRenderNode.obj.d -o CMakeFiles\UniversalUI.dir\Rendering\source\uRenderNode.obj -c C:\Users\sebam\Documents\UniversalUI\Rendering\source\uRenderNode.cpp
+
+CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.i"
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\sebam\Documents\UniversalUI\Rendering\source\uRenderNode.cpp > CMakeFiles\UniversalUI.dir\Rendering\source\uRenderNode.i
+
+CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.s"
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\sebam\Documents\UniversalUI\Rendering\source\uRenderNode.cpp -o CMakeFiles\UniversalUI.dir\Rendering\source\uRenderNode.s
+
 # Object files for target UniversalUI
 UniversalUI_OBJECTS = \
 "CMakeFiles/UniversalUI.dir/Test/main.obj" \
 "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj" \
 "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj" \
 "CMakeFiles/UniversalUI.dir/Core/source/uApplication.obj" \
-"CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj"
+"CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj" \
+"CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj" \
+"CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj"
 
 # External object files for target UniversalUI
 UniversalUI_EXTERNAL_OBJECTS =
@@ -159,11 +191,13 @@ UniversalUI.exe: CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/Core/source/uApplication.obj
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
+UniversalUI.exe: CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj
+UniversalUI.exe: CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/build.make
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/linkLibs.rsp
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/objects1.rsp
 UniversalUI.exe: CMakeFiles/UniversalUI.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\sebam\Documents\UniversalUI\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable UniversalUI.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\sebam\Documents\UniversalUI\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable UniversalUI.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\UniversalUI.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

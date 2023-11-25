@@ -160,6 +160,11 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj: \
  C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_laguerre.tcc \
  C:/msys64/mingw64/include/c++/13.1.0/tr1/riemann_zeta.tcc \
  C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutConstraint.h \
+ C:/Users/sebam/Documents/UniversalUI/Rendering/include/uCanvas.h \
+ C:/Users/sebam/Documents/UniversalUI/Rendering/include/uRenderNode.h \
+ C:/Users/sebam/Documents/UniversalUI/Rendering/include/uCanvas.h \
+ C:/Users/sebam/Documents/UniversalUI/Rendering/include/uRenderCommand.h \
+ C:/msys64/mingw64/include/c++/13.1.0/cstdint \
  C:/msys64/mingw64/include/windows.h \
  C:/msys64/mingw64/include/sdkddkver.h C:/msys64/mingw64/include/excpt.h \
  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdarg.h \

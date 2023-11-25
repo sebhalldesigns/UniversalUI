@@ -2,20 +2,16 @@
 #define UVIEW_H
 
 #include <vector>
+#include <stdio.h>
 #include "uLayoutTree.h"
+#include "uCanvas.h"
+#include "uRenderNode.h"
 
 struct uRect {
     double x;
     double y;
     double width;
     double height;
-};
-
-struct uColor {
-    float r;
-    float g;
-    float b;
-    float a;
 };
 
 struct uAnchorPoint {
@@ -53,7 +49,7 @@ public:
 
     uAnchorPointSet anchorPoints;
 
-    std::vector<uView> subviews;
+    std::vector<uView*> subviews;
 
     uView(uRect initFrame) {
         //frame = initFrame;
@@ -62,6 +58,9 @@ public:
     // default constructor
     uView() { }
 
+    virtual void Draw(uCanvas& canvas) {
+        //printf("DRAW!\n");
+    }
 
 };
 

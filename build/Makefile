@@ -159,6 +159,36 @@ Core/source/uApplication.s:
 .PHONY : Core/source/uApplication.s
 
 # target to build an object file
+Rendering/source/uCanvas.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.obj
+.PHONY : Rendering/source/uCanvas.obj
+
+# target to preprocess a source file
+Rendering/source/uCanvas.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.i
+.PHONY : Rendering/source/uCanvas.i
+
+# target to generate assembly for a file
+Rendering/source/uCanvas.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.s
+.PHONY : Rendering/source/uCanvas.s
+
+# target to build an object file
+Rendering/source/uRenderNode.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.obj
+.PHONY : Rendering/source/uRenderNode.obj
+
+# target to preprocess a source file
+Rendering/source/uRenderNode.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.i
+.PHONY : Rendering/source/uRenderNode.i
+
+# target to generate assembly for a file
+Rendering/source/uRenderNode.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.s
+.PHONY : Rendering/source/uRenderNode.s
+
+# target to build an object file
 Test/main.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\UniversalUI.dir\build.make CMakeFiles/UniversalUI.dir/Test/main.obj
 .PHONY : Test/main.obj
@@ -218,6 +248,12 @@ help:
 	@echo ... Core/source/uApplication.obj
 	@echo ... Core/source/uApplication.i
 	@echo ... Core/source/uApplication.s
+	@echo ... Rendering/source/uCanvas.obj
+	@echo ... Rendering/source/uCanvas.i
+	@echo ... Rendering/source/uCanvas.s
+	@echo ... Rendering/source/uRenderNode.obj
+	@echo ... Rendering/source/uRenderNode.i
+	@echo ... Rendering/source/uRenderNode.s
 	@echo ... Test/main.obj
 	@echo ... Test/main.i
 	@echo ... Test/main.s
