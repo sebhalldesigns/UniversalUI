@@ -1,0 +1,32 @@
+[
+{
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -o CMakeFiles\\UniversalUI.dir\\Test\\main.cpp.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Test\\main.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Test/main.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Test/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -o CMakeFiles\\UniversalUI.dir\\Windowing\\source\\uWindow.cpp.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Windowing\\source\\uWindow.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindow.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.cpp.obj"
+},
+{
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -o CMakeFiles\\UniversalUI.dir\\Core\\source\\UniversalUI.cpp.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Core\\source\\UniversalUI.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Core/source/UniversalUI.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.cpp.obj"
+},
+{
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -o CMakeFiles\\UniversalUI.dir\\Core\\source\\uApplication.cpp.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Core\\source\\uApplication.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Core/source/uApplication.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Core/source/uApplication.cpp.obj"
+},
+{
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -o CMakeFiles\\UniversalUI.dir\\Windowing\\source\\uWindowManager.cpp.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Windowing\\source\\uWindowManager.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindowManager.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.cpp.obj"
+}
+]
