@@ -148,41 +148,46 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.o: \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
  /usr/include/c++/12/bits/charconv.h \
- /usr/include/c++/12/bits/basic_string.tcc /usr/include/X11/Xlib.h \
- /usr/include/X11/X.h /usr/include/X11/Xfuncproto.h \
- /usr/include/X11/Xosdefs.h /usr/include/c++/12/stdlib.h \
- /usr/lib/gcc/x86_64-linux-gnu/12/include/stdbool.h \
+ /usr/include/c++/12/bits/basic_string.tcc \
+ /home/seb/Documents/UniversalUI/./Core/include/uView.h \
  /usr/include/c++/12/vector /usr/include/c++/12/bits/stl_vector.h \
  /usr/include/c++/12/bits/stl_bvector.h \
- /usr/include/c++/12/bits/vector.tcc /usr/include/GL/gl.h \
+ /usr/include/c++/12/bits/vector.tcc \
+ /home/seb/Documents/UniversalUI/./Layout/include/uLayoutTree.h \
+ /home/seb/Documents/UniversalUI/./Layout/include/uLayoutNode.h \
+ /usr/include/c++/12/math.h /usr/include/c++/12/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+ /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+ /usr/include/c++/12/bits/specfun.h /usr/include/c++/12/limits \
+ /usr/include/c++/12/tr1/gamma.tcc \
+ /usr/include/c++/12/tr1/special_function_util.h \
+ /usr/include/c++/12/tr1/bessel_function.tcc \
+ /usr/include/c++/12/tr1/beta_function.tcc \
+ /usr/include/c++/12/tr1/ell_integral.tcc \
+ /usr/include/c++/12/tr1/exp_integral.tcc \
+ /usr/include/c++/12/tr1/hypergeometric.tcc \
+ /usr/include/c++/12/tr1/legendre_function.tcc \
+ /usr/include/c++/12/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/12/tr1/poly_hermite.tcc \
+ /usr/include/c++/12/tr1/poly_laguerre.tcc \
+ /usr/include/c++/12/tr1/riemann_zeta.tcc \
+ /home/seb/Documents/UniversalUI/./Layout/include/uLayoutConstraint.h \
+ /home/seb/Documents/UniversalUI/./Rendering/include/uCanvas.h \
+ /home/seb/Documents/UniversalUI/./Rendering/include/uRenderNode.h \
+ /home/seb/Documents/UniversalUI/./Rendering/include/uCanvas.h \
+ /home/seb/Documents/UniversalUI/./Rendering/include/uRenderCommand.h \
+ /usr/include/X11/Xlib.h /usr/include/X11/X.h \
+ /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h \
+ /usr/include/c++/12/stdlib.h \
+ /usr/lib/gcc/x86_64-linux-gnu/12/include/stdbool.h /usr/include/GL/gl.h \
  /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
  /usr/include/GL/glx.h /usr/include/X11/Xutil.h /usr/include/X11/keysym.h \
  /usr/include/X11/keysymdef.h /usr/include/GL/glxext.h \
- /usr/include/inttypes.h \
- /home/seb/Documents/UniversalUI/./Bitmap/include/uBitmap.h \
- /usr/include/c++/12/fstream /usr/include/c++/12/istream \
- /usr/include/c++/12/ios /usr/include/c++/12/bits/ios_base.h \
- /usr/include/c++/12/bits/locale_classes.h \
- /usr/include/c++/12/bits/locale_classes.tcc \
- /usr/include/c++/12/system_error \
- /usr/include/x86_64-linux-gnu/c++/12/bits/error_constants.h \
- /usr/include/c++/12/stdexcept /usr/include/c++/12/streambuf \
- /usr/include/c++/12/bits/streambuf.tcc \
- /usr/include/c++/12/bits/basic_ios.h \
- /usr/include/c++/12/bits/locale_facets.h /usr/include/c++/12/cwctype \
- /usr/include/wctype.h /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
- /usr/include/x86_64-linux-gnu/c++/12/bits/ctype_base.h \
- /usr/include/c++/12/bits/streambuf_iterator.h \
- /usr/include/x86_64-linux-gnu/c++/12/bits/ctype_inline.h \
- /usr/include/c++/12/bits/locale_facets.tcc \
- /usr/include/c++/12/bits/basic_ios.tcc /usr/include/c++/12/ostream \
- /usr/include/c++/12/bits/ostream.tcc \
- /usr/include/c++/12/bits/istream.tcc /usr/include/c++/12/bits/codecvt.h \
- /usr/include/x86_64-linux-gnu/c++/12/bits/basic_file.h \
- /usr/include/x86_64-linux-gnu/c++/12/bits/c++io.h \
- /usr/include/c++/12/bits/fstream.tcc /usr/include/c++/12/algorithm \
- /usr/include/c++/12/bits/stl_algo.h \
- /usr/include/c++/12/bits/algorithmfwd.h \
- /usr/include/c++/12/bits/stl_heap.h \
- /usr/include/c++/12/bits/uniform_int_dist.h \
- /usr/include/c++/12/pstl/glue_algorithm_defs.h
+ /usr/include/inttypes.h

@@ -236,6 +236,11 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
         // Make the GLX context current
         glXMakeCurrent(display, window->systemHandle, stuffForManager.glxContext);
 
+        glEnable(GL_BLEND);  
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+        glEnable(GL_TEXTURE_2D);   
+        glEnable(GL_POINT_SMOOTH); 
+
         // Show the window
         XMapWindow(display, window->systemHandle);
 
@@ -469,19 +474,33 @@ void X11WindowProcedure(XEvent event) {
                 }
 
 
+                // get window attributes e.g width, ehgit
+                XGetWindowAttributes(display, xWindow, &windowAttributes);
+
                 // Make the GLX context current
                 glXMakeCurrent(display, xWindow, windowStuff.glxContext);
 
+                
+
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                glOrtho(0.0, windowAttributes.width, windowAttributes.height, 0.0, -1.0, 1.0);
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
+
+
                 // Define the solid color (RGB)
-                float clearColor[] = {0.0f, 0.0f, 1.0f, 1.0f};  // Blue
+                float clearColor[] = {0.0f, 0.0f, 0.0f, 1.0f};  // Blue
                 glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
                 glClear(GL_COLOR_BUFFER_BIT);
 
+
+                RenderView(&windowStuff.windowPointer->rootView);
                 glXSwapBuffers(display, xWindow);
 
                 return;
             }
-         case MapNotify: {
+        /* case MapNotify: {
                 Window xWindow = event.xexpose.window; 
                 // Handle expose event
 
@@ -503,7 +522,7 @@ void X11WindowProcedure(XEvent event) {
                 glXSwapBuffers(display, xWindow);
 
                 return;
-            }
+            }*/
         case ConfigureNotify: {
                 Window xWindow = event.xexpose.window; 
 
@@ -519,6 +538,13 @@ void X11WindowProcedure(XEvent event) {
                 // Make the GLX context current
                 glXMakeCurrent(display, xWindow, windowStuff.glxContext);
                 glViewport(0, 0, windowAttributes.width, windowAttributes.height);
+
+                windowStuff.windowPointer->layoutTree.rootNode.frame.width = windowAttributes.width;
+                windowStuff.windowPointer->layoutTree.rootNode.frame.height = windowAttributes.height;
+
+                windowStuff.windowPointer->layoutTree.rootNode.EvaluateConstraints();
+
+                // TODO refactor the resizing and layout and drawing code
 
                 uWindowManager::SetWindowSize(windowStuff.windowPointer, windowAttributes.width, windowAttributes.height);
             

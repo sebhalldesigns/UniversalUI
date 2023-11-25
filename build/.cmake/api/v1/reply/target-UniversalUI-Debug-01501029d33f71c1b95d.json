@@ -2,10 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "UniversalUI.exe"
-		},
-		{
-			"path" : "UniversalUI.pdb"
+			"path" : "UniversalUI"
 		}
 	],
 	"backtrace" : 1,
@@ -14,7 +11,6 @@
 		"commands" : 
 		[
 			"add_executable",
-			"target_link_libraries",
 			"target_include_directories"
 		],
 		"files" : 
@@ -35,29 +31,23 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 48,
-				"parent" : 0
-			},
-			{
-				"command" : 2,
-				"file" : 0,
 				"line" : 40,
 				"parent" : 0
 			},
 			{
-				"command" : 2,
+				"command" : 1,
 				"file" : 0,
 				"line" : 41,
 				"parent" : 0
 			},
 			{
-				"command" : 2,
+				"command" : 1,
 				"file" : 0,
 				"line" : 42,
 				"parent" : 0
 			},
 			{
-				"command" : 2,
+				"command" : 1,
 				"file" : 0,
 				"line" : 43,
 				"parent" : 0
@@ -70,26 +60,29 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++17"
+					"fragment" : "-g"
+				},
+				{
+					"fragment" : "-std=gnu++17"
 				}
 			],
 			"includes" : 
 			[
 				{
+					"backtrace" : 2,
+					"path" : "/home/seb/Documents/UniversalUI/./Core/include"
+				},
+				{
 					"backtrace" : 3,
-					"path" : "C:/Users/sebam/Documents/UniversalUI/./Core/include"
+					"path" : "/home/seb/Documents/UniversalUI/./Windowing/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/sebam/Documents/UniversalUI/./Windowing/include"
+					"path" : "/home/seb/Documents/UniversalUI/./Layout/include"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/sebam/Documents/UniversalUI/./Layout/include"
-				},
-				{
-					"backtrace" : 6,
-					"path" : "C:/Users/sebam/Documents/UniversalUI/./Rendering/include"
+					"path" : "/home/seb/Documents/UniversalUI/./Rendering/include"
 				}
 			],
 			"language" : "CXX",
@@ -123,23 +116,26 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "",
+				"fragment" : "-rdynamic",
 				"role" : "flags"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "-lopengl32",
+				"fragment" : "-lGL",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"fragment" : "-lX11",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lXext",
 				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
 	"name" : "UniversalUI",
-	"nameOnDisk" : "UniversalUI.exe",
+	"nameOnDisk" : "UniversalUI",
 	"paths" : 
 	{
 		"build" : ".",
