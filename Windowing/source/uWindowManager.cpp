@@ -11,10 +11,18 @@ std::vector<uWindowStuffForManager> uWindowManager::windows;
 #include "uBitmap.h"
 
 #ifdef _WIN32
+    const wchar_t CLASS_NAME[]  = L"UniversalUI Window";
 
-const wchar_t CLASS_NAME[]  = L"UniversalUI Window";
+    LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+#elif __linux__
+    Display *display;
+    Window root;
+    XWindowAttributes windowAttributes;
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+    void X11WindowProcedure(XEvent event);
+
+    int X11HandleError(Display* display, XErrorEvent* event);
 
 #endif
 
@@ -26,17 +34,38 @@ bool uWindowManager::Init() {
     // Register the window class.
     WNDCLASS wc = { };
 
-    wc.lpfnWndProc   = WindowProc;
+    wc.lpfnWndProc   = Win32WindowProcedure;
     wc.hInstance     = GetModuleHandleW(nullptr);
     wc.lpszClassName = CLASS_NAME;
 
     if (RegisterClass(&wc) == 0) {
         return false;
     }
+#elif __linux__
+
+    // Open a connection to the X server
+    display = XOpenDisplay(NULL);
+    if (!display) {
+        printf("Unable to open X display. Exiting...\n");
+        return false;
+    }
+
+    // Set up error handler for X errors
+    XSetErrorHandler(X11HandleError);
+
+    // Get the root window
+    root = DefaultRootWindow(display);
 
 #endif
 
     return true;
+}
+
+void uWindowManager::Close() {
+    #ifdef _WIN32
+    #elif __linux__
+        XCloseDisplay(display);
+    #endif
 }
 
 
@@ -48,6 +77,14 @@ void uWindowManager::PollEvents() {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+    #elif __linux__
+
+        XEvent xEvent;
+
+        while (XPending(display)) {
+            XNextEvent(display, &xEvent);
+            X11WindowProcedure(xEvent);
+        }
 
     #endif
 }
@@ -55,6 +92,28 @@ void uWindowManager::PollEvents() {
 bool uWindowManager::IsWindowsEmpty() {
     return windows.empty();
 }
+
+bool uWindowManager::WindowStuffFromSystemHandle(uWindowHandle handle, uWindowStuffForManager& windowStuff) {
+    for (int i = 0; i < windows.size(); i++) {
+        if (windows[i].windowPointer->systemHandle == handle) { 
+            windowStuff = windows[i];
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void uWindowManager::SetWindowSize(uWindow* window, double width, double height) {
+    window->width = width;
+    window->height = height;
+}
+
+void uWindowManager::GetWindowSize(uWindow* window, double& width, double& height) {
+    width = window->width;
+    height = window->height;
+}
+
 
 void uWindowManager::CreateNewWindow(uWindow* window, double width, double height, std::string title) {
 
@@ -87,21 +146,10 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
             24, // bit depth
             0, 0, 0, 0, 0, 0,
             0,
-            0,
-            0,
-            0, 0, 0, 0,
-            16, // depth buffer
-            0, // stencil buffer
-            0,
-            PFD_MAIN_PLANE,
-            0,
-            0, 0, 0
-        };
-
-        if (window->systemHandle == nullptr)
-        {
-            printf("ERROR: Window creation failed!");
-            return;
+            0,// Cleanup and exit
+    glXMakeCurrent(display, None, NULL);
+    glXDestroyContext(display, glxContext);
+    XDestroyWindow(display, window);
         }
 
         stuffForManager.windowPointer = window;
@@ -116,28 +164,102 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
         windows.push_back(stuffForManager);
 
         //uRenderManager::SetupForWindow(window);
-        //uRenderManager::RenderToWindow(window);
+        //uRenderManager::RenderToWindow(window);Expose
+    #elif __linux__
 
+        // Find a suitable visual
+        int attribs[] = {GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None};
+        stuffForManager.visualInfo = glXChooseVisual(display, 0, attribs);
+        if (!stuffForManager.visualInfo) {
+            printf("Unable to find a suitable visual. Exiting...\n");
+            return;
+        }
+
+        // Create colormap
+        stuffForManager.colormap = XCreateColormap(display, root, stuffForManager.visualInfo->visual, AllocNone);
+
+        // Set up window attributes
+        stuffForManager.setWindowAttributes.colormap = stuffForManager.colormap;
+        stuffForManager.setWindowAttributes.event_mask = ExposureMask | KeyPressMask | StructureNotifyMask | SubstructureNotifyMask;
+
+        // NOTE the pointer to stuffForManager.setWindowAttributes may break
+        window->systemHandle = XCreateWindow(
+            display, root, 0, 0, width, height, 0, stuffForManager.visualInfo->depth, InputOutput,
+            stuffForManager.visualInfo->visual, CWColormap | CWEventMask, &stuffForManager.setWindowAttributes
+        );
+
+        if (window->systemHandle == NULL) {
+            printf("ERROR: Window creation failed!\n");
+            return;
+        }
+
+        stuffForManager.windowPointer = window;
+
+        // Set the window title
+        XStoreName(display, window->systemHandle, title.c_str());
+
+        // Link the delete button atom
+        // Set the WM_DELETE_WINDOW protocol for the close button
+        stuffForManager.deleteButtonAtom = XInternAtom(display, "WM_DELETE_WINDOW", False); 
+        XSetWMProtocols(display, window->systemHandle, &stuffForManager.deleteButtonAtom, 1);
+
+
+        // Create GLX context
+        stuffForManager.glxContext = glXCreateContext(display, stuffForManager.visualInfo, NULL, GL_TRUE);
+        if (!stuffForManager.glxContext) {
+            printf("Failed to create GLX context. Exiting...\n");
+            return;
+        }
+
+        // Make the GLX context current
+        glXMakeCurrent(display, window->systemHandle, stuffForManager.glxContext);
+
+        // Show the window
+        XMapWindow(display, window->systemHandle);
+
+        windows.push_back(stuffForManager);
 
     #endif // _WIN32
 
 }
 
 void uWindowManager::DestroyWindowByHandle(uWindowHandle handle) {
-    for (int i = 0; i < windows.size(); i++) {
-        if (windows[i].windowPointer->systemHandle == handle) {
 
-            #ifdef _WIN32
-                if (DestroyWindow(handle)) {
-                    wglMakeCurrent(NULL, NULL);
-                    wglDeleteContext(windows[i].glRenderContextHandle);
-                    windows.erase(windows.begin() + i);
-                    i--;
-                }
-            #endif // _WIN32
-        }
+    uWindowStuffForManager windowStuff;
+    if (!uWindowManager::WindowStuffFromSystemHandle(handle, windowStuff)) {
+        printf("ERROR: Unknown window!\n");
+        return;
     }
+
+    #ifdef _WIN32
+
+        for (int i = 0; i < windows.size(); i++) {
+            if (windows[i].windowPointer->systemHandle == handle) { 
+                // Cleanup and exit
+                wglMakeCurrent(NULL, NULL);
+                wglDeleteContext(windows[i].glRenderContextHandle);
+                windows.erase(windows.begin() + i);
+                return;
+            }
+        }
+    #elif __linux__
+        for (int i = 0; i < windows.size(); i++) {
+            if (windows[i].windowPointer->systemHandle == handle) { 
+                // Cleanup and exit
+                glXMakeCurrent(display, None, NULL);
+                glXDestroyContext(display, windowStuff.glxContext);
+                XDestroyWindow(display, handle);
+                windows.erase(windows.begin() + i);
+                return;
+            }
+        }
+        return;
+
+    #endif
 }
+
+
+
 
 void uWindowManager::SetWindowVisibility(uWindow* window, uWindowVisibility visibility) {
 
@@ -160,7 +282,7 @@ void uWindowManager::SetWindowVisibility(uWindow* window, uWindowVisibility visi
 
 #ifdef _WIN32
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
         case WM_CLOSE:
             uWindowManager::DestroyWindowByHandle(hwnd);
@@ -209,6 +331,112 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
     }
 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+#elif __linux__
+
+void X11WindowProcedure(XEvent event) {
+
+    switch (event.type) { 
+        case ClientMessage: {
+                Window xWindow = event.xclient.window; 
+                uWindowManager::DestroyWindowByHandle(xWindow);
+
+                // Check if it's a WM_DELETE_WINDOW message
+                /*if (event.xclient.message_type == XInternAtom(display, "WM_PROTOCOLS", False) &&
+                        event.xclient.data.l[0] == deleteButtonAtom) {
+                    uWindowManager::DestroyWindowByHandle(xWindow);
+                }*/
+                return;
+            }
+            
+        case Expose: {
+                Window xWindow = event.xexpose.window; 
+                // Handle expose event
+
+                uWindowStuffForManager windowStuff;
+                if (!uWindowManager::WindowStuffFromSystemHandle(xWindow, windowStuff)) {
+                    printf("ERROR: Unknown window!\n");
+                    return;
+                }
+
+
+                // Make the GLX context current
+                glXMakeCurrent(display, xWindow, windowStuff.glxContext);
+
+                // Define the solid color (RGB)
+                float clearColor[] = {0.0f, 0.0f, 1.0f, 1.0f};  // Blue
+                glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+                glClear(GL_COLOR_BUFFER_BIT);
+
+                glXSwapBuffers(display, xWindow);
+
+                return;
+            }
+         case MapNotify: {
+                Window xWindow = event.xexpose.window; 
+                // Handle expose event
+
+                uWindowStuffForManager windowStuff;
+                if (!uWindowManager::WindowStuffFromSystemHandle(xWindow, windowStuff)) {
+                    printf("ERROR: Unknown window!\n");
+                    return;
+                }
+
+
+                // Make the GLX context current
+                glXMakeCurrent(display, xWindow, windowStuff.glxContext);
+
+                // Define the solid color (RGB)
+                float clearColor[] = {0.0f, 0.0f, 1.0f, 1.0f};  // Blue
+                glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+                glClear(GL_COLOR_BUFFER_BIT);
+
+                glXSwapBuffers(display, xWindow);
+
+                return;
+            }
+        case ConfigureNotify: {
+                Window xWindow = event.xexpose.window; 
+
+                uWindowStuffForManager windowStuff;
+                if (!uWindowManager::WindowStuffFromSystemHandle(xWindow, windowStuff)) {
+                    printf("ERROR: Unknown window!\n");
+                    return;
+                }
+
+                // get window attributes e.g width, ehgit
+                XGetWindowAttributes(display, xWindow, &windowAttributes);
+
+                // Make the GLX context current
+                glXMakeCurrent(display, xWindow, windowStuff.glxContext);
+                glViewport(0, 0, windowAttributes.width, windowAttributes.height);
+
+                uWindowManager::SetWindowSize(windowStuff.windowPointer, windowAttributes.width, windowAttributes.height);
+            
+                return;
+            }
+        case DestroyNotify: {
+                return;
+            }
+        case UnmapNotify: {
+                return;
+            }
+        case ReparentNotify: {
+                return;
+            }
+        default: {
+                printf("ERROR: Unhandled XEvent %u\n", event.type);
+                return;
+            }
+            
+    }
+}
+
+int X11HandleError(Display* display, XErrorEvent* event) {
+    printf("X Error: An error occurred. Exiting...\n");
+    //exit(EXIT_FAILURE);
+    return 0;
 }
 
 #endif

@@ -21,7 +21,7 @@ int UniversalUI(uApplication* application) {
         uWindowManager::PollEvents();
 
         if (uWindowManager::IsWindowsEmpty() && application->quitWhenLastWindowClosed) {
-            printf("\nINFO: Application quitting due to no windows being present");
+            printf("\nINFO: Application finishing due to no windows being present\n");
             application->shouldQuit = true;
         }
     }

@@ -2,8 +2,8 @@
 // Created by sebam on 11/1/2023.
 //
 
-#ifndef UNIVERSALUI_UWINDOW_H
-#define UNIVERSALUI_UWINDOW_H
+#ifndef UWINDOW_H
+#define UWINDOW_H
 
 #include <memory>
 #include <string>
@@ -18,15 +18,19 @@
 
     typedef HWND uWindowHandle;
 
+#elif __linux__
+    #include <X11/Xlib.h>
+
+    typedef Window uWindowHandle;
+
+#elif __APPLE__
+
+#else
+    #error "Unsupported platform :("
 #endif
 
-#ifdef __APPLE__
 
-#endif
 
-#ifdef __linux__
-
-#endif
 
 enum uWindowVisibility {
     HIDDEN,
@@ -39,11 +43,13 @@ class uWindow {
     friend class uWindowManager;
     friend class uRenderManager;
 
-  
+    double width;
+    double height;
+    
     ~uWindow();
 
 public:
-  uWindowHandle systemHandle = nullptr;
+    uWindowHandle systemHandle = NULL;
 
 
 
@@ -59,4 +65,4 @@ public:
 };
 
 
-#endif //UNIVERSALUI_UWINDOW_H
+#endif //UWINDOW_H

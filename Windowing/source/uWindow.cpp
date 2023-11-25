@@ -10,8 +10,9 @@
 
 uWindow::~uWindow() = default;
 
-uWindow::uWindow(double width, double height, std::string title) {
-
+uWindow::uWindow(double initWidth, double initHeight, std::string title) {
+    width = initWidth;
+    height = initHeight;
     uWindowManager::CreateNewWindow(this, width, height, std::move(title));
 
 }
