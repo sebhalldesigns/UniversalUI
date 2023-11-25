@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"projectIndex" : 0,
 					"source" : ".",
 					"targetIndexes" : 
@@ -35,7 +35,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "UniversalUI::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-UniversalUI-Debug-2fda183655b2ce8c7b7f.json",
+					"jsonFile" : "target-UniversalUI-Debug-431626c5ea03f3be554c.json",
 					"name" : "UniversalUI",
 					"projectIndex" : 0
 				}
@@ -45,12 +45,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/seb/Documents/UniversalUI/build",
-		"source" : "/home/seb/Documents/UniversalUI"
+		"build" : "C:/Users/sebam/Documents/UniversalUI/build",
+		"source" : "C:/Users/sebam/Documents/UniversalUI"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 6
 	}
 }

@@ -146,10 +146,21 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
             24, // bit depth
             0, 0, 0, 0, 0, 0,
             0,
-            0,// Cleanup and exit
-    glXMakeCurrent(display, None, NULL);
-    glXDestroyContext(display, glxContext);
-    XDestroyWindow(display, window);
+            0,
+            0,
+            0, 0, 0, 0,
+            16, // depth buffer
+            0, // stencil buffer
+            0,
+            PFD_MAIN_PLANE,
+            0,
+            0, 0, 0
+        };
+
+        if (window->systemHandle == nullptr)
+        {
+            printf("ERROR: Window creation failed!");
+            return;
         }
 
         stuffForManager.windowPointer = window;
@@ -162,6 +173,8 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
         ReleaseDC(window->systemHandle, hdc);
 
         windows.push_back(stuffForManager);
+
+        printf("Window %x created\n", window->systemHandle);
 
         //uRenderManager::SetupForWindow(window);
         //uRenderManager::RenderToWindow(window);Expose
@@ -235,11 +248,13 @@ void uWindowManager::DestroyWindowByHandle(uWindowHandle handle) {
 
         for (int i = 0; i < windows.size(); i++) {
             if (windows[i].windowPointer->systemHandle == handle) { 
-                // Cleanup and exit
-                wglMakeCurrent(NULL, NULL);
-                wglDeleteContext(windows[i].glRenderContextHandle);
-                windows.erase(windows.begin() + i);
-                return;
+                if (DestroyWindow(handle)) { 
+                    // Cleanup and exit
+                    wglMakeCurrent(NULL, NULL);
+                    wglDeleteContext(windows[i].glRenderContextHandle);
+                    windows.erase(windows.begin() + i);
+                    return;
+                }
             }
         }
     #elif __linux__
@@ -286,6 +301,8 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
     switch (uMsg) {
         case WM_CLOSE:
             uWindowManager::DestroyWindowByHandle(hwnd);
+            printf("Window %x close\n", hwnd);
+
             return 0;
 
         case WM_PAINT: {

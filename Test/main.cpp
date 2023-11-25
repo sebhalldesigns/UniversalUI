@@ -14,9 +14,6 @@ class MyApp : public uApplication {
 
     void FinishedLaunching() override {
 
-        uBitmap myBitmap(100, 100, 128);
-        myBitmap.WriteToFile("C:\\UniversalUI\\bitmap2.bmp");
-
         uWindow* window1 = new uWindow(1000.0, 750.0, "window 1");
         window1->SetVisibility(uWindowVisibility::VISIBLE);
 

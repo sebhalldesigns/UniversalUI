@@ -2,7 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "UniversalUI"
+			"path" : "UniversalUI.exe"
+		},
+		{
+			"path" : "UniversalUI.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -11,6 +14,7 @@
 		"commands" : 
 		[
 			"add_executable",
+			"target_link_libraries",
 			"target_include_directories"
 		],
 		"files" : 
@@ -31,17 +35,23 @@
 			{
 				"command" : 1,
 				"file" : 0,
+				"line" : 46,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
 				"line" : 38,
 				"parent" : 0
 			},
 			{
-				"command" : 1,
+				"command" : 2,
 				"file" : 0,
 				"line" : 39,
 				"parent" : 0
 			},
 			{
-				"command" : 1,
+				"command" : 2,
 				"file" : 0,
 				"line" : 40,
 				"parent" : 0
@@ -54,25 +64,22 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g"
-				},
-				{
-					"fragment" : "-std=gnu++17"
+					"fragment" : "-g -std=gnu++17"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 2,
-					"path" : "/home/seb/Documents/UniversalUI/./Core/include"
-				},
-				{
 					"backtrace" : 3,
-					"path" : "/home/seb/Documents/UniversalUI/./Bitmap/include"
+					"path" : "C:/Users/sebam/Documents/UniversalUI/./Core/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/home/seb/Documents/UniversalUI/./Windowing/include"
+					"path" : "C:/Users/sebam/Documents/UniversalUI/./Bitmap/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "C:/Users/sebam/Documents/UniversalUI/./Windowing/include"
 				}
 			],
 			"language" : "CXX",
@@ -104,26 +111,23 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-rdynamic",
+				"fragment" : "",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-lGL",
+				"backtrace" : 2,
+				"fragment" : "-lopengl32",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "-lX11",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lXext",
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
 				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
 	"name" : "UniversalUI",
-	"nameOnDisk" : "UniversalUI",
+	"nameOnDisk" : "UniversalUI.exe",
 	"paths" : 
 	{
 		"build" : ".",

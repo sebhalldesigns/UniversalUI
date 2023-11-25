@@ -1,27 +1,32 @@
 [
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Bitmap/include -I/home/seb/Documents/UniversalUI/./Windowing/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Test/main.o -c /home/seb/Documents/UniversalUI/Test/main.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Test/main.cpp"
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\UniversalUI.dir\\Test\\main.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Test\\main.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Test/main.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Test/main.obj"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Bitmap/include -I/home/seb/Documents/UniversalUI/./Windowing/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.o -c /home/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp"
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\UniversalUI.dir\\Windowing\\source\\uWindow.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Windowing\\source\\uWindow.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindow.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Bitmap/include -I/home/seb/Documents/UniversalUI/./Windowing/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.o -c /home/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp"
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\UniversalUI.dir\\Core\\source\\UniversalUI.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Core\\source\\UniversalUI.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Core/source/UniversalUI.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Bitmap/include -I/home/seb/Documents/UniversalUI/./Windowing/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Core/source/uApplication.o -c /home/seb/Documents/UniversalUI/Core/source/uApplication.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Core/source/uApplication.cpp"
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\UniversalUI.dir\\Core\\source\\uApplication.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Core\\source\\uApplication.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Core/source/uApplication.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Core/source/uApplication.obj"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Bitmap/include -I/home/seb/Documents/UniversalUI/./Windowing/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.o -c /home/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp"
+  "directory": "C:/Users/sebam/Documents/UniversalUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/UniversalUI.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\UniversalUI.dir\\Windowing\\source\\uWindowManager.obj -c C:\\Users\\sebam\\Documents\\UniversalUI\\Windowing\\source\\uWindowManager.cpp",
+  "file": "C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindowManager.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj"
 }
 ]

@@ -8,15 +8,15 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp" "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.o" "gcc" "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.o.d"
-  "/home/seb/Documents/UniversalUI/Core/source/uApplication.cpp" "CMakeFiles/UniversalUI.dir/Core/source/uApplication.o" "gcc" "CMakeFiles/UniversalUI.dir/Core/source/uApplication.o.d"
-  "/home/seb/Documents/UniversalUI/Test/main.cpp" "CMakeFiles/UniversalUI.dir/Test/main.o" "gcc" "CMakeFiles/UniversalUI.dir/Test/main.o.d"
-  "/home/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.o" "gcc" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.o.d"
-  "/home/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.o" "gcc" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.o.d"
+  "C:/Users/sebam/Documents/UniversalUI/Core/source/UniversalUI.cpp" "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj" "gcc" "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj.d"
+  "C:/Users/sebam/Documents/UniversalUI/Core/source/uApplication.cpp" "CMakeFiles/UniversalUI.dir/Core/source/uApplication.obj" "gcc" "CMakeFiles/UniversalUI.dir/Core/source/uApplication.obj.d"
+  "C:/Users/sebam/Documents/UniversalUI/Test/main.cpp" "CMakeFiles/UniversalUI.dir/Test/main.obj" "gcc" "CMakeFiles/UniversalUI.dir/Test/main.obj.d"
+  "C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindow.cpp" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj" "gcc" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj.d"
+  "C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindowManager.cpp" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj" "gcc" "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj.d"
   )
 
-# Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

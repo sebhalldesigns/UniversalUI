@@ -1,1 +1,3 @@
-/usr/bin/g++ -g -rdynamic CMakeFiles/UniversalUI.dir/Test/main.o CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.o CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.o CMakeFiles/UniversalUI.dir/Core/source/uApplication.o CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.o -o UniversalUI  -lGL -lX11 -lXext 
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\UniversalUI.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\UniversalUI.dir/objects.a @CMakeFiles\UniversalUI.dir\objects1.rsp
+C:\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\UniversalUI.dir/objects.a -Wl,--no-whole-archive -o UniversalUI.exe -Wl,--out-implib,libUniversalUI.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\UniversalUI.dir\linkLibs.rsp
