@@ -304,6 +304,25 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
             printf("Window %x close\n", hwnd);
 
             return 0;
+        case WM_SIZE: {
+                int width = LOWORD(lParam);
+                int height = HIWORD(lParam);
+
+                for (int i = 0; i < uWindowManager::windows.size(); i++) {
+                    if (uWindowManager::windows[i].windowPointer->systemHandle == hwnd) {
+                        HDC hdc = GetDC(hwnd); // Get the device context for the window
+                        wglMakeCurrent(hdc, uWindowManager::windows[i].glRenderContextHandle);
+                        glViewport(0, 0, width, height);
+                        wglMakeCurrent(NULL, NULL); // Optionally, make no context current  
+
+                        ReleaseDC(hwnd, hdc); // Release the device context
+                        InvalidateRect(hwnd, NULL, FALSE); // Request a redraw
+                    }
+                }
+                
+                return 0;
+            }
+
 
         case WM_PAINT: {
             PAINTSTRUCT ps;
@@ -327,9 +346,20 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
             glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            // Set color for the rectangle (for example, green)
+            glColor3f(0.0f, 1.0f, 0.0f); // Green color
+
+            // Draw rectangle based on view's frame
+            glBegin(GL_QUADS);
+                glVertex2f(10.0, 10.0);
+                glVertex2f(50.0, 10.0);
+                glVertex2f(50.0, 50.0);
+                glVertex2f(10.0, 50.0);
+            glEnd();
+
             // Render the texture
             /*glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, /* texture ID);
+            glBindTexture(GL_TEXTURE_2D, /* texture ID);   
             glBegin(GL_QUADS);
                 glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 0.0f);
                 glTexCoord2f(1.0f, 1.0f); glVertex2f(ps.rcPaint.right, 0.0f);
