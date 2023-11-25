@@ -129,7 +129,7 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
                 WS_OVERLAPPEDWINDOW,            // Window style
 
                 // Size and position
-                CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                CW_USEDEFAULT, CW_USEDEFAULT, (int)width, (int)height,
 
 
                 nullptr,       // Parent window
@@ -170,6 +170,10 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
         SetPixelFormat(hdc, pixelFormat, &pfd);
         stuffForManager.glRenderContextHandle = wglCreateContext(hdc);
         wglMakeCurrent(hdc, stuffForManager.glRenderContextHandle);
+
+        glEnable(GL_BLEND);  
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
         ReleaseDC(window->systemHandle, hdc);
 
         windows.push_back(stuffForManager);
@@ -294,6 +298,26 @@ void uWindowManager::SetWindowVisibility(uWindow* window, uWindowVisibility visi
 }
 
 
+void RenderView(uView view) {
+
+    // Set color for the rectangle (for example, green)
+    glColor4f(view.backgroundColor.r, view.backgroundColor.g, view.backgroundColor.b, view.backgroundColor.a); // Green color
+
+    uRectangle frame = view.layoutNode->frame;
+    // Draw rectangle based on view's frame
+    glBegin(GL_QUADS);
+        glVertex2f(frame.x, frame.y);
+        glVertex2f(frame.x + frame.width, frame.y);
+        glVertex2f(frame.x + frame.width, frame.y + frame.height);
+        glVertex2f(frame.x, frame.y + frame.height);
+    glEnd();
+    
+    for (uView subview : view.subviews) {
+        RenderView(subview);
+    }
+}
+
+
 
 #ifdef _WIN32
 
@@ -315,8 +339,15 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                         glViewport(0, 0, width, height);
                         wglMakeCurrent(NULL, NULL); // Optionally, make no context current  
 
+                        printf("RESIZE %d %d\n", width, height);
+
                         ReleaseDC(hwnd, hdc); // Release the device context
                         InvalidateRect(hwnd, NULL, FALSE); // Request a redraw
+
+                        uWindowManager::windows[i].windowPointer->layoutTree.rootNode.frame.width = width;
+                        uWindowManager::windows[i].windowPointer->layoutTree.rootNode.frame.height = height;
+
+                        uWindowManager::windows[i].windowPointer->layoutTree.rootNode.EvaluateConstraints();
                     }
                 }
                 
@@ -325,37 +356,42 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 
 
         case WM_PAINT: {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hwnd, &ps);
+
 
             for (int i = 0; i < uWindowManager::windows.size(); i++) {
                 if (uWindowManager::windows[i].windowPointer->systemHandle == hwnd) {
+
+                    PAINTSTRUCT ps;
+                    HDC hdc = BeginPaint(hwnd, &ps);
+
                     wglMakeCurrent(hdc, uWindowManager::windows[i].glRenderContextHandle);
+
+
+                    // Set up OpenGL viewport, projection, etc.
+                    glViewport(0, 0, ps.rcPaint.right - ps.rcPaint.left, ps.rcPaint.bottom - ps.rcPaint.top);
+                    glMatrixMode(GL_PROJECTION);
+                    glLoadIdentity();
+                    glOrtho(0.0, ps.rcPaint.right, ps.rcPaint.bottom, 0.0, -1.0, 1.0);
+                    glMatrixMode(GL_MODELVIEW);
+                    glLoadIdentity();
+
+                    // Clear screen
+                    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+                    glClear(GL_COLOR_BUFFER_BIT);
+
+                    RenderView(uWindowManager::windows[i].windowPointer->rootView);
+
+                    SwapBuffers(hdc);
+
+                    EndPaint(hwnd, &ps);
                 }
+
+            
             }
-
-            // Set up OpenGL viewport, projection, etc.
-            glViewport(0, 0, ps.rcPaint.right - ps.rcPaint.left, ps.rcPaint.bottom - ps.rcPaint.top);
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glOrtho(0.0, ps.rcPaint.right, ps.rcPaint.bottom, 0.0, -1.0, 1.0);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-
-            // Clear screen
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            // Set color for the rectangle (for example, green)
-            glColor3f(0.0f, 1.0f, 0.0f); // Green color
+            
 
             // Draw rectangle based on view's frame
-            glBegin(GL_QUADS);
-                glVertex2f(10.0, 10.0);
-                glVertex2f(50.0, 10.0);
-                glVertex2f(50.0, 50.0);
-                glVertex2f(10.0, 50.0);
-            glEnd();
+            
 
             // Render the texture
             /*glEnable(GL_TEXTURE_2D);
@@ -368,11 +404,14 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
             glEnd();
             glDisable(GL_TEXTURE_2D);*/
 
-            SwapBuffers(hdc);
-
-            EndPaint(hwnd, &ps);
-        }
             return 0;
+        }
+
+        case WM_DISPLAYCHANGE: {
+            InvalidateRect(hwnd, NULL, FALSE); // Request a redraw
+            return 0;
+        }
+            
         default:
             break;
     }

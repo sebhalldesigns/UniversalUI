@@ -38,7 +38,7 @@ add_executable(UniversalUI
 target_include_directories(UniversalUI PUBLIC "./Core/include")
 target_include_directories(UniversalUI PUBLIC "./Bitmap/include")
 target_include_directories(UniversalUI PUBLIC "./Windowing/include")
-
+target_include_directories(UniversalUI PUBLIC "./Layout/include")
 
 
 if(WIN32)

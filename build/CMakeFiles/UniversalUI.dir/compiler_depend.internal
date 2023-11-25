@@ -5,6 +5,10 @@ CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
  C:/Users/sebam/Documents/UniversalUI/Core/source/UniversalUI.cpp
  C:/Users/sebam/Documents/UniversalUI/Core/include/UniversalUI.h
  C:/Users/sebam/Documents/UniversalUI/Core/include/uApplication.h
+ C:/Users/sebam/Documents/UniversalUI/Core/include/uView.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutConstraint.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutNode.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutTree.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindow.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindowManager.h
  C:/msys64/mingw64/include/GL/gl.h
@@ -62,6 +66,7 @@ CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_atomic.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_base.h
+ C:/msys64/mingw64/include/c++/13.1.0/bits/specfun.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/std_abs.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_algobase.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_bvector.h
@@ -85,6 +90,7 @@ CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
  C:/msys64/mingw64/include/c++/13.1.0/cctype
  C:/msys64/mingw64/include/c++/13.1.0/cerrno
  C:/msys64/mingw64/include/c++/13.1.0/clocale
+ C:/msys64/mingw64/include/c++/13.1.0/cmath
  C:/msys64/mingw64/include/c++/13.1.0/cstddef
  C:/msys64/mingw64/include/c++/13.1.0/cstdio
  C:/msys64/mingw64/include/c++/13.1.0/cstdlib
@@ -101,6 +107,8 @@ CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
  C:/msys64/mingw64/include/c++/13.1.0/ext/type_traits.h
  C:/msys64/mingw64/include/c++/13.1.0/initializer_list
  C:/msys64/mingw64/include/c++/13.1.0/iosfwd
+ C:/msys64/mingw64/include/c++/13.1.0/limits
+ C:/msys64/mingw64/include/c++/13.1.0/math.h
  C:/msys64/mingw64/include/c++/13.1.0/memory
  C:/msys64/mingw64/include/c++/13.1.0/new
  C:/msys64/mingw64/include/c++/13.1.0/pstl/execution_defs.h
@@ -109,6 +117,18 @@ CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
  C:/msys64/mingw64/include/c++/13.1.0/stdlib.h
  C:/msys64/mingw64/include/c++/13.1.0/string
  C:/msys64/mingw64/include/c++/13.1.0/string_view
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/bessel_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/beta_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/ell_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/exp_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/gamma.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/hypergeometric.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/legendre_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/modified_bessel_func.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_hermite.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_laguerre.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/riemann_zeta.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/special_function_util.h
  C:/msys64/mingw64/include/c++/13.1.0/tuple
  C:/msys64/mingw64/include/c++/13.1.0/type_traits
  C:/msys64/mingw64/include/c++/13.1.0/typeinfo
@@ -160,6 +180,7 @@ CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.obj
  C:/msys64/mingw64/include/locale.h
  C:/msys64/mingw64/include/lzexpand.h
  C:/msys64/mingw64/include/malloc.h
+ C:/msys64/mingw64/include/math.h
  C:/msys64/mingw64/include/mciapi.h
  C:/msys64/mingw64/include/mcx.h
  C:/msys64/mingw64/include/memoryapi.h
@@ -499,6 +520,10 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
  C:/Users/sebam/Documents/UniversalUI/Bitmap/include/uBitmap.h
  C:/Users/sebam/Documents/UniversalUI/Core/include/UniversalUI.h
  C:/Users/sebam/Documents/UniversalUI/Core/include/uApplication.h
+ C:/Users/sebam/Documents/UniversalUI/Core/include/uView.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutConstraint.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutNode.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutTree.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindow.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindowManager.h
  C:/msys64/mingw64/include/GL/gl.h
@@ -569,6 +594,7 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_atomic.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_base.h
+ C:/msys64/mingw64/include/c++/13.1.0/bits/specfun.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/std_abs.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_algo.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_algobase.h
@@ -597,6 +623,7 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
  C:/msys64/mingw64/include/c++/13.1.0/cctype
  C:/msys64/mingw64/include/c++/13.1.0/cerrno
  C:/msys64/mingw64/include/c++/13.1.0/clocale
+ C:/msys64/mingw64/include/c++/13.1.0/cmath
  C:/msys64/mingw64/include/c++/13.1.0/cstddef
  C:/msys64/mingw64/include/c++/13.1.0/cstdint
  C:/msys64/mingw64/include/c++/13.1.0/cstdio
@@ -618,6 +645,8 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
  C:/msys64/mingw64/include/c++/13.1.0/ios
  C:/msys64/mingw64/include/c++/13.1.0/iosfwd
  C:/msys64/mingw64/include/c++/13.1.0/istream
+ C:/msys64/mingw64/include/c++/13.1.0/limits
+ C:/msys64/mingw64/include/c++/13.1.0/math.h
  C:/msys64/mingw64/include/c++/13.1.0/memory
  C:/msys64/mingw64/include/c++/13.1.0/new
  C:/msys64/mingw64/include/c++/13.1.0/ostream
@@ -631,6 +660,18 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
  C:/msys64/mingw64/include/c++/13.1.0/string
  C:/msys64/mingw64/include/c++/13.1.0/string_view
  C:/msys64/mingw64/include/c++/13.1.0/system_error
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/bessel_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/beta_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/ell_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/exp_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/gamma.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/hypergeometric.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/legendre_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/modified_bessel_func.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_hermite.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_laguerre.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/riemann_zeta.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/special_function_util.h
  C:/msys64/mingw64/include/c++/13.1.0/tuple
  C:/msys64/mingw64/include/c++/13.1.0/type_traits
  C:/msys64/mingw64/include/c++/13.1.0/typeinfo
@@ -687,6 +728,7 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
  C:/msys64/mingw64/include/locale.h
  C:/msys64/mingw64/include/lzexpand.h
  C:/msys64/mingw64/include/malloc.h
+ C:/msys64/mingw64/include/math.h
  C:/msys64/mingw64/include/mciapi.h
  C:/msys64/mingw64/include/mcx.h
  C:/msys64/mingw64/include/memoryapi.h
@@ -923,6 +965,10 @@ CMakeFiles/UniversalUI.dir/Test/main.obj
 
 CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
  C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindow.cpp
+ C:/Users/sebam/Documents/UniversalUI/Core/include/uView.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutConstraint.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutNode.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutTree.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindow.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindowManager.h
  C:/msys64/mingw64/include/GL/gl.h
@@ -980,6 +1026,7 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_atomic.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_base.h
+ C:/msys64/mingw64/include/c++/13.1.0/bits/specfun.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/std_abs.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_algobase.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_bvector.h
@@ -1004,6 +1051,7 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
  C:/msys64/mingw64/include/c++/13.1.0/cctype
  C:/msys64/mingw64/include/c++/13.1.0/cerrno
  C:/msys64/mingw64/include/c++/13.1.0/clocale
+ C:/msys64/mingw64/include/c++/13.1.0/cmath
  C:/msys64/mingw64/include/c++/13.1.0/cstddef
  C:/msys64/mingw64/include/c++/13.1.0/cstdio
  C:/msys64/mingw64/include/c++/13.1.0/cstdlib
@@ -1020,6 +1068,8 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
  C:/msys64/mingw64/include/c++/13.1.0/ext/type_traits.h
  C:/msys64/mingw64/include/c++/13.1.0/initializer_list
  C:/msys64/mingw64/include/c++/13.1.0/iosfwd
+ C:/msys64/mingw64/include/c++/13.1.0/limits
+ C:/msys64/mingw64/include/c++/13.1.0/math.h
  C:/msys64/mingw64/include/c++/13.1.0/memory
  C:/msys64/mingw64/include/c++/13.1.0/new
  C:/msys64/mingw64/include/c++/13.1.0/pstl/execution_defs.h
@@ -1028,6 +1078,18 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
  C:/msys64/mingw64/include/c++/13.1.0/stdlib.h
  C:/msys64/mingw64/include/c++/13.1.0/string
  C:/msys64/mingw64/include/c++/13.1.0/string_view
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/bessel_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/beta_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/ell_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/exp_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/gamma.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/hypergeometric.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/legendre_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/modified_bessel_func.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_hermite.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_laguerre.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/riemann_zeta.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/special_function_util.h
  C:/msys64/mingw64/include/c++/13.1.0/tuple
  C:/msys64/mingw64/include/c++/13.1.0/type_traits
  C:/msys64/mingw64/include/c++/13.1.0/typeinfo
@@ -1080,6 +1142,7 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
  C:/msys64/mingw64/include/locale.h
  C:/msys64/mingw64/include/lzexpand.h
  C:/msys64/mingw64/include/malloc.h
+ C:/msys64/mingw64/include/math.h
  C:/msys64/mingw64/include/mciapi.h
  C:/msys64/mingw64/include/mcx.h
  C:/msys64/mingw64/include/memoryapi.h
@@ -1316,6 +1379,10 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.obj
 CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
  C:/Users/sebam/Documents/UniversalUI/Windowing/source/uWindowManager.cpp
  C:/Users/sebam/Documents/UniversalUI/Bitmap/include/uBitmap.h
+ C:/Users/sebam/Documents/UniversalUI/Core/include/uView.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutConstraint.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutNode.h
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutTree.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindow.h
  C:/Users/sebam/Documents/UniversalUI/Windowing/include/uWindowManager.h
  C:/msys64/mingw64/include/GL/gl.h
@@ -1386,6 +1453,7 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_atomic.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/shared_ptr_base.h
+ C:/msys64/mingw64/include/c++/13.1.0/bits/specfun.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/std_abs.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_algo.h
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_algobase.h
@@ -1414,6 +1482,7 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
  C:/msys64/mingw64/include/c++/13.1.0/cctype
  C:/msys64/mingw64/include/c++/13.1.0/cerrno
  C:/msys64/mingw64/include/c++/13.1.0/clocale
+ C:/msys64/mingw64/include/c++/13.1.0/cmath
  C:/msys64/mingw64/include/c++/13.1.0/cstddef
  C:/msys64/mingw64/include/c++/13.1.0/cstdint
  C:/msys64/mingw64/include/c++/13.1.0/cstdio
@@ -1435,6 +1504,8 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
  C:/msys64/mingw64/include/c++/13.1.0/ios
  C:/msys64/mingw64/include/c++/13.1.0/iosfwd
  C:/msys64/mingw64/include/c++/13.1.0/istream
+ C:/msys64/mingw64/include/c++/13.1.0/limits
+ C:/msys64/mingw64/include/c++/13.1.0/math.h
  C:/msys64/mingw64/include/c++/13.1.0/memory
  C:/msys64/mingw64/include/c++/13.1.0/new
  C:/msys64/mingw64/include/c++/13.1.0/ostream
@@ -1448,6 +1519,18 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
  C:/msys64/mingw64/include/c++/13.1.0/string
  C:/msys64/mingw64/include/c++/13.1.0/string_view
  C:/msys64/mingw64/include/c++/13.1.0/system_error
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/bessel_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/beta_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/ell_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/exp_integral.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/gamma.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/hypergeometric.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/legendre_function.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/modified_bessel_func.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_hermite.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_laguerre.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/riemann_zeta.tcc
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/special_function_util.h
  C:/msys64/mingw64/include/c++/13.1.0/tuple
  C:/msys64/mingw64/include/c++/13.1.0/type_traits
  C:/msys64/mingw64/include/c++/13.1.0/typeinfo
@@ -1504,6 +1587,7 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj
  C:/msys64/mingw64/include/locale.h
  C:/msys64/mingw64/include/lzexpand.h
  C:/msys64/mingw64/include/malloc.h
+ C:/msys64/mingw64/include/math.h
  C:/msys64/mingw64/include/mciapi.h
  C:/msys64/mingw64/include/mcx.h
  C:/msys64/mingw64/include/memoryapi.h

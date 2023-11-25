@@ -55,6 +55,12 @@
 				"file" : 0,
 				"line" : 40,
 				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 41,
+				"parent" : 0
 			}
 		]
 	},
@@ -80,6 +86,10 @@
 				{
 					"backtrace" : 5,
 					"path" : "C:/Users/sebam/Documents/UniversalUI/./Windowing/include"
+				},
+				{
+					"backtrace" : 6,
+					"path" : "C:/Users/sebam/Documents/UniversalUI/./Layout/include"
 				}
 			],
 			"language" : "CXX",

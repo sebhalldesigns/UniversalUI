@@ -134,6 +134,31 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj: \
  C:/msys64/mingw64/include/c++/13.1.0/bits/memory_resource.h \
  C:/msys64/mingw64/include/c++/13.1.0/cstddef \
  C:/msys64/mingw64/include/c++/13.1.0/bits/uses_allocator_args.h \
+ C:/Users/sebam/Documents/UniversalUI/Core/include/uView.h \
+ C:/msys64/mingw64/include/c++/13.1.0/vector \
+ C:/msys64/mingw64/include/c++/13.1.0/bits/stl_vector.h \
+ C:/msys64/mingw64/include/c++/13.1.0/bits/stl_bvector.h \
+ C:/msys64/mingw64/include/c++/13.1.0/bits/vector.tcc \
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutTree.h \
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutNode.h \
+ C:/msys64/mingw64/include/c++/13.1.0/math.h \
+ C:/msys64/mingw64/include/c++/13.1.0/cmath \
+ C:/msys64/mingw64/include/math.h \
+ C:/msys64/mingw64/include/c++/13.1.0/bits/specfun.h \
+ C:/msys64/mingw64/include/c++/13.1.0/limits \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/gamma.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/special_function_util.h \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/bessel_function.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/beta_function.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/ell_integral.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/exp_integral.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/hypergeometric.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/legendre_function.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/modified_bessel_func.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_hermite.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/poly_laguerre.tcc \
+ C:/msys64/mingw64/include/c++/13.1.0/tr1/riemann_zeta.tcc \
+ C:/Users/sebam/Documents/UniversalUI/Layout/include/uLayoutConstraint.h \
  C:/msys64/mingw64/include/windows.h \
  C:/msys64/mingw64/include/sdkddkver.h C:/msys64/mingw64/include/excpt.h \
  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdarg.h \
@@ -344,10 +369,6 @@ CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.obj: \
  C:/msys64/mingw64/include/winsvc.h C:/msys64/mingw64/include/mcx.h \
  C:/msys64/mingw64/include/imm.h \
  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdbool.h \
- C:/msys64/mingw64/include/c++/13.1.0/vector \
- C:/msys64/mingw64/include/c++/13.1.0/bits/stl_vector.h \
- C:/msys64/mingw64/include/c++/13.1.0/bits/stl_bvector.h \
- C:/msys64/mingw64/include/c++/13.1.0/bits/vector.tcc \
  C:/msys64/mingw64/include/GL/gl.h \
  C:/Users/sebam/Documents/UniversalUI/Bitmap/include/uBitmap.h \
  C:/msys64/mingw64/include/c++/13.1.0/fstream \

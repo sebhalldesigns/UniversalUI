@@ -2,6 +2,7 @@
 #define UVIEW_H
 
 #include <vector>
+#include "uLayoutTree.h"
 
 struct uRect {
     double x;
@@ -40,7 +41,9 @@ class uView {
 
 public:
 
-    uRect frame;
+    // actually responsible for layout + size
+    uLayoutNode* layoutNode;
+    //uRect frame;
 
     double borderThickness;
     double borderRadius;
@@ -53,7 +56,7 @@ public:
     std::vector<uView> subviews;
 
     uView(uRect initFrame) {
-        frame = initFrame;
+        //frame = initFrame;
     }
 
     // default constructor
@@ -64,4 +67,4 @@ public:
 
 
 
-#endif UVIEW_H
+#endif // UVIEW_H

@@ -8,6 +8,9 @@
 #include <memory>
 #include <string>
 
+#include "uView.h"
+#include "uLayoutTree.h"
+
 #ifdef _WIN32
 
     #ifndef UNICODE
@@ -51,8 +54,9 @@ class uWindow {
 public:
     uWindowHandle systemHandle = NULL;
 
-
-
+    uView rootView;
+    uLayoutTree layoutTree;
+    
     // TODO: make friend class and these private
     static bool _POST();
     static void _POLL();
