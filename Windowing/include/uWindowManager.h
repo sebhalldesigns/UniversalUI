@@ -47,14 +47,17 @@
         NSOpenGLPixelFormat* pixelFormat;
         NSOpenGLContext* glContext; // OpenGL Context
     };
+
+    @interface WindowDelegate: NSObject <NSWindowDelegate>
+    @end
 #else
     #error "Unsupported platform :("
 #endif
 
 class uWindowManager {
-
-    
-
+    #ifdef __APPLE__
+        static WindowDelegate* nsWindowDelegate;
+    #endif 
 public:
 
     static std::vector<uWindowStuffForManager> windows;

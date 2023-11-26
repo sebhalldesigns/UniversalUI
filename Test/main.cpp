@@ -19,11 +19,11 @@ class MyView : public uView {
 public:
     void Draw(uCanvas& canvas) override {
 
-        //for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             Dot* point = canvas.NewPoint(unif(re), unif(re));
             point->color = PAINFUL_GREEN;
             point->radius = 10.0;
-        //}
+        }
         
     }
 

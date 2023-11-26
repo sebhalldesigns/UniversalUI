@@ -11,7 +11,6 @@ std::vector<uWindowStuffForManager> uWindowManager::windows;
 
 #include <cstdio>
 
-
 #ifdef _WIN32
     const wchar_t CLASS_NAME[]  = L"UniversalUI Window";
 
@@ -28,6 +27,24 @@ std::vector<uWindowStuffForManager> uWindowManager::windows;
 #elif __APPLE__
     #include <Cocoa/Cocoa.h>
     #include <OpenGL/gl.h>
+
+    WindowDelegate* uWindowManager::nsWindowDelegate;
+
+
+    enum WindowEvent {
+        SIZE
+    };
+
+    void CocoaWindowProcedure(WindowEvent event, NSWindow* window, double param1, double param2);
+
+    @implementation WindowDelegate
+    - (NSSize)windowWillResize:(NSWindow *)sender 
+                    toSize:(NSSize)frameSize {
+
+        CocoaWindowProcedure(WindowEvent::SIZE, sender, frameSize.width, frameSize.height);
+        return frameSize;
+    }
+    @end
 #endif
 
 
@@ -60,6 +77,8 @@ bool uWindowManager::Init() {
     // Get the root window
     root = DefaultRootWindow(display);
 
+#elif __APPLE__
+    nsWindowDelegate = [[WindowDelegate alloc] init];
 #endif
 
     return true;
@@ -261,8 +280,36 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
             return;
         }
 
+        stuffForManager.windowPointer = window;
+
+        [window->systemHandle setDelegate: nsWindowDelegate];
         [window->systemHandle setTitle: [[NSString alloc] initWithUTF8String: title.c_str()]];
+
+        NSOpenGLPixelFormatAttribute attrs[] =
+        {
+            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersionLegacy,
+            NSOpenGLPFAColorSize, 24,
+            NSOpenGLPFADepthSize, 16,
+            NSOpenGLPFADoubleBuffer,
+            0
+        };
+
+        stuffForManager.pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+        stuffForManager.glContext = [[NSOpenGLContext alloc] initWithFormat: stuffForManager.pixelFormat shareContext:nil];
+        [stuffForManager.glContext makeCurrentContext];
+        glEnable(GL_BLEND);  
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+        glEnable(GL_TEXTURE_2D);   
+        glEnable(GL_POINT_SMOOTH); 
+
+
+        [window->systemHandle.contentView setWantsLayer:YES]; // For layer-backed views
+        [stuffForManager.glContext setView:window->systemHandle.contentView];
+
         [window->systemHandle makeKeyAndOrderFront:nil];
+
+
+        windows.push_back(stuffForManager);
         printf("Created a window!\n");
     #endif
 
@@ -327,6 +374,8 @@ void uWindowManager::SetWindowVisibility(uWindow* window, uWindowVisibility visi
 
 
 void RenderView(uView* view) {
+
+    printf("RENDER VIEW\n");
 
     // Set color for the rectangle (for example, green)
     uRectangle frame = view->layoutNode->frame;
@@ -591,4 +640,46 @@ int X11HandleError(Display* display, XErrorEvent* event) {
     return 0;
 }
 
+#elif __APPLE__
+
+void CocoaWindowProcedure(WindowEvent event, NSWindow* window, double param1, double param2) {
+    switch (event) {
+        case SIZE: {
+                uWindowStuffForManager windowStuff;
+                if (!uWindowManager::WindowStuffFromSystemHandle(window, windowStuff)) {
+                    printf("ERROR: Unknown window!\n");
+                    return;
+                }
+
+                [windowStuff.glContext makeCurrentContext];
+
+                // Set up OpenGL viewport, projection, etc.
+                glViewport(0, 0, param1, param2);
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                glOrtho(0.0, param1, param2, 0.0, -1.0, 1.0);
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
+
+                glClearColor(0.0, 0.5, 1.0, 1.0);
+                glClear(GL_COLOR_BUFFER_BIT);
+
+                windowStuff.windowPointer->layoutTree.rootNode.frame.width = param1;
+                windowStuff.windowPointer->layoutTree.rootNode.frame.height = param2;
+
+                windowStuff.windowPointer->layoutTree.rootNode.EvaluateConstraints();
+                RenderView(&windowStuff.windowPointer->rootView);
+
+                [windowStuff.glContext flushBuffer];
+
+                printf("NEW SIZE: %f %f\n", param1, param2);
+                return;
+            }
+        default: {
+                printf("ERROR: Unhandled event %u \n", event);
+                return;
+            }
+
+    }
+}
 #endif
