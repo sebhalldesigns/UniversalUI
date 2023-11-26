@@ -25,7 +25,9 @@ std::vector<uWindowStuffForManager> uWindowManager::windows;
     void X11WindowProcedure(XEvent event);
 
     int X11HandleError(Display* display, XErrorEvent* event);
-
+#elif __APPLE__
+    #include <Cocoa/Cocoa.h>
+    #include <OpenGL/gl.h>
 #endif
 
 
@@ -246,7 +248,23 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
 
         windows.push_back(stuffForManager);
 
-    #endif // _WIN32
+    #elif __APPLE__
+
+        NSRect frame = NSMakeRect(0, 0, width, height);
+        window->systemHandle = [[NSWindow alloc] initWithContentRect: frame 
+                                styleMask: NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable
+                                backing:NSBackingStoreBuffered
+                                defer:NO];
+
+        if (window->systemHandle == nullptr) {
+            printf("ERROR: Window creation failed!");
+            return;
+        }
+
+        [window->systemHandle setTitle: [[NSString alloc] initWithUTF8String: title.c_str()]];
+        [window->systemHandle makeKeyAndOrderFront:nil];
+        printf("Created a window!\n");
+    #endif
 
 }
 

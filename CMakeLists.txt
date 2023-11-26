@@ -1,10 +1,9 @@
 # linux dependencies libgl1-mesa-dev libx11-dev
 
 
-#cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.5)
 project(UniversalUI)
-
-set(CMAKE_CXX_STANDARD 17)
+add_definitions(-w)
 
 # Check if the target platform is Windows
 if(WIN32)
@@ -20,22 +19,30 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     include_directories(${OPENGL_INCLUDE_DIRS} ${X11_INCLUDE_DIR})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     message("Configuring for Darwin")
+    project(UniversalUI LANGUAGES CXX OBJCXX)
+
+    find_library(COCOA_LIBRARY Cocoa REQUIRED)
+    find_library(OPENGL_LIBRARY OpenGL REQUIRED)
+
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()
 
+set(CMAKE_CXX_STANDARD 17)
 
-
-
-add_executable(UniversalUI
-        Test/main.cpp
-        Windowing/source/uWindow.cpp
-        Core/source/UniversalUI.cpp
-        Core/source/uApplication.cpp
-        Windowing/source/uWindowManager.cpp
-        Rendering/source/uCanvas.cpp
-        Rendering/source/uRenderNode.cpp
+set(SOURCE_FILES 
+    Test/main.cpp
+    Windowing/source/uWindow.cpp
+    Core/source/UniversalUI.cpp
+    Core/source/uApplication.cpp
+    Windowing/source/uWindowManager.cpp
+    Rendering/source/uCanvas.cpp
+    Rendering/source/uRenderNode.cpp
 )
+
+add_executable(UniversalUI ${SOURCE_FILES})
+
+set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE OBJCXX)
 
 target_include_directories(UniversalUI PUBLIC "./Core/include")
 target_include_directories(UniversalUI PUBLIC "./Windowing/include")
@@ -52,4 +59,5 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(UniversalUI ${OPENGL_LIBRARIES} ${X11_LIBRARIES})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     message("Linking libraries for Darwin")
+    target_link_libraries(UniversalUI ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
 endif()

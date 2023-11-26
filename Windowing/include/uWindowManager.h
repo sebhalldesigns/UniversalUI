@@ -44,7 +44,8 @@
 
     struct uWindowStuffForManager {
         uWindow* windowPointer;
-        CGLContextObj glRenderContext; // Core OpenGL Context
+        NSOpenGLPixelFormat* pixelFormat;
+        NSOpenGLContext* glContext; // OpenGL Context
     };
 #else
     #error "Unsupported platform :("

@@ -27,7 +27,9 @@
     typedef Window uWindowHandle;
 
 #elif __APPLE__
+    #include <Cocoa/Cocoa.h>
 
+    typedef NSWindow* uWindowHandle;
 #else
     #error "Unsupported platform :("
 #endif

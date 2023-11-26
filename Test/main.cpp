@@ -20,7 +20,7 @@ public:
     void Draw(uCanvas& canvas) override {
 
         //for (int i = 0; i < 1000; i++) {
-            Point* point = canvas.NewPoint(unif(re), unif(re));
+            Dot* point = canvas.NewPoint(unif(re), unif(re));
             point->color = PAINFUL_GREEN;
             point->radius = 10.0;
         //}
@@ -32,6 +32,8 @@ public:
 class MyApp : public uApplication {
 
     void FinishedLaunching() override {
+
+        printf("started launching!!\n");
 
         uWindow* window1 = new uWindow(1000.0, 750.0, "window 1");
         window1->SetVisibility(uWindowVisibility::VISIBLE);
@@ -58,6 +60,8 @@ class MyApp : public uApplication {
 
 
 int main() {
+
+    printf("MAIN\n");
 
     MyApp* app = new MyApp();
     return UniversalUI(app);

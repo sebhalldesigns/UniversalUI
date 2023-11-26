@@ -24,8 +24,8 @@ uCanvas::~uCanvas() {
 }   
 
 
-Point* uCanvas::NewPoint(double x, double y) {
-    Point* newPoint = new Point();
+Dot* uCanvas::NewPoint(double x, double y) {
+    Dot* newPoint = new Dot();
     newPoint->x = x;
     newPoint->y = y;
     points.push_back(newPoint);

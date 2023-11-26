@@ -1,37 +1,44 @@
 [
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Test/main.o -c /home/seb/Documents/UniversalUI/Test/main.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Test/main.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Test/main.cpp.o -c /Users/seb/Documents/UniversalUI/Test/main.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Test/main.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Test/main.cpp.o"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.o -c /home/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.cpp.o -c /Users/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Windowing/source/uWindow.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Windowing/source/uWindow.cpp.o"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.o -c /home/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.cpp.o -c /Users/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Core/source/UniversalUI.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Core/source/UniversalUI.cpp.o"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Core/source/uApplication.o -c /home/seb/Documents/UniversalUI/Core/source/uApplication.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Core/source/uApplication.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Core/source/uApplication.cpp.o -c /Users/seb/Documents/UniversalUI/Core/source/uApplication.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Core/source/uApplication.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Core/source/uApplication.cpp.o"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.o -c /home/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.cpp.o -c /Users/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Windowing/source/uWindowManager.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Windowing/source/uWindowManager.cpp.o"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.o -c /home/seb/Documents/UniversalUI/Rendering/source/uCanvas.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Rendering/source/uCanvas.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.cpp.o -c /Users/seb/Documents/UniversalUI/Rendering/source/uCanvas.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Rendering/source/uCanvas.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Rendering/source/uCanvas.cpp.o"
 },
 {
-  "directory": "/home/seb/Documents/UniversalUI/build",
-  "command": "/usr/bin/g++  -I/home/seb/Documents/UniversalUI/./Core/include -I/home/seb/Documents/UniversalUI/./Windowing/include -I/home/seb/Documents/UniversalUI/./Layout/include -I/home/seb/Documents/UniversalUI/./Rendering/include -g -std=gnu++17 -o CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.o -c /home/seb/Documents/UniversalUI/Rendering/source/uRenderNode.cpp",
-  "file": "/home/seb/Documents/UniversalUI/Rendering/source/uRenderNode.cpp"
+  "directory": "/Users/seb/Documents/UniversalUI/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/clang++  -I/Users/seb/Documents/UniversalUI/./Core/include -I/Users/seb/Documents/UniversalUI/./Windowing/include -I/Users/seb/Documents/UniversalUI/./Layout/include -I/Users/seb/Documents/UniversalUI/./Rendering/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks -x objective-c++ -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk   -w -o CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.cpp.o -c /Users/seb/Documents/UniversalUI/Rendering/source/uRenderNode.cpp",
+  "file": "/Users/seb/Documents/UniversalUI/Rendering/source/uRenderNode.cpp",
+  "output": "CMakeFiles/UniversalUI.dir/Rendering/source/uRenderNode.cpp.o"
 }
 ]

@@ -12,3 +12,7 @@ void uApplication::WillQuit() {
 bool uApplication::ShouldQuit() {
     return true;
 }
+
+void uApplication::SetShouldQuitWhenLastWindowClosed(bool shouldQuit) {
+    quitWhenLastWindowClosed = shouldQuit;
+}

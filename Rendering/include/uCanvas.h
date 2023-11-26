@@ -16,10 +16,10 @@ const static uColor PAINFUL_GREEN = { 0.0, 1.0, 0.0, 1.0 };
 
 
 
-class Point {
+class Dot {
     friend class uCanvas;
-    Point() {}
-    ~Point() {}
+    Dot() {}
+    ~Dot() {}
 public:
     double x;
     double y;
@@ -72,7 +72,7 @@ class uCanvas {
     double width;
     double height;
 
-    std::vector<Point*> points;
+    std::vector<Dot*> points;
     std::vector<Rectangle*> rectangles;
     std::vector<Image*> images;
 
@@ -86,7 +86,7 @@ public:
     uCanvas(double initWidth, double initHeight);
     ~uCanvas();
 
-    Point* NewPoint(double x, double y);
+    Dot* NewPoint(double x, double y);
     Rectangle* NewRectangle(double x, double y, double width, double height);
     Image* NewImage(std::string filePath, double x, double y, double width, double height);
     

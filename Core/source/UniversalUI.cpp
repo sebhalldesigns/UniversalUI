@@ -4,11 +4,19 @@
 
 #include "../include/UniversalUI.h"
 
-
-
 #include <stdio.h>
 
+#ifdef __APPLE__
+    #include <Cocoa/Cocoa.h>
+#endif
+
 int UniversalUI(uApplication* application) {
+
+    #ifdef __APPLE__
+        @autoreleasepool {
+            [NSApplication sharedApplication];
+        
+    #endif
 
     if (!uWindowManager::Init()) {
         return -1;
@@ -16,15 +24,29 @@ int UniversalUI(uApplication* application) {
 
     application->FinishedLaunching();
 
-    while (!application->shouldQuit) {
+    #ifdef __APPLE__
 
-        uWindowManager::PollEvents();
+            printf("APP RUN!");
+            // Create and run the application event loop
+            NSApp.activationPolicy = NSApplicationActivationPolicyRegular;
+            [NSApp activateIgnoringOtherApps:YES];
+            [NSApp run];
 
-        if (uWindowManager::IsWindowsEmpty() && application->quitWhenLastWindowClosed) {
-            printf("\nINFO: Application finishing due to no windows being present\n");
-            application->shouldQuit = true;
+        } // @autoreleasepool
+    #else
+
+        while (!application->shouldQuit) {
+
+            uWindowManager::PollEvents();
+
+            if (uWindowManager::IsWindowsEmpty() && application->quitWhenLastWindowClosed) {
+                printf("\nINFO: Application finishing due to no windows being present\n");
+                application->shouldQuit = true;
+            }
         }
-    }
+
+    #endif
+   
 
     return 0;
 }

@@ -7,15 +7,15 @@
 
 #include <string>
 
-class uApplication {
 
+class uApplication {
+    bool quitWhenLastWindowClosed = true;
 public:
 
     std::string name;
     int majorVersion;
     int minorVersion;
 
-    bool quitWhenLastWindowClosed = true;
 
     // internal should quit flag
     bool shouldQuit = false;
@@ -25,6 +25,7 @@ public:
     virtual void WillQuit();
     virtual bool ShouldQuit();
 
+    void SetShouldQuitWhenLastWindowClosed(bool shouldQuit);
 
 };
 
