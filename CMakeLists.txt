@@ -63,7 +63,13 @@ if(WIN32)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message("Linking libraries for Linux")
     # Link against OpenGL and X11 libraries
-    target_link_libraries(UniversalUI ${OPENGL_LIBRARIES} ${X11_LIBRARIES})
+
+    target_link_libraries(UniversalUI PRIVATE ${OPENGL_LIBRARIES} ${X11_LIBRARIES})
+
+    include_directories(${CMAKE_SOURCE_DIR}/Rendering/lib)
+    target_link_libraries(UniversalUI PRIVATE ${CMAKE_SOURCE_DIR}/Rendering/lib/libfreetype.a)
+    
+
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     message("Linking libraries for Darwin")
     target_link_libraries(UniversalUI ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
