@@ -9,7 +9,6 @@
 
 
 class uApplication {
-    bool quitWhenLastWindowClosed = true;
 public:
 
     std::string name;
@@ -24,6 +23,8 @@ public:
     virtual void FinishedLaunching();
     virtual void WillQuit();
     virtual bool ShouldQuit();
+
+    bool quitWhenLastWindowClosed = true;
 
     void SetShouldQuitWhenLastWindowClosed(bool shouldQuit);
 

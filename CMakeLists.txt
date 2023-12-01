@@ -42,17 +42,24 @@ set(SOURCE_FILES
 
 add_executable(UniversalUI ${SOURCE_FILES})
 
-set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE OBJCXX)
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE OBJCXX)
+endif()
 
 target_include_directories(UniversalUI PUBLIC "./Core/include")
 target_include_directories(UniversalUI PUBLIC "./Windowing/include")
 target_include_directories(UniversalUI PUBLIC "./Layout/include")
 target_include_directories(UniversalUI PUBLIC "./Rendering/include")
 
+target_include_directories(UniversalUI SYSTEM PRIVATE "./Rendering/include/freetype2")
+
 
 if(WIN32)
     message("Linking libraries for Windows")
     target_link_libraries(UniversalUI PRIVATE OpenGL::GL)
+    
+    target_link_libraries(UniversalUI PRIVATE "${CMAKE_SOURCE_DIR}/Rendering/lib/freetype.lib")
+
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message("Linking libraries for Linux")
     # Link against OpenGL and X11 libraries

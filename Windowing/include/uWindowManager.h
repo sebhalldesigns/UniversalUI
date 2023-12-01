@@ -15,6 +15,7 @@
 #ifdef _WIN32
 
     #include <gl/GL.h>
+    #include <gl/glu.h>
     #include <windows.h>
 
     struct uWindowStuffForManager {

@@ -6,15 +6,31 @@
 
 #include "uCanvas.h"
 #include "uRenderNode.h"
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include "glm/glm.hpp"
 
 std::vector<uWindowStuffForManager> uWindowManager::windows;
 
 #include <cstdio>
+#include <map>
 
 #ifdef _WIN32
     const wchar_t CLASS_NAME[]  = L"UniversalUI Window";
 
     LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+    FT_Library ft;
+    struct Character {
+        GLuint textureID;  // Texture ID
+        glm::ivec2 size;   // Size of glyph
+        glm::ivec2 bearing;// Offset from baseline to left/top of glyph
+        FT_Pos advance;    // Offset to advance to next glyph
+    };
+
+    std::map<char, Character> Characters;
+
 #elif __linux__
     Display *display;
     Window root;
@@ -50,6 +66,7 @@ std::vector<uWindowStuffForManager> uWindowManager::windows;
 
 bool uWindowManager::Init() {
 
+
 #ifdef _WIN32
 
     // Register the window class.
@@ -81,6 +98,7 @@ bool uWindowManager::Init() {
     nsWindowDelegate = [[WindowDelegate alloc] init];
 #endif
 
+   
     return true;
 }
 
@@ -199,6 +217,63 @@ void uWindowManager::CreateNewWindow(uWindow* window, double width, double heigh
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
         glEnable(GL_TEXTURE_2D);   
         glEnable(GL_POINT_SMOOTH); 
+
+         if (FT_Init_FreeType(&ft)) {
+            // Handle error: initialization failed
+        }
+
+        FT_Face face;
+        if (FT_New_Face(ft, "./font.ttf", 0, &face)) {
+            // Handle error: failed to load font
+        }
+
+        // Set the desired font size
+        FT_Set_Pixel_Sizes(face, 0, 48);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
+
+        for (GLubyte c = 0; c < 128; c++) {
+            // Load character glyph
+            if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+                // Handle error: failed to load glyph
+                continue;
+            }
+
+            // Generate texture
+            GLuint texture;
+            glGenTextures(1, &texture);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_RED,
+                face->glyph->bitmap.width,
+                face->glyph->bitmap.rows,
+                0,
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                face->glyph->bitmap.buffer
+            );
+
+            // Set texture options
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            // Store character for later use
+            Character character = {
+                texture, 
+                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                face->glyph->advance.x
+            };
+            Characters.insert(std::pair<char, Character>(c, character));
+        }
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+
 
         ReleaseDC(window->systemHandle, hdc);
 
@@ -425,6 +500,43 @@ void RenderView(uView* view) {
     }
 }
 
+void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
+    // Activate corresponding render state	
+
+
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+
+    // Iterate through all characters
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++) {
+        Character ch = Characters[*c];
+
+        GLfloat xpos = x + ch.bearing.x * scale;
+        GLfloat ypos = y - (ch.size.y - ch.bearing.y) * scale;
+
+        GLfloat w = ch.size.x * scale;
+        GLfloat h = ch.size.y * scale;
+
+        // Render glyph texture over quad
+        glBindTexture(GL_TEXTURE_2D, ch.textureID);
+
+        glBegin(GL_QUADS);
+            glColor3f(color.x, color.y, color.z);
+            glTexCoord2d(0, 0); glVertex2f(xpos, ypos);
+            glTexCoord2d(1, 0); glVertex2f(xpos + w, ypos);
+            glTexCoord2d(1, 1); glVertex2f(xpos + w, ypos + h);
+            glTexCoord2d(0, 1); glVertex2f(xpos, ypos + h);
+        glEnd();
+
+        // Now advance cursors for next glyph
+        x += (ch.advance >> 6) * scale; // Bitshift by 6 to get value in pixels (1/64th times)
+    }
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glPopMatrix();
+}
+
 
 
 #ifdef _WIN32
@@ -447,7 +559,7 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                         glViewport(0, 0, width, height);
                         wglMakeCurrent(NULL, NULL); // Optionally, make no context current  
 
-                        //printf("RESIZE %d %d\n", width, height);
+                        printf("RESIZE %d %d\n", width, height);
 
                         ReleaseDC(hwnd, hdc); // Release the device context
                         InvalidateRect(hwnd, NULL, FALSE); // Request a redraw
@@ -465,7 +577,7 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 
         case WM_PAINT: {
 
-
+            
             for (int i = 0; i < uWindowManager::windows.size(); i++) {
                 if (uWindowManager::windows[i].windowPointer->systemHandle == hwnd) {
 
@@ -488,6 +600,8 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                     glClear(GL_COLOR_BUFFER_BIT);
 
                     RenderView(&uWindowManager::windows[i].windowPointer->rootView);
+
+                    RenderText("Hello World!", 25.0f, 50.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
                     SwapBuffers(hdc);
 
