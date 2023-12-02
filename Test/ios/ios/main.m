@@ -1,18 +1,39 @@
-//
-//  main.m
-//  ios
-//
-//  Created by Seb on 01/12/2023.
-//
-
 #import <UIKit/UIKit.h>
-#import "AppDelegate.h"
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+@end
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    printf("FINISHED LAUNCHING");
+    // Override point for customization after application launch.
+
+    // Create a window
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    // Create a view controller
+    UIViewController *viewController = [[UIViewController alloc] init];
+
+    viewController.view.backgroundColor = UIColor.redColor;
+
+    // Set the view controller as the root view controller
+    self.window.rootViewController = viewController;
+
+    // Make the window visible
+    [self.window makeKeyAndVisible];
+
+    return YES;
+}
+
+@end
 
 int main(int argc, char * argv[]) {
-    NSString * appDelegateClassName;
     @autoreleasepool {
-        // Setup code that might create autoreleased objects goes here.
-        appDelegateClassName = NSStringFromClass([AppDelegate class]);
+        printf("MAIN");
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
-    return UIApplicationMain(argc, argv, nil, appDelegateClassName);
 }
