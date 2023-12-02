@@ -14,7 +14,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    printf("app delegate launched!\n");
+    printf("app delegate launched with an update and another update!\n");
 }
 
 @end

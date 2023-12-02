@@ -8,11 +8,11 @@
 
 	<!-- The bundle version, typically incremented with each release -->
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>0.0.1</string>
 
 	<!-- The bundle short version string, shown as the version to users -->
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>0.0.1</string>
 
 	<!-- The display name of the app -->
 	<key>CFBundleName</key>
