@@ -1,7 +1,7 @@
 //
 // Created by sebam on 11/11/2023.
 //
-#include "../include/uApplication.h"
+#include "Core/Application/uApplication.h"
 
 void uApplication::FinishedLaunching() {
 
@@ -9,10 +9,7 @@ void uApplication::FinishedLaunching() {
 void uApplication::WillQuit() {
 
 }
+
 bool uApplication::ShouldQuit() {
     return true;
-}
-
-void uApplication::SetShouldQuitWhenLastWindowClosed(bool shouldQuit) {
-    quitWhenLastWindowClosed = shouldQuit;
 }

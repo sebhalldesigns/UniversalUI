@@ -5,8 +5,7 @@
 #ifndef UNIVERSALUI_H
 #define UNIVERSALUI_H
 
-#include "uApplication.h"
-#include "uWindowManager.h"
+#include "Application/uApplication.h"
 
 //  UniversalUI main function - takes a subclass
 //  of uApplication and only returns on application quit.
@@ -16,6 +15,13 @@
 //      MyAppClass* myApp = new MyAppClass();
 //      return UniversalUI(myApp);
 //
+//  or, a full main function could simply be:
+//  
+//      int main() {
+//          return UniversalUI(new MyApp());
+//      }
+//
+
 int UniversalUI(uApplication* application);
 
 #endif //UNIVERSALUI_H

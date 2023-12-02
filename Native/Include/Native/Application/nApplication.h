@@ -1,7 +1,7 @@
 #ifndef NAPPLICATION_H
 #define NAPPLICATION_H
 
-#include "uApplication.h"
+#include "Core/Application/uApplication.h"
 
 class nApplication {
 public:

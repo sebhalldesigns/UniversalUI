@@ -1,4 +1,4 @@
-#include "nApplication.h"
+#include "Native/Application/nApplication.h"
 #include <cstdio>
 
 #import <UIKit/UIKit.h>
@@ -8,21 +8,21 @@
 @end
 
 
-int nApplication::Run(uApplication* application) {
-
-    @autoreleasepool {
-        return UIApplicationMain(nil, nil, nil, NSStringFromClass([AppDelegate class]));
-    }
-    
-}
 
 
 @implementation AppDelegate 
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    printf("launched!\n");
+    printf("app delegate launched!\n");
 }
 
 @end
 
+int nApplication::Run(uApplication* application) {
+
+    @autoreleasepool {
+        return UIApplicationMain(0, nil, nil, NSStringFromClass([AppDelegate class]));
+    }
+    
+}

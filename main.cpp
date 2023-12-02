@@ -4,13 +4,11 @@
 
 #include <stdio.h>
 
-#include "UniversalUI.h"
-#include "uApplication.h"
-#include "uWindow.h"
+#include "Core/UniversalUI.h"
 
 #include <random>
 
-double lower_bound = 0;
+/*double lower_bound = 0;
 double upper_bound = 1000;
 std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
 std::default_random_engine re;
@@ -23,11 +21,11 @@ public:
             Dot* point = canvas.NewPoint(unif(re), unif(re));
             point->color = PAINFUL_GREEN;
             point->radius = 10.0;
-        }*/
+        }
         
     }
 
-};
+};*/
 
 class MyApp : public uApplication {
 
@@ -35,7 +33,7 @@ class MyApp : public uApplication {
 
         printf("started launching!!\n");
 
-        uWindow* window1 = new uWindow(1000.0, 750.0, "window 1");
+        /*uWindow* window1 = new uWindow(1000.0, 750.0, "window 1");
         window1->SetVisibility(uWindowVisibility::VISIBLE);
         window1->rootView.backgroundColor = { 0.0, 0.0, 0.0, 1.0};
 
@@ -51,9 +49,9 @@ class MyApp : public uApplication {
         view->layoutNode->AddConstraint(window1->rootView.layoutNode, uLayoutAnchor::TOP, uLayoutAnchor::TOP, 0.0);
         view->layoutNode->AddConstraint(window1->rootView.layoutNode, uLayoutAnchor::BOTTOM, uLayoutAnchor::BOTTOM, 0.0);
         view->layoutNode->AddConstraint(window1->rootView.layoutNode, uLayoutAnchor::LEFT, uLayoutAnchor::LEFT, 0.0);
-        view->layoutNode->AddConstraint(window1->rootView.layoutNode, uLayoutAnchor::WIDTH, uLayoutAnchor::WIDTH, 0.0, 1.0);
+        view->layoutNode->AddConstraint(window1->rootView.layoutNode, uLayoutAnchor::WIDTH, uLayoutAnchor::WIDTH, 0.0, 1.0);*/
         
-        printf("finished launching!");
+        printf("finished launching!\n");
     }
 };
 
@@ -61,8 +59,6 @@ class MyApp : public uApplication {
 
 int main() {
 
-    printf("MAIN\n");
-
-    MyApp* app = new MyApp();
-    return UniversalUI(app);
+    printf("main!\n");
+    return UniversalUI(new MyApp());
 }

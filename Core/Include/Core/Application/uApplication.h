@@ -7,7 +7,6 @@
 
 #include <string>
 
-
 class uApplication {
 public:
 
@@ -18,15 +17,14 @@ public:
 
     // internal should quit flag
     bool shouldQuit = false;
+    bool quitWhenLastWindowClosed = true;
+
 
     //  override functions
     virtual void FinishedLaunching();
     virtual void WillQuit();
     virtual bool ShouldQuit();
 
-    bool quitWhenLastWindowClosed = true;
-
-    void SetShouldQuitWhenLastWindowClosed(bool shouldQuit);
 
 };
 
