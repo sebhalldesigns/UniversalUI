@@ -10,14 +10,7 @@
 
 
 int UniversalUI(uApplication* application) {
-
-    /*if (!uWindowManager::Init()) {
-        return -1;
-    }*/
-
-   
-    application->FinishedLaunching();
-
    
     return nApplication::Run(application);
+    
 }

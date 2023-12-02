@@ -1,7 +1,5 @@
 # UniversalUI Native CMakeLists.txt
 
-set(PLATFORM "ios")
-
 if(PLATFORM STREQUAL "ios")
     
     message("Configuring UniversalUI-Native for iOS...")
@@ -25,6 +23,16 @@ elseif(PLATFORM STREQUAL "macos")
     # Set the target platform to macOS
     set(CMAKE_SYSTEM_NAME MacOSX)
     message("Configuring UniversalUI-Native for macOS...")
+
+    set(UNIVERSALUI_NATIVE_PLATFORM_SOURCE
+        Source/macOS/nApplication.mm
+    )
+
+    set(PLATFORM_SPECIFIC_LIBRARIES
+        "-framework Cocoa"
+        "-framework Foundation"
+    )
+    
 
 else()
     message(FATAL_ERROR "Unsupported platform ${PLATFORM}")

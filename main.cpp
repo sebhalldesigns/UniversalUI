@@ -5,27 +5,11 @@
 #include <stdio.h>
 
 #include "Core/UniversalUI.h"
+#include "Core/Windowing/uWindow.h"
 
 #include <random>
 
-/*double lower_bound = 0;
-double upper_bound = 1000;
-std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
-std::default_random_engine re;
 
-class MyView : public uView {
-public:
-    void Draw(uCanvas& canvas) override {
-
-        /*for (int i = 0; i < 10000; i++) {
-            Dot* point = canvas.NewPoint(unif(re), unif(re));
-            point->color = PAINFUL_GREEN;
-            point->radius = 10.0;
-        }
-        
-    }
-
-};*/
 
 class MyApp : public uApplication {
 
@@ -55,10 +39,17 @@ class MyApp : public uApplication {
     }
 };
 
+class MyWindow : public uWindow {
+public:
 
+    void OnCreated() override {
+        printf("Window created!\n");
+    }
+};
 
 int main() {
 
-    printf("main!\n");
-    return UniversalUI(new MyApp());
+    uApplication* app = new uApplication();
+    app->simpleWindow = new MyWindow();
+    return UniversalUI(app);
 }

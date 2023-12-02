@@ -7,24 +7,23 @@
 
 #include <string>
 
+#include "Core/Windowing/uWindow.h"
+
 class uApplication {
 public:
+
+    uWindow* simpleWindow;
 
     std::string name;
     int majorVersion;
     int minorVersion;
 
-
-    // internal should quit flag
-    bool shouldQuit = false;
     bool quitWhenLastWindowClosed = true;
-
 
     //  override functions
     virtual void FinishedLaunching();
     virtual void WillQuit();
     virtual bool ShouldQuit();
-
 
 };
 
