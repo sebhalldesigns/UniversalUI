@@ -11,7 +11,7 @@
 int nApplication::Run(uApplication* application) {
 
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+        return UIApplicationMain(nil, nil, nil, NSStringFromClass([AppDelegate class]));
     }
     
 }
