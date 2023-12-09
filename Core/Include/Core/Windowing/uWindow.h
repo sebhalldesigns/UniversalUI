@@ -8,7 +8,41 @@
 #include <memory>
 #include <string>
 
-#include "Native/Windowing/nWindow.h"
+
+#ifdef _WIN32
+    #include <Windows.h>
+
+    struct uWindowResources {
+        HWND systemHandle;
+        HGLRC glRenderContextHandle;
+    };
+
+#elif __linux__
+    #include <X11/Xlib.h>
+
+    struct uWindowResources {
+        Window systemHandle;
+        Colormap colormap;
+        Atom deleteButtonAtom; // atom for intercepting delete button
+        GLXContext glxContext; // GLX OpenGL Context
+        XSetWindowAttributes setWindowAttributes;
+        XVisualInfo *visualInfo;
+        GC xGraphicsContext;
+        Pixmap backBuffer;
+    };
+
+#elif __APPLE__
+    #include <Cocoa/Cocoa.h>
+
+    struct uWindowResources {
+        NSWindow* systemHandle;
+        NSOpenGLPixelFormat* pixelFormat;
+        NSOpenGLContext* glContext; // OpenGL Context
+    };
+#else
+    #error "Unsupported platform :("
+#endif
+
 
 enum uWindowVisibility {
     HIDDEN,
@@ -18,18 +52,14 @@ enum uWindowVisibility {
 
 class uWindow {
 
-    friend class uWindowManager;
-    friend class uRenderManager;
+    friend class uApplication;
 
     double width;
     double height;
 
-    nWindow* nativeWindow;
-
-    
-
 public:
-    //uWindowHandle systemHandle = NULL;
+
+    uWindowResources* resources = nullptr;
 
     //uView rootView;
     //uLayoutTree layoutTree;

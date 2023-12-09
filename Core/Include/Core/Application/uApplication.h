@@ -1,18 +1,18 @@
-//
-// Created by sebam on 11/11/2023.
-//
-
 #ifndef UAPPLICATION_H
 #define UAPPLICATION_H
 
-#include <string>
-
 #include "Core/Windowing/uWindow.h"
 
+#include <string>
+#include <vector>
+
 class uApplication {
+
+  
+
 public:
 
-    uWindow* simpleWindow;
+    std::vector<uWindow*> windows;
 
     std::string name;
     int majorVersion;
@@ -20,11 +20,15 @@ public:
 
     bool quitWhenLastWindowClosed = true;
 
+    uWindow* NewWindow(double width, double height, std::string title);
+
     //  override functions
     virtual void FinishedLaunching();
     virtual void WillQuit();
     virtual bool ShouldQuit();
 
+    int Run();
+    
 };
 
 #endif //UAPPLICATION_H

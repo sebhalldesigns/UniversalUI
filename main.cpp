@@ -4,33 +4,35 @@
 
 #include <stdio.h>
 
-#include "Core/UniversalUI.h"
+#include "Core/Application/uApplication.h"
 #include "Core/Windowing/uWindow.h"
 
 #include <random>
 
-
-
-class MyApp : public uApplication {
-
-    void FinishedLaunching() override {
-
-        printf("started launching from macos!!\n");
-
-    }
-};
 
 class MyWindow : public uWindow {
 public:
 
     void OnCreated() override {
         printf("Window created!\n");
+
+    }
+};
+
+
+class MyApp : public uApplication {
+
+    void FinishedLaunching() override {
+
+        printf("started launching from windows\n");
+
+        uWindow* window = NewWindow(800, 600, "My Window");
+
     }
 };
 
 int main() {
 
-    MyApp* app = new MyApp();
-    app->simpleWindow = new MyWindow();
-    return UniversalUI(app);
+    MyApp app;
+    return app.Run();
 }
