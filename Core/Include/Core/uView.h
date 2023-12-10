@@ -6,17 +6,19 @@
 //#include "uLayoutTree.h"
 //#include "uCanvas.h"
 //#include "uRenderNode.h"
+#include "Core/Layout/uLayoutConstraint.h"
+#include "Graphics/Canvas/uCanvas.h"
 
 struct uRect {
-    double x;
-    double y;
-    double width;
-    double height;
+    float x;
+    float y;
+    float width;
+    float height;
 };
 
 struct uAnchorPoint {
-    double viewProportionX; // relative to view origin
-    double viewProportionY;
+    float viewProportionX; // relative to view origin
+    float viewProportionY;
 };
 
 struct uAnchorPointSet {
@@ -34,32 +36,122 @@ struct uAnchorPointSet {
 };
 
 class uView {
-
-public:
-
-    // actually responsible for layout + size
-    uLayoutNode* layoutNode;
-    //uRect frame;
-
-    double borderThickness;
-    double borderRadius;
-    uColor borderColor;
-
-    uColor backgroundColor;
+    friend class uApplication;
+    friend class uWindow;
 
     uAnchorPointSet anchorPoints;
 
     std::vector<uView*> subviews;
 
+    std::vector<uLayoutConstraint*> dependentConstraints;
+    std::vector<uLayoutConstraint*> dependingConstraints;
+
+public:
+
+    uRect frame;
+
     uView(uRect initFrame) {
-        //frame = initFrame;
+        frame = initFrame;
     }
 
     // default constructor
     uView() { }
 
+    // view contains logic for layout and input?? 
+
     virtual void Draw(uCanvas& canvas) {
         //printf("DRAW!\n");
+    }
+
+    void AddSubview(uView* view) {
+
+        // add to views tree and layout tree
+        subviews.push_back(view);
+    }
+
+    void RemoveSubview(uView* view) {
+
+
+        for (int i = 0; i < subviews.size(); i++) {
+            if (subviews[i] == view) {
+                subviews.erase(subviews.begin() + i);
+                i--;
+            }
+        }
+
+    }
+
+    std::vector<uView*> Subviews() {
+        return subviews;
+    }
+
+  
+
+    void AddConstraint(uView* parentNode, uLayoutAnchor parentAnchor, uLayoutAnchor secondaryAnchor, double offset, double multiplier = 1.0) {
+        uLayoutConstraint* constraint = new uLayoutConstraint(parentNode, 
+        parentAnchor, this, secondaryAnchor, offset, multiplier);
+
+        dependentConstraints.push_back(constraint);
+        parentNode->dependingConstraints.push_back(constraint);
+    }
+
+    void LayoutSubviews() {
+         for (uLayoutConstraint* constraint : dependingConstraints) {
+
+            double primaryMeasurement = NAN;
+
+            switch (constraint->primaryAnchor) {
+                case uLayoutAnchor::TOP:
+                    primaryMeasurement = frame.y;
+                    break;
+                case uLayoutAnchor::BOTTOM:
+                    primaryMeasurement = frame.y + frame.height;
+                    break;
+                case uLayoutAnchor::LEFT:
+                    primaryMeasurement = frame.x;
+                    break;
+                case uLayoutAnchor::RIGHT:
+                    primaryMeasurement = frame.x + frame.width;
+                    break;
+                case uLayoutAnchor::WIDTH:
+                    primaryMeasurement = frame.width;
+                    break;
+                case uLayoutAnchor::HEIGHT:
+                    primaryMeasurement = frame.height;
+                    break;
+            }
+
+            if (isnan(primaryMeasurement)) {
+                printf("PRIMARY MEASUREMENT FAILED\n");
+                break;
+            }
+
+            switch (constraint->secondaryAnchor) {
+                case uLayoutAnchor::TOP:
+                    constraint->secondaryNode->frame.y = (primaryMeasurement * constraint->multiplier) + constraint->offset; 
+                    break;
+                case uLayoutAnchor::BOTTOM:
+                    constraint->secondaryNode->frame.height = ((primaryMeasurement * constraint->multiplier) + constraint->offset) - constraint->secondaryNode->frame.y;
+                    break;
+                case uLayoutAnchor::LEFT:
+                    constraint->secondaryNode->frame.x = (primaryMeasurement * constraint->multiplier) + constraint->offset; 
+                    break;
+                case uLayoutAnchor::RIGHT:
+                    constraint->secondaryNode->frame.width = ((primaryMeasurement * constraint->multiplier) + constraint->offset) - constraint->secondaryNode->frame.x;
+                    break;
+                case uLayoutAnchor::WIDTH:
+                    constraint->secondaryNode->frame.width = (primaryMeasurement * constraint->multiplier) + constraint->offset; 
+                    break;
+                case uLayoutAnchor::HEIGHT:
+                    constraint->secondaryNode->frame.height = (primaryMeasurement * constraint->multiplier) + constraint->offset; 
+                    break;
+            }
+
+        }
+
+        for (uView* subview : subviews) {
+            subview->LayoutSubviews();
+        }
     }
 
 };

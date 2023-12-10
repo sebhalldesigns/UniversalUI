@@ -1,8 +1,6 @@
 #ifndef ULAYOUTCONSTRAINT_H
 #define ULAYOUTCONSTRAINT_H
 
-class uLayoutNode;
-
 enum uLayoutAnchor {
     TOP,
     BOTTOM,
@@ -14,10 +12,10 @@ enum uLayoutAnchor {
 
 class uLayoutConstraint {
 
-    friend class uLayoutNode;
+    friend class uView;
     
-    uLayoutNode* primaryNode;
-    uLayoutNode* secondaryNode;
+    uView* primaryNode;
+    uView* secondaryNode;
     uLayoutAnchor primaryAnchor;
     uLayoutAnchor secondaryAnchor;
     double offset;
@@ -25,8 +23,8 @@ class uLayoutConstraint {
 
 public:
 
-    uLayoutConstraint(uLayoutNode* primary, 
-    uLayoutAnchor primaryAnch, uLayoutNode* secondary, 
+    uLayoutConstraint(uView* primary, 
+    uLayoutAnchor primaryAnch, uView* secondary, 
     uLayoutAnchor secondaryAnch, double initOffset = 0.0, double initMultiplier = 1.0) {
         primaryNode = primary;
         secondaryNode = secondary;
@@ -37,11 +35,11 @@ public:
     }
 
     // public get 
-    uLayoutNode* PrimaryNode() {
+    uView* PrimaryNode() {
         return primaryNode;
     }
 
-    uLayoutNode* SecondaryNode() {
+    uView* SecondaryNode() {
         return secondaryNode;
     }
 

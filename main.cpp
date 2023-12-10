@@ -6,6 +6,9 @@
 
 #include "Core/Application/uApplication.h"
 #include "Core/Windowing/uWindow.h"
+#include "Core/uView.h"
+
+#include "Graphics/Canvas/uDrawingItem.h"
 
 #include <random>
 
@@ -19,6 +22,26 @@ public:
     }
 };
 
+class uButton : public uView {
+
+public:
+
+    void Draw(uCanvas& canvas) override { 
+        //printf("draw button!!\n");
+
+        Draw::Line line;
+        line.start = { 10.0f, 10.0f };
+        line.end = { frame.width - 10.0f, frame.height - 10.0f };
+        line.color = { 1.0f, 0.0f, 0.0f, 1.0f };
+        line.thickness = 5.0f;
+
+        canvas.AddItem(line);
+
+        //canvas.backgroundColor = { 0.0f, 1.0f, 0.0f, 1.0f};
+    }
+
+};
+
 
 class MyApp : public uApplication {
 
@@ -28,6 +51,14 @@ class MyApp : public uApplication {
 
         uWindow* window = NewWindow(800, 600, "My Window");
 
+        uButton* button = new uButton;
+        button->frame = { 10.0f, 10.0f, 100.0f, 100.0f };
+        window->rootView.AddSubview(button);
+        
+        button->AddConstraint(&window->rootView, uLayoutAnchor::LEFT, uLayoutAnchor::LEFT, 0.0f);
+        button->AddConstraint(&window->rootView, uLayoutAnchor::TOP, uLayoutAnchor::TOP, 0.0f);
+        button->AddConstraint(&window->rootView, uLayoutAnchor::BOTTOM, uLayoutAnchor::BOTTOM, 0.0f);
+        button->AddConstraint(&window->rootView, uLayoutAnchor::WIDTH, uLayoutAnchor::WIDTH, 0.0f, 0.5f);
     }
 };
 

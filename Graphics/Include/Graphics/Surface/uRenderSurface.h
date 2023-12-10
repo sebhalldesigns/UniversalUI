@@ -3,6 +3,9 @@
 
 #include "Graphics/General/uColor.h"
 #include "Graphics/General/uSize.h"
+#include "Graphics/Canvas/uCanvas.h"
+
+#include <vector>
 
 #ifdef _WIN32
     #include <Windows.h>
@@ -53,6 +56,9 @@ class uRenderSurface {
     public:
         uSize size;
         uColor backgroundColor;
+
+        // all canvases to be drawn on render. Each contains a fully defined set of drawing commands
+        std::vector<uCanvas*> canvasList;
 
         static uRenderSurface* InitForWindow(uWindowHandle windowHandle, float width, float height);
 

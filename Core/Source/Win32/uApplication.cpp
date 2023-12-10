@@ -4,6 +4,7 @@
 
 #include "Core/Application/uApplication.h"
 
+#include "Core/uView.h"
 
 
 #include <cstdio>
@@ -19,6 +20,8 @@ const static wchar_t CLASS_NAME[]  = L"UniversalUI Window";
 
 static uApplication* app;
 
+
+static void DrawView(uView* view, std::vector<uCanvas&>& canvasSet);
 static bool Win32Init();
 static LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -143,7 +146,25 @@ bool uApplication::ShouldQuit() {
     return true;
 }
 
+static void DrawView(uView* view, std::vector<uCanvas*>& canvasSet) {
+    
+    // allocate new canvas and draw to it
+    uCanvas* canvas = new uCanvas;
+    view->Draw(*canvas);
+    canvas->x = view->frame.x;
+    canvas->y = view->frame.y;
+    canvas->width = view->frame.width;
+    canvas->height = view->frame.height;
 
+    // push it to the canvas set
+    canvasSet.push_back(canvas);
+
+    // recurse for all subviews
+    for (uView* subview : view->Subviews()) {
+        DrawView(subview, canvasSet);
+    }
+
+}
 
 bool Win32Init() {
 
@@ -160,6 +181,8 @@ bool Win32Init() {
     
     return true;
 }
+
+
 
 LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
@@ -183,8 +206,13 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                 uWindow* window = app->GetWindowFromHandle(hwnd);
 
                 if (window != nullptr) {
+                    window->rootView.frame = { 0.0f, 0.0f, (float)width, (float)height };
+                    window->rootView.LayoutSubviews();
                     window->renderSurface->SizeChanged(width, height);
+                    InvalidateRect(hwnd, NULL, NULL);
                 }
+
+                printf("SIZE\n");
 
                 return 0;
             }
@@ -195,8 +223,22 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
             uWindow* window = app->GetWindowFromHandle(hwnd);
 
             if (window != nullptr) {
+                
+                                
+                // deallocate previous canvases
+                for (uCanvas* canvas : window->renderSurface->canvasList) {
+                    delete canvas;
+                }
+                window->renderSurface->canvasList.clear();
+                
+                std::vector<uCanvas*> canvasSet;
+                DrawView(&(window->rootView), canvasSet);
+                window->renderSurface->canvasList = canvasSet;
+
                 window->renderSurface->Render();
             }
+
+            printf("PAINT\n");
                     
             return 0;
         }

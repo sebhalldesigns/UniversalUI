@@ -29,6 +29,7 @@
 #endif
 
 #include "Graphics/Surface/uRenderSurface.h"
+#include "Core/uView.h"
 
 
 enum uWindowVisibility {
@@ -51,7 +52,7 @@ public:
     uWindowHandle systemHandle = NULL;
     uRenderSurface* renderSurface;
 
-    //uView rootView;
+    uView rootView;
     //uLayoutTree layoutTree;
 
     uWindow(double width, double height, std::string title);
