@@ -1,8 +1,8 @@
-#ifndef GRENDERSURFACE_H
-#define GRENDERSURFACE_H
+#ifndef URENDERSURFACE_H
+#define URENDERSURFACE_H
 
-#include "Graphics/General/gColor.h"
-#include "Graphics/General/gSize.h"
+#include "Graphics/General/uColor.h"
+#include "Graphics/General/uSize.h"
 
 #ifdef _WIN32
     #include <Windows.h>
@@ -12,7 +12,7 @@
 
     typedef HWND uWindowHandle;
 
-    struct gRenderSurfaceResources {
+    struct uRenderSurfaceResources {
         HWND windowHandle;
         HGLRC glRenderContextHandle;
     };
@@ -22,7 +22,7 @@
 
     typedef Window uWindowHandle;
 
-    struct gRenderSurfaceResources {
+    struct uRenderSurfaceResources {
         Atom deleteButtonAtom; // atom for intercepting delete button
         XSetWindowAttributes setWindowAttributes;
         XVisualInfo *visualInfo;
@@ -37,7 +37,7 @@
     
     typedef NSWindow* uWindowHandle;
 
-    struct gRenderSurfaceResources {
+    struct uRenderSurfaceResources {
         NSOpenGLPixelFormat* pixelFormat;
         NSOpenGLContext* glContext; // OpenGL Context
     };
@@ -46,19 +46,19 @@
     #error "Unsupported platform :("
 #endif
 
-class gRenderSurface {
+class uRenderSurface {
 
-    gRenderSurfaceResources resources;
+    uRenderSurfaceResources resources;
 
     public:
-        gSize size;
-        gColor backgroundColor;
+        uSize size;
+        uColor backgroundColor;
 
-        static gRenderSurface* InitForWindow(uWindowHandle windowHandle, float width, float height);
+        static uRenderSurface* InitForWindow(uWindowHandle windowHandle, float width, float height);
 
         void SizeChanged(float width, float height);
 
         void Render();
 };
 
-#endif // GRENDERSURFACE_H
+#endif // URENDERSURFACE_H

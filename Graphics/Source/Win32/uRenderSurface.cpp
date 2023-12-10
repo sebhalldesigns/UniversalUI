@@ -1,8 +1,8 @@
-#include "Graphics/Surface/gRenderSurface.h"
+#include "Graphics/Surface/uRenderSurface.h"
 
-gRenderSurface* gRenderSurface::InitForWindow(uWindowHandle windowHandle, float width, float height) {
+uRenderSurface* uRenderSurface::InitForWindow(uWindowHandle windowHandle, float width, float height) {
 
-    gRenderSurface* surface = new gRenderSurface;
+    uRenderSurface* surface = new uRenderSurface;
 
     PIXELFORMATDESCRIPTOR pfd = {
         sizeof(PIXELFORMATDESCRIPTOR),
@@ -53,7 +53,7 @@ gRenderSurface* gRenderSurface::InitForWindow(uWindowHandle windowHandle, float 
 
 }
 
-void gRenderSurface::SizeChanged(float width, float height) {
+void uRenderSurface::SizeChanged(float width, float height) {
 
     size = { width, height };
 
@@ -65,7 +65,7 @@ void gRenderSurface::SizeChanged(float width, float height) {
     ReleaseDC(resources.windowHandle, hdc); // Release the device context
 }
 
-void gRenderSurface::Render() {
+void uRenderSurface::Render() {
     
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(resources.windowHandle, &ps);

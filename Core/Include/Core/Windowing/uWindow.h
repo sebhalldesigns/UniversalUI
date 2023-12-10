@@ -28,7 +28,7 @@
     #error "Unsupported platform :("
 #endif
 
-#include "Graphics/Surface/gRenderSurface.h"
+#include "Graphics/Surface/uRenderSurface.h"
 
 
 enum uWindowVisibility {
@@ -49,7 +49,7 @@ class uWindow {
 public:
 
     uWindowHandle systemHandle = NULL;
-    gRenderSurface* renderSurface;
+    uRenderSurface* renderSurface;
 
     //uView rootView;
     //uLayoutTree layoutTree;

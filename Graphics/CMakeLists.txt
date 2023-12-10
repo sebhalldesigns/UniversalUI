@@ -5,7 +5,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "DARWIN")
 elseif (WIN32) 
 
     set(UNIVERSALUI_NATIVE_GRAPHICS_SOURCE
-        Source/Win32/gRenderSurface.cpp
+        Source/Win32/uRenderSurface.cpp
     )
 
     find_package(OpenGL REQUIRED)

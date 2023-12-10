@@ -85,7 +85,7 @@ uWindow* uApplication::NewWindow(double width, double height, std::string title)
         return nullptr;
     }
 
-    gRenderSurface* renderSurface = gRenderSurface::InitForWindow(window->systemHandle, width, height);
+    uRenderSurface* renderSurface = uRenderSurface::InitForWindow(window->systemHandle, width, height);
 
     if (renderSurface == nullptr) {
         printf("ERROR: Render surface creation failed!");
