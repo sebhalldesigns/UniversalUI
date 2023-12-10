@@ -29,6 +29,14 @@ public:
     void Draw(uCanvas& canvas) override { 
         //printf("draw button!!\n");
 
+        Draw::RoundedRect rect;
+        rect.origin = { 10.0f, 10.0f };
+        rect.size = { frame.width - 20.0f, frame.height - 20.0f };
+        rect.fillColor = { 0.2f, 0.2f, 0.2f, 1.0f };
+        rect.cornerRadius = 10.0f;
+        canvas.AddItem(rect);
+    
+        /*
         Draw::Line line;
         line.start = { 10.0f, 10.0f };
         line.end = { frame.width - 10.0f, frame.height - 10.0f };
@@ -36,8 +44,7 @@ public:
         line.thickness = 5.0f;
 
         canvas.AddItem(line);
-
-        //canvas.backgroundColor = { 0.0f, 1.0f, 0.0f, 1.0f};
+        */
     }
 
 };

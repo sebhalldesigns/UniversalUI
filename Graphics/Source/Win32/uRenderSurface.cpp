@@ -129,6 +129,14 @@ void RenderCommands(uCanvas* canvas, std::vector<uDrawingCommand>& commands) {
                     glEnd();
                     break;
                 }
+            case BEGIN_POLYGON: {
+                    glBegin(GL_POLYGON);
+                    break;
+                }
+            case END_POLYGON: {
+                    glEnd();
+                    break;
+                }
             case VERTEX_2D: {
                     glVertex2d(originX + command.parameterA, originY + command.parameterB);
                     break;
