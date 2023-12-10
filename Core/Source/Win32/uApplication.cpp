@@ -4,6 +4,8 @@
 
 #include "Core/Application/uApplication.h"
 
+
+
 #include <cstdio>
 
 
@@ -36,7 +38,7 @@ int uApplication::Run() {
 
      MSG msg = { };
 
-    while (true) {
+    while (!(quitWhenLastWindowClosed && this->windows.size() <= 0)) {
            
         while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
@@ -44,6 +46,7 @@ int uApplication::Run() {
         }
     }
 
+    printf("Closing as no windows left\n");
     
     return 0;
     
@@ -55,73 +58,78 @@ uWindow* uApplication::NewWindow(double width, double height, std::string title)
 
     std::wstring wideTitle = std::wstring(title.begin(), title.end());
 
-    uWindowResources* windowResources = new uWindowResources();
 
-     windowResources->systemHandle = CreateWindowExW(
-                0,                              // Optional window styles.
-                CLASS_NAME,                     // Window class
-                wideTitle.c_str(),  // Window text
-                WS_OVERLAPPEDWINDOW,            // Window style
+     window->systemHandle = CreateWindowExW(
+            0,                              // Optional window styles.
+            CLASS_NAME,                     // Window class
+            wideTitle.c_str(),  // Window text
+            WS_OVERLAPPEDWINDOW,            // Window style
 
-                // Size and position
-                CW_USEDEFAULT, CW_USEDEFAULT, (int)width, (int)height,
+            // Size and position
+            CW_USEDEFAULT, CW_USEDEFAULT, (int)width, (int)height,
 
 
-                nullptr,       // Parent window
-                nullptr,       // Menu
-                GetModuleHandleW(nullptr),  // Instance handle
-                nullptr        // Additional application data
-        );
+            nullptr,       // Parent window
+            nullptr,       // Menu
+            GetModuleHandleW(nullptr),  // Instance handle
+            nullptr        // Additional application data
+    );
 
-        PIXELFORMATDESCRIPTOR pfd = {
-            sizeof(PIXELFORMATDESCRIPTOR),
-            1,
-            PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-            PFD_TYPE_RGBA,
-            24, // bit depth
-            0, 0, 0, 0, 0, 0,
-            0,
-            0,
-            0,
-            0, 0, 0, 0,
-            16, // depth buffer
-            0, // stencil buffer
-            0,
-            PFD_MAIN_PLANE,
-            0,
-            0, 0, 0
-        };
+    HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
+    SetClassLongPtr(window->systemHandle, GCLP_HBRBACKGROUND, (LONG_PTR)brush);
 
-        if (windowResources->systemHandle == nullptr)
-        {
-            printf("ERROR: Window creation failed!");
-            return nullptr;
-        }
+    
+    if (window->systemHandle == nullptr)
+    {
+        printf("ERROR: Window creation failed!");
+        return nullptr;
+    }
 
-        HDC hdc = GetDC(windowResources->systemHandle);
-        int pixelFormat = ChoosePixelFormat(hdc, &pfd);
-        SetPixelFormat(hdc, pixelFormat, &pfd);
-        windowResources->glRenderContextHandle = wglCreateContext(hdc);
-        wglMakeCurrent(hdc, windowResources->glRenderContextHandle);
+    gRenderSurface* renderSurface = gRenderSurface::InitForWindow(window->systemHandle, width, height);
+
+    if (renderSurface == nullptr) {
+        printf("ERROR: Render surface creation failed!");
+        return nullptr;
+    }
+
+    window->renderSurface = renderSurface;
+
+
+    ShowWindow(window->systemHandle, SW_SHOW);
 
         
-        glEnable(GL_BLEND);  
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-        glEnable(GL_TEXTURE_2D);   
-        glEnable(GL_POINT_SMOOTH); 
-
-        ReleaseDC(windowResources->systemHandle, hdc);
-
-
-        ShowWindow(windowResources->systemHandle, SW_SHOW);
-
-
-        window->resources = windowResources;
-        
-        windows.push_back(window);
+    windows.push_back(window);
 
 
     return window;
+}
+
+void uApplication::DestroyWindow(uWindow* window) {
+
+    if (CloseWindow(window->systemHandle)) {
+
+        // remove all occurrences of window from windows 
+        //  I cant think why this would be more than one 
+        //  but assume it might be more than one
+        for (int i = 0; i < app->windows.size(); i++) {
+            if (app->windows[i] == window) {
+                app->windows.erase(app->windows.begin() + i);
+                i--;
+            }
+        }
+
+        delete window;
+    }
+
+}
+
+uWindow* uApplication::GetWindowFromHandle(uWindowHandle handle) {
+    for (int i = 0; i < app->windows.size(); i++) {
+        if (app->windows[i]->systemHandle == handle) {
+            return app->windows[i];
+        }
+    }
+    return nullptr;
 }
 
 void uApplication::FinishedLaunching() {
@@ -156,77 +164,40 @@ bool Win32Init() {
 LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
      switch (uMsg) {
-        case WM_CLOSE:
-            //uWindowManager::DestroyWindowByHandle(hwnd);
-            printf("Window %x close\n", hwnd);
+        case WM_CLOSE: {
+                uWindow* window = app->GetWindowFromHandle(hwnd);
 
-            return 0;
+                if (window != nullptr) {
+                    app->DestroyWindow(window);
+                }
+
+                printf("Window %x closed\n", hwnd);
+
+                return 0;
+            }
+
         case WM_SIZE: {
                 int width = LOWORD(lParam);
                 int height = HIWORD(lParam);
 
-               /*for (int i = 0; i < uWindowManager::windows.size(); i++) {
-                    if (uWindowManager::windows[i].windowPointer->systemHandle == hwnd) {
-                        HDC hdc = GetDC(hwnd); // Get the device context for the window
-                        wglMakeCurrent(hdc, uWindowManager::windows[i].glRenderContextHandle);
-                        glViewport(0, 0, width, height);
-                        wglMakeCurrent(NULL, NULL); // Optionally, make no context current  
+                uWindow* window = app->GetWindowFromHandle(hwnd);
 
-                        printf("RESIZE %d %d\n", width, height);
+                if (window != nullptr) {
+                    window->renderSurface->SizeChanged(width, height);
+                }
 
-                        ReleaseDC(hwnd, hdc); // Release the device context
-                        InvalidateRect(hwnd, NULL, FALSE); // Request a redraw
-
-                        uWindowManager::windows[i].windowPointer->layoutTree.rootNode.frame.width = width;
-                        uWindowManager::windows[i].windowPointer->layoutTree.rootNode.frame.height = height;
-
-                        uWindowManager::windows[i].windowPointer->layoutTree.rootNode.EvaluateConstraints();
-                    }
-                }*/
-                
                 return 0;
             }
 
 
         case WM_PAINT: {
-
             
-            for (int i = 0; i < app->windows.size(); i++) {
-                if (app->windows[i]->resources->systemHandle == hwnd) {
+            uWindow* window = app->GetWindowFromHandle(hwnd);
 
-                    PAINTSTRUCT ps;
-                    HDC hdc = BeginPaint(hwnd, &ps);
-
-                    wglMakeCurrent(hdc, app->windows[i]->resources->glRenderContextHandle);
-
-
-                    // Set up OpenGL viewport, projection, etc.
-                    glViewport(0, 0, ps.rcPaint.right - ps.rcPaint.left, ps.rcPaint.bottom - ps.rcPaint.top);
-                    glMatrixMode(GL_PROJECTION);
-                    glLoadIdentity();
-                    glOrtho(0.0, ps.rcPaint.right, ps.rcPaint.bottom, 0.0, -1.0, 1.0);
-                    glMatrixMode(GL_MODELVIEW);
-                    glLoadIdentity();
-
-                    // Clear screen
-                    glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
-                    glClear(GL_COLOR_BUFFER_BIT);
-
-                    //RenderView(&uWindowManager::windows[i].windowPointer->rootView);
-
-                    for (int j = 0;j < 30; j++) {
-                        //RenderText("By systematically checking each of these areas, you should be able to identify and correct the issue with the color in your text rendering. If the problem persists, please provide a code snippet or more details about your rendering setup, and I can offer more specific guidance.", 10.0f, 10.0f + 15.0f*(float)j, 1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
-                    }
-                    
-                    SwapBuffers(hdc);
-
-                    EndPaint(hwnd, &ps);
-                }
-
-            
+            if (window != nullptr) {
+                window->renderSurface->Render();
             }
-        
-
+                    
             return 0;
         }
 

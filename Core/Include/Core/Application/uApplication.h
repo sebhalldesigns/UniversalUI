@@ -22,6 +22,12 @@ public:
 
     uWindow* NewWindow(double width, double height, std::string title);
 
+    // destroy and deallocate window memory
+    //  any subsequent reference to the window will cause a segfault
+    //  this should be the last thing called on a window
+    void DestroyWindow(uWindow* window);
+    uWindow* GetWindowFromHandle(uWindowHandle handle);
+
     //  override functions
     virtual void FinishedLaunching();
     virtual void WillQuit();

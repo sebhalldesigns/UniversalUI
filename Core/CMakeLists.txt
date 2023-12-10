@@ -41,11 +41,7 @@ elseif(WIN32)
     )
 
 
-    find_package(OpenGL REQUIRED)
-
-    set(PLATFORM_SPECIFIC_LIBRARIES
-        OpenGL::GL
-    )
+    set(PLATFORM_SPECIFIC_LIBRARIES )
 else()
     message(FATAL_ERROR "Unsupported platform ${PLATFORM}")
 endif()
@@ -55,7 +51,8 @@ endif()
 add_library(UniversalUI-Core STATIC ${UNIVERSALUI_NATIVE_PLATFORM_SOURCE})
 
 target_include_directories(UniversalUI-Core PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}/Include/)
+    ${CMAKE_CURRENT_SOURCE_DIR}/Include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Graphics/Include/)
 
 # Link platform-specific libraries
-target_link_libraries(UniversalUI-Core PUBLIC ${PLATFORM_SPECIFIC_LIBRARIES})
+target_link_libraries(UniversalUI-Core PUBLIC UniversalUI-Graphics ${PLATFORM_SPECIFIC_LIBRARIES})

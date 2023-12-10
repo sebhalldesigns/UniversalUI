@@ -71,6 +71,7 @@ elseif(PLATFORM STREQUAL "macos")
 
 elseif(WIN32)
 
+    add_subdirectory(Graphics)
     add_subdirectory(Core)
 
     add_executable(UniversalUI main.cpp)

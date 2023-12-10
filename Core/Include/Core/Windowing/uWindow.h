@@ -12,36 +12,23 @@
 #ifdef _WIN32
     #include <Windows.h>
 
-    struct uWindowResources {
-        HWND systemHandle;
-        HGLRC glRenderContextHandle;
-    };
-
+    typedef HWND uWindowHandle;
 #elif __linux__
     #include <X11/Xlib.h>
 
-    struct uWindowResources {
-        Window systemHandle;
-        Colormap colormap;
-        Atom deleteButtonAtom; // atom for intercepting delete button
-        GLXContext glxContext; // GLX OpenGL Context
-        XSetWindowAttributes setWindowAttributes;
-        XVisualInfo *visualInfo;
-        GC xGraphicsContext;
-        Pixmap backBuffer;
-    };
+    typedef Window uWindowHandle;
+
 
 #elif __APPLE__
     #include <Cocoa/Cocoa.h>
 
-    struct uWindowResources {
-        NSWindow* systemHandle;
-        NSOpenGLPixelFormat* pixelFormat;
-        NSOpenGLContext* glContext; // OpenGL Context
-    };
+    typedef NSWindow* uWindowHandle;
+
 #else
     #error "Unsupported platform :("
 #endif
+
+#include "Graphics/Surface/gRenderSurface.h"
 
 
 enum uWindowVisibility {
@@ -57,9 +44,12 @@ class uWindow {
     double width;
     double height;
 
+    ~uWindow() = default;
+
 public:
 
-    uWindowResources* resources = nullptr;
+    uWindowHandle systemHandle = NULL;
+    gRenderSurface* renderSurface;
 
     //uView rootView;
     //uLayoutTree layoutTree;
