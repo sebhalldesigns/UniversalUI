@@ -61,7 +61,7 @@ class MyApp : public uApplication {
         uButton* button = new uButton;
         button->frame = { 10.0f, 10.0f, 100.0f, 100.0f };
         window->rootView.AddSubview(button);
-        
+
         button->AddConstraint(&window->rootView, uLayoutAnchor::LEFT, uLayoutAnchor::LEFT, 0.0f);
         button->AddConstraint(&window->rootView, uLayoutAnchor::TOP, uLayoutAnchor::TOP, 0.0f);
         button->AddConstraint(&window->rootView, uLayoutAnchor::BOTTOM, uLayoutAnchor::BOTTOM, 0.0f);

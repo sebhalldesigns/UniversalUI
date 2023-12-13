@@ -1,5 +1,9 @@
 #include "Graphics/Surface/uRenderSurface.h"
 
+#include <chrono>
+
+const float budgetUs = 1000000.0f/144.0f;
+
 void RenderCommands(uCanvas* canvas, std::vector<uDrawingCommand>& commands);
 
 uRenderSurface* uRenderSurface::InitForWindow(uWindowHandle windowHandle, float width, float height) {
@@ -71,6 +75,9 @@ void uRenderSurface::SizeChanged(float width, float height) {
 
 
 void uRenderSurface::Render() {
+
+    std::chrono::steady_clock::time_point start = std::chrono::high_resolution_clock::now();
+
     
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(resources.windowHandle, &ps);
@@ -102,6 +109,12 @@ void uRenderSurface::Render() {
         RenderCommands(canvas, canvas->commands);
     }
     // do other rendering here
+                            
+    std::chrono::nanoseconds elapsed = std::chrono::high_resolution_clock::now() - start;
+    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+    float proportionOfBudget = (float) microseconds / budgetUs;
+    printf("RENDER TOOK %lld us (%.12f %) \n", microseconds, proportionOfBudget*100.0f);
 
     SwapBuffers(hdc);
     EndPaint(resources.windowHandle, &ps);

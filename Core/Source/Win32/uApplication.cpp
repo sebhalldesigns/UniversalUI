@@ -8,7 +8,7 @@
 
 
 #include <cstdio>
-
+#include <chrono>
 
 #include <windows.h>
 #include <gl/GL.h>
@@ -209,10 +209,28 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                     window->rootView.frame = { 0.0f, 0.0f, (float)width, (float)height };
                     window->rootView.LayoutSubviews();
                     window->renderSurface->SizeChanged(width, height);
+
+                    std::chrono::steady_clock::time_point start = std::chrono::high_resolution_clock::now();
+
+                    // deallocate previous canvases
+                    for (uCanvas* canvas : window->renderSurface->canvasList) {
+                        delete canvas;
+                    }
+                    window->renderSurface->canvasList.clear();
+
+                    std::vector<uCanvas*> canvasSet;
+                    DrawView(&(window->rootView), canvasSet);
+                    window->renderSurface->canvasList = canvasSet;
+                        
+                    std::chrono::nanoseconds elapsed = std::chrono::high_resolution_clock::now() - start;
+                    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+                    printf("DRAW TOOK %lld us\n", microseconds);
+
+
                     InvalidateRect(hwnd, NULL, NULL);
                 }
 
-                printf("SIZE\n");
+                //printf("SIZE\n");
 
                 return 0;
             }
@@ -224,21 +242,16 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 
             if (window != nullptr) {
                 
-                                
-                // deallocate previous canvases
-                for (uCanvas* canvas : window->renderSurface->canvasList) {
-                    delete canvas;
-                }
-                window->renderSurface->canvasList.clear();
+              
                 
-                std::vector<uCanvas*> canvasSet;
-                DrawView(&(window->rootView), canvasSet);
-                window->renderSurface->canvasList = canvasSet;
 
                 window->renderSurface->Render();
+
+
+                
             }
 
-            printf("PAINT\n");
+            
                     
             return 0;
         }
