@@ -5,12 +5,14 @@
 #include "Core/Application/uApplication.h"
 
 #include "Core/uView.h"
+#include "Graphics/General/uPoint.h"
 
 
 #include <cstdio>
 #include <chrono>
 
 #include <windows.h>
+#include <windowsx.h>
 #include <gl/GL.h>
 #include <gl/glu.h>
 
@@ -24,6 +26,7 @@ static uApplication* app;
 static void DrawView(uView* view, std::vector<uCanvas&>& canvasSet);
 static bool Win32Init();
 static LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 
 
 int uApplication::Run() {
@@ -150,6 +153,7 @@ static void DrawView(uView* view, std::vector<uCanvas*>& canvasSet) {
     
     // allocate new canvas and draw to it
     uCanvas* canvas = new uCanvas;
+    canvas->backgroundColor = view->backgroundColor;
     view->Draw(*canvas);
     canvas->x = view->frame.x;
     canvas->y = view->frame.y;
@@ -164,6 +168,21 @@ static void DrawView(uView* view, std::vector<uCanvas*>& canvasSet) {
         DrawView(subview, canvasSet);
     }
 
+}
+
+static uView* GetTopmostViewForPoint(uView* root, uPoint point) {
+
+    for (uView* subview : root->Subviews()) {
+        if (subview->frame.ContainsPoint(point)) {
+            if (subview->Subviews().size() <= 0) {
+                return subview;
+            } else {
+                return GetTopmostViewForPoint(subview, point);
+            }
+        }
+    }
+
+    return root;
 }
 
 bool Win32Init() {
@@ -200,12 +219,15 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
             }
 
         case WM_SIZE: {
-                int width = LOWORD(lParam);
-                int height = HIWORD(lParam);
-
+                
                 uWindow* window = app->GetWindowFromHandle(hwnd);
 
                 if (window != nullptr) {
+
+                    int width = LOWORD(lParam);
+                    int height = HIWORD(lParam);
+
+
                     window->rootView.frame = { 0.0f, 0.0f, (float)width, (float)height };
                     window->rootView.LayoutSubviews();
                     window->renderSurface->SizeChanged(width, height);
@@ -251,10 +273,45 @@ LRESULT CALLBACK Win32WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
                 
             }
 
-            
-                    
             return 0;
-        }
+            }
+
+        case WM_MOUSEMOVE: {
+                uWindow* window = app->GetWindowFromHandle(hwnd);
+
+                if (window != nullptr) {
+                    
+                    int xPos = GET_X_LPARAM(lParam);
+                    int yPos = GET_Y_LPARAM(lParam);
+                    uPoint point = { (float) xPos, (float) yPos };
+                    uView* view = GetTopmostViewForPoint(&(window->rootView), point);
+
+                    if (view != app->currentActiveView) {
+                        if (app->currentActiveView != nullptr) {
+                            app->currentActiveView->MouseExit();
+                        }
+                        app->currentActiveView = view;
+                        app->currentActiveView->MouseEnter();
+                        
+                        // deallocate previous canvases
+                        for (uCanvas* canvas : window->renderSurface->canvasList) {
+                            delete canvas;
+                        }
+                        window->renderSurface->canvasList.clear();
+
+                        std::vector<uCanvas*> canvasSet;
+                        DrawView(&(window->rootView), canvasSet);
+                        window->renderSurface->canvasList = canvasSet;
+                        
+                        InvalidateRect(hwnd, NULL, NULL);
+                    }
+                    
+                    //printf("MOUSE IN VIEW %x\n", view);
+                }
+                return 0;
+            }
+
+            
 
         case WM_DISPLAYCHANGE: {
             InvalidateRect(hwnd, NULL, FALSE); // Request a redraw

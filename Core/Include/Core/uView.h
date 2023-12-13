@@ -8,12 +8,22 @@
 //#include "uRenderNode.h"
 #include "Core/Layout/uLayoutConstraint.h"
 #include "Graphics/Canvas/uCanvas.h"
+#include "Graphics/General/uPoint.h"
+#include "Graphics/General/uColor.h"
 
 struct uRect {
     float x;
     float y;
     float width;
     float height;
+
+    bool ContainsPoint(uPoint point) {
+        if (point.x >= x && point.y >= y && point.x <= (x + width) && point.y <= (y + height)) {
+            return true;
+        }
+
+        return false;
+    }
 };
 
 struct uAnchorPoint {
@@ -49,19 +59,28 @@ class uView {
 public:
 
     uRect frame;
+    uColor backgroundColor;
 
     uView(uRect initFrame) {
         frame = initFrame;
+        backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
     }
 
     // default constructor
-    uView() { }
+    uView() { 
+                backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
+    }
 
     // view contains logic for layout and input?? 
 
     virtual void Draw(uCanvas& canvas) {
         //printf("DRAW!\n");
     }
+
+    virtual void MouseEnter() { }
+    virtual void MouseExit() { }
+    virtual void MouseDown() { }
+    virtual void MouseUp() { }
 
     void AddSubview(uView* view) {
 

@@ -126,6 +126,8 @@ void RenderCommands(uCanvas* canvas, std::vector<uDrawingCommand>& commands) {
     float originX = canvas->x;
     float originY = canvas->y;
 
+    //printf("background color %f %f %f %f\n", canvas->backgroundColor.r, canvas->backgroundColor.g, canvas->backgroundColor.b, canvas->backgroundColor.a);
+
     glClearColor(canvas->backgroundColor.r, canvas->backgroundColor.g, canvas->backgroundColor.b, canvas->backgroundColor.a);
     glClear(GL_COLOR_BUFFER_BIT);
 

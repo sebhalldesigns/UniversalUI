@@ -1,6 +1,8 @@
 #ifndef UAPPLICATION_H
 #define UAPPLICATION_H
 
+
+#include "Core/uView.h"
 #include "Core/Windowing/uWindow.h"
 
 #include <string>
@@ -19,6 +21,8 @@ public:
     int minorVersion;
 
     bool quitWhenLastWindowClosed = true;
+
+    uView* currentActiveView = nullptr;
 
     uWindow* NewWindow(double width, double height, std::string title);
 
