@@ -193,6 +193,7 @@ bool Win32Init() {
     wc.lpfnWndProc   = Win32WindowProcedure;
     wc.hInstance     = GetModuleHandleW(nullptr);
     wc.lpszClassName = CLASS_NAME;
+    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
     if (RegisterClass(&wc) == 0) {
         return false;
