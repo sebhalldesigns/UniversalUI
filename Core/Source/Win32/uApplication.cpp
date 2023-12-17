@@ -62,7 +62,10 @@ int uApplication::Run() {
 uWindow* uApplication::NewWindow(double width, double height, std::string title) {
     uWindow* window = new uWindow();
 
-    std::wstring wideTitle = std::wstring(title.begin(), title.end());
+    int titleLength = MultiByteToWideChar(CP_UTF8, 0, title.c_str(), -1, NULL, 0);
+    std::wstring wideTitle;
+    wideTitle.resize(titleLength);
+    MultiByteToWideChar(CP_UTF8, 0, title.c_str(), -1, &wideTitle[0], titleLength);
 
 
      window->systemHandle = CreateWindowExW(
@@ -197,6 +200,10 @@ bool Win32Init() {
 
     if (RegisterClass(&wc) == 0) {
         return false;
+    }
+
+    if (!SetConsoleOutputCP(CP_UTF8)) {
+        printf("warning: failed to set UTF-8 debug!\n");
     }
     
     return true;

@@ -2,6 +2,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 project(UniversalUI)
+add_definitions(-w)
 
 if(PLATFORM STREQUAL "ios")
     

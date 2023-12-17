@@ -9,9 +9,11 @@
 #include "Core/uView.h"
 
 #include "Graphics/Canvas/uDrawingItem.h"
+#include "Graphics/Text/uFont.h"
 
 #include <random>
 
+uFont* myfont;
 
 class MyWindow : public uWindow {
 public:
@@ -35,6 +37,7 @@ public:
         rect.fillColor = { 0.1f, 0.1f, 0.1f, 1.0f };
         rect.cornerRadius = 10.0f;
         canvas.AddItem(rect);
+
     
         /*
         Draw::Line line;
@@ -53,7 +56,7 @@ public:
     }
 
     void MouseExit() override {
-        backgroundColor = { 0.0f, 0.0f, 0.0f, 1.0f};
+        backgroundColor = { 1.0f, 1.0f, 1.0f, 1.0f};
         printf("MOUSE EXIT\n");
     }
 
@@ -65,16 +68,30 @@ class LeftRectangle : public uView {
 public:
 
     void Draw(uCanvas& canvas) override { 
-        //printf("draw rectangle!!\n");
+        backgroundColor = { 1.0f, 1.0f, 1.0f, 1.0f};
 
+        //printf("draw rectangle!!\n");
+        /*
         Draw::RoundedRect rect;
         rect.origin = { 10.0f, 10.0f };
         rect.size = { frame.width - 20.0f, frame.height - 20.0f };
         rect.fillColor = { 0.2f, 0.2f, 0.2f, 1.0f };
         rect.cornerRadius = 10.0f;
         canvas.AddItem(rect);
+        */
+        
+        Draw::Label label;
+        label.origin = { 100.0f, 100.0f };
+        label.size = { 2000.0f, 0.0f };
+        label.canBeTaller = true;
+        label.canBeWider = true;
+        label.text = "Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages.";
+        label.fontColor = { 0.0f, 0.0f, 0.0f, 1.0f};
+        label.font = myfont;
+        canvas.AddItem(label);
 
-    
+        canvas.clipsToBounds = false;
+
         /*
         Draw::Line line;
         line.start = { 10.0f, 10.0f };
@@ -93,19 +110,19 @@ class MyApp : public uApplication {
 
     void FinishedLaunching() override {
 
-        printf("started launching from windows\n");
+        printf("started launching from windows 노래방 六書; 六书 الْأَبْجَدِيَّة الْعَرَبِيَّة 送り仮名 👋\n");
 
-        uWindow* window = NewWindow(800, 600, "My Window");
+        uWindow* window = NewWindow(800, 600, "My Window 노래방 六書; 六书 الْأَبْجَدِيَّة الْعَرَبِيَّة 送り仮名 👋");
 
-        //LeftRectangle* rectangle = new LeftRectangle;
-        //rectangle->frame = { 10.0f, 10.0f, 100.0f, 100.0f };
-        /*window->rootView.AddSubview(rectangle);
+        LeftRectangle* rectangle = new LeftRectangle;
+        rectangle->frame = { 10.0f, 10.0f, 100.0f, 100.0f };
+        window->rootView.AddSubview(rectangle);
 
         rectangle->AddConstraint(&window->rootView, uLayoutAnchor::LEFT, uLayoutAnchor::LEFT, 0.0f);
         rectangle->AddConstraint(&window->rootView, uLayoutAnchor::TOP, uLayoutAnchor::TOP, 0.0f);
         rectangle->AddConstraint(&window->rootView, uLayoutAnchor::BOTTOM, uLayoutAnchor::BOTTOM, 0.0f);
-        rectangle->AddConstraint(&window->rootView, uLayoutAnchor::WIDTH, uLayoutAnchor::WIDTH, 0.0f, 0.5f);*/
-
+        rectangle->AddConstraint(&window->rootView, uLayoutAnchor::WIDTH, uLayoutAnchor::WIDTH, 0.0f, 0.5f);
+        /*
         for (int x = 0; x < 45; x++) {
             for (int y = 0; y < 25; y++) {
                 Button* button = new Button;
@@ -114,12 +131,14 @@ class MyApp : public uApplication {
             }
 
 
-        }
+        }*/
     }
 };
 
 int main() {
 
     MyApp app;
+
+    myfont = new uFont("./font.ttf");
     return app.Run();
 }

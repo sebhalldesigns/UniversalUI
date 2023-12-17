@@ -1,6 +1,8 @@
 #ifndef UDRAWINGCOMMAND_H
 #define UDRAWINGCOMMAND_H
 
+#include <cstdint>
+
 enum uDrawingCommandType {
     BEGIN_POINTS,
     END_POINTS,
@@ -54,6 +56,8 @@ struct uDrawingCommand {
     float parameterB;
     float parameterC;
     float parameterD;
+
+    uint32_t parameterE; 
 };
 
 #endif // UDRAWINGCOMMAND_H

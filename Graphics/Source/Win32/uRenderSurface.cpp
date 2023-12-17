@@ -48,6 +48,7 @@ uRenderSurface* uRenderSurface::InitForWindow(uWindowHandle windowHandle, float 
     glEnable(GL_TEXTURE_2D);   
     glEnable(GL_POINT_SMOOTH); 
     glEnable(GL_SCISSOR_TEST);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction for text
 
     ReleaseDC(windowHandle, hdc);
     
@@ -152,8 +153,30 @@ void RenderCommands(uCanvas* canvas, std::vector<uDrawingCommand>& commands) {
                     glEnd();
                     break;
                 }
+            case BEGIN_QUADS: {
+                    glBegin(GL_QUADS);
+                    break;
+                }
+            case END_QUADS: {
+                    glEnd();
+                    break;
+                }
+            case BEGIN_TEXTURE: {
+                    glBindTexture(GL_TEXTURE_2D, command.parameterE);
+                    break;
+                }
+            case END_TEXTURE: {
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    break;
+                }
+            
             case VERTEX_2D: {
+                    //printf("VERTEX2D %f %f\n", originX + command.parameterA, originY + command.parameterB);
                     glVertex2d(originX + command.parameterA, originY + command.parameterB);
+                    break;
+                }
+            case TEX_VERTEX_2D: {
+                    glTexCoord2d(command.parameterA, command.parameterB);
                     break;
                 }
             case COLOR_4F: {
