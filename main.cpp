@@ -13,6 +13,8 @@
 
 #include <random>
 
+#include "uRmlParser.h"
+
 uFont* myfont;
 
 class MyWindow : public uWindow {
@@ -85,7 +87,7 @@ public:
         label.size = { 2000.0f, 0.0f };
         label.canBeTaller = true;
         label.canBeWider = true;
-        label.text = "Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages. Latin (Roman) is a European bicameral alphabet, written left-to-right. The most popular writing system in the world. Used for over 3,000 languages including Latin and Romance languages (Italian, French, Portuguese, Spanish and Romanian), Germanic languages (English, Dutch, German, Nordic languages), Finnish, Malaysian, Indonesian, Filipino, Visayan languages, Turkish, Azerbaijani, Polish, Somali, Vietnamese, and many others. Derived from Western Greek, attested in Rome in the 7th century BCE. In the common era, numerous European languages adopted the Latin script along with Western Christian religion, the script disseminated further with European colonization of the Americas, Australia, parts of Asia, Africa and the Pacific. New letters, ligatures and diacritical marks were gradually added to represent the sounds of various languages.";
+        label.text = "Hello world";
         label.fontColor = { 0.0f, 0.0f, 0.0f, 1.0f};
         label.font = myfont;
         canvas.AddItem(label);
@@ -139,6 +141,11 @@ int main() {
 
     MyApp app;
 
-    myfont = new uFont("./font.ttf");
-    return app.Run();
+    uRmlParser::ParseFile("../../main.xml");
+
+    return 0;
+    //myfont = new uFont("./font.ttf");
+    //return app.Run();
+
+
 }
