@@ -7,19 +7,28 @@
 #include <string>
 #include <map>
 
+// note: general parsing methodology:
+// define all acceptable cases, deny every other.
+// aka 'whitelist'
+
 enum uRmlTagParseStatus {
     START, // a < was found
     TYPE, // parsing type - from < to the next space character 
     READY, // ready for the next parsing item - this is the state after a type or parameter is set
     KEY, // parsing a parameter key - from a space to the next equals and ignoring whitespace characters
     VALUE, // parsing a parameter value - from one " to the next "
-    END, // a / was found
+    END, // a / was found after READY
+
+    START_CLOSING, // a / was found after START
+    TYPE_CLOSING, // from first alphabetic character to next space
+    READY_CLOSING, // if a space is found after a TYPE_CLOSING
+    
     COMPLETE // a > was found 
 };
 
 struct uRmlTag {
     uRmlTagParseStatus parseStatus = START;
-    bool isComplete = false;
+    bool isTerminated = false;
     
     std::string type;
 
@@ -82,6 +91,8 @@ public:
 
         uRmlTag* currentTag = nullptr;
 
+        std::vector<uRmlTag*> tags;
+
 
         for (uint32_t codepoint : codepoints) {
 
@@ -96,12 +107,38 @@ public:
                     // error if a second < is found before a >
                     if (currentTag == nullptr) {
                         currentTag = new uRmlTag();
+                        currentTag->parseStatus = START;
                         printf("allocated a new tag!\n");
+
+                        uRmlTag* candidateParentTag = nullptr;
+
+                        // set candidateParentTag to the deepest of the tree that is still unterminated
+                        if (tags.size() > 0 && !tags[tags.size() - 1]->isTerminated) {
+                            candidateParentTag = tags[tags.size() - 1];
+
+                            while (candidateParentTag->children.size() > 0) {
+                                if (!candidateParentTag->children[candidateParentTag->children.size() - 1]->isTerminated) {
+                                    candidateParentTag = candidateParentTag->children[candidateParentTag->children.size() - 1];
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+
+                        // add tag either to a nested tag or to the top-level vector
+                        if (candidateParentTag != nullptr) {
+                            candidateParentTag->children.push_back(currentTag);
+                        } else {
+                            tags.push_back(currentTag);
+                        }
+
+                        printf("done allocating a new tag\n");
+
                     } else {
                         printf("Error parsing file (at line %d, column %d): an opening tag was detected before a closing tag!\n\t\n", lineCount, columnCount);
                     }
 
-                    //printf("<");
+                    printf("<");
                     break;
 
                 case '>':
@@ -112,21 +149,48 @@ public:
                         // there is a tag being parsed
                         if (currentTag->parseStatus == END) {
                             // the last parse change was a / so this is the end of a single tag
-                            currentTag->isComplete = true;
+                            currentTag->isTerminated = true;
                             currentTag->parseStatus = COMPLETE;
-                            printf("tag complete with type %s\n", currentTag->type.c_str());
+                            printf("tag terminated with type %s\n", currentTag->type.c_str());
                             currentTag = nullptr;
                             break;
-                        } else if (currentTag->parseStatus == READY) {
+                        } else if (currentTag->parseStatus == READY || currentTag->parseStatus == TYPE) {
 
                             currentTag->parseStatus = COMPLETE;
                             printf("tag complete with type %s\n", currentTag->type.c_str());
                             currentTag = nullptr;
                             break;
+                        } else if (currentTag->parseStatus == READY_CLOSING || currentTag->parseStatus == TYPE_CLOSING) {
+                            // closing tag complete
+
+                            uRmlTag* candidateOpeningTag = nullptr;
+
+                            // set candidateParentTag to the deepest of the tree that is still unterminated
+                            if (tags.size() > 0 && !tags[tags.size() - 1]->isTerminated) {
+                                candidateOpeningTag = tags[tags.size() - 1];
+
+                                while (candidateOpeningTag->children.size() > 0) {
+                                    if (!candidateOpeningTag->children[candidateOpeningTag->children.size() - 1]->isTerminated) {
+                                        candidateOpeningTag = candidateOpeningTag->children[candidateOpeningTag->children.size() - 1];
+                                    }
+                                }
+                            }
+
+                            if (candidateOpeningTag == nullptr) {
+                                printf("ERROR: tag closed with no corresponding opening tag (at line %d, column %d)\n", lineCount, columnCount );
+                            } else if (strcmp(candidateOpeningTag->type.c_str(), currentTag->type.c_str()) != 0) {
+                                printf("ERROR: tag closed with a different type (\"%s\") to the corresponding opening tag (\"%s\") (at line %d, column %d) \n", currentTag->type.c_str(), candidateOpeningTag->type.c_str(), lineCount, columnCount);
+                            } else {
+                                printf("INFO: tag terminated with type \"%s\"\n", currentTag->type.c_str());
+                                candidateOpeningTag->isTerminated = true;
+                            }
+
+                            currentTag = nullptr;
+
                         }
                     }
 
-                    //printf(">\n");
+                    printf(">\n");
                     break;
                 case ' ':
 
@@ -135,18 +199,27 @@ public:
                         if (currentTag->parseStatus == TYPE) {
                             // end the type if it is being parsed
                             currentTag->parseStatus = READY;
+                        } else if (currentTag->parseStatus == TYPE_CLOSING) {
+                            currentTag->parseStatus == READY_CLOSING;
                         }
                     }
 
                     break;
                 case '=':
-                    //printf("=");
+                    printf("=");
                     break;
                 case '/':
-                    //printf("/");
+                    printf("/");
+                    if (currentTag != nullptr) {
+                        if (currentTag->parseStatus == READY) {
+                            currentTag->parseStatus = END;
+                        } else if (currentTag->parseStatus == START) {
+                            currentTag->parseStatus = START_CLOSING;
+                        }
+                    }
                     break;
                 case '\"':
-                    //printf("\"");
+                    printf("\"");
                     break;
                 default:
 
@@ -161,7 +234,14 @@ public:
                         } else if (currentTag->parseStatus == TYPE) {
                             printf("%u\n", codepoint);
                             currentTag->type += static_cast<char>(codepoint);
-                        }    
+                        } else if (currentTag->parseStatus == START_CLOSING) {
+                            currentTag->parseStatus = TYPE_CLOSING;
+                            printf("%u\n", codepoint);
+                            currentTag->type += static_cast<char>(codepoint);
+                        } else if (currentTag->parseStatus == TYPE_CLOSING) {
+                            printf("%u\n", codepoint);
+                            currentTag->type += static_cast<char>(codepoint);
+                        }
                     }
 
                     //
