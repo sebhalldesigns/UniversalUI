@@ -11,11 +11,17 @@
 // define all acceptable cases, deny every other.
 // aka 'whitelist'
 
+
+// note: iterate through each parsing character showing parse status
+
+
+
 enum uRmlTagParseStatus {
     START, // a < was found
     TYPE, // parsing type - from < to the next space character 
     READY, // ready for the next parsing item - this is the state after a type or parameter is set
     KEY, // parsing a parameter key - from a space to the next equals and ignoring whitespace characters
+    EQUALS, // = after key
     VALUE, // parsing a parameter value - from one " to the next "
     END, // a / was found after READY
 
@@ -40,9 +46,28 @@ struct uRmlTag {
     std::string childText;
 };
 
+
 class uRmlParser {
 public:
+
+    static int lineCount;
+    static int columnCount;
+
+    static uRmlTag* currentTag;
+    static std::string currentParameterKey;
+    static std::string currentParameterValue;
+
+    static std::vector<uRmlTag*> tags;
+    
+
+
     static void ParseFile(std::string path) {
+
+        lineCount = 0;
+        columnCount = 0;
+        currentTag = nullptr;
+        tags.clear();
+
         //open file
         std::ifstream infile(path);
         std::vector<char> buffer;
@@ -86,12 +111,7 @@ public:
             codepoints.push_back(cp);
         }
 
-        int lineCount = 0;
-        int columnCount = 0;
-
-        uRmlTag* currentTag = nullptr;
-
-        std::vector<uRmlTag*> tags;
+        
 
 
         for (uint32_t codepoint : codepoints) {
@@ -104,26 +124,17 @@ public:
             
             switch (codepoint) {
                 case '<':
+
                     // error if a second < is found before a >
-                    if (currentTag == nullptr) {
+                    if (currentTag != nullptr) {
+                        printf("Error parsing file (at line %d, column %d): an opening tag was detected before a closing tag!\n\t\n", lineCount, columnCount);
+                    } else {
+                        // create a new tag
+
                         currentTag = new uRmlTag();
                         currentTag->parseStatus = START;
-                        printf("allocated a new tag!\n");
 
-                        uRmlTag* candidateParentTag = nullptr;
-
-                        // set candidateParentTag to the deepest of the tree that is still unterminated
-                        if (tags.size() > 0 && !tags[tags.size() - 1]->isTerminated) {
-                            candidateParentTag = tags[tags.size() - 1];
-
-                            while (candidateParentTag->children.size() > 0) {
-                                if (!candidateParentTag->children[candidateParentTag->children.size() - 1]->isTerminated) {
-                                    candidateParentTag = candidateParentTag->children[candidateParentTag->children.size() - 1];
-                                } else {
-                                    break;
-                                }
-                            }
-                        }
+                        uRmlTag* candidateParentTag = FindDeepestOpenTag();
 
                         // add tag either to a nested tag or to the top-level vector
                         if (candidateParentTag != nullptr) {
@@ -132,20 +143,27 @@ public:
                             tags.push_back(currentTag);
                         }
 
-                        printf("done allocating a new tag\n");
-
-                    } else {
-                        printf("Error parsing file (at line %d, column %d): an opening tag was detected before a closing tag!\n\t\n", lineCount, columnCount);
                     }
 
-                    printf("<");
+                    //printf("<");
                     break;
 
                 case '>':
 
                     if (currentTag == nullptr) {
-                        printf("Error parsing file (at line %d, column %d): a closing tag was detected before an opening tag\n\t\n", lineCount, columnCount);
+
+                        uRmlTag* candidateParentTag = FindDeepestOpenTag();
+
+                        if (candidateParentTag != nullptr) {
+                            candidateParentTag->childText += ">";
+                        } else {
+                            printf("Error: unexpected symbol '>' (at line %d, column %d)\n", lineCount, columnCount);
+                        }
+
+
                     } else {
+
+
                         // there is a tag being parsed
                         if (currentTag->parseStatus == END) {
                             // the last parse change was a / so this is the end of a single tag
@@ -182,6 +200,11 @@ public:
                                 printf("ERROR: tag closed with a different type (\"%s\") to the corresponding opening tag (\"%s\") (at line %d, column %d) \n", currentTag->type.c_str(), candidateOpeningTag->type.c_str(), lineCount, columnCount);
                             } else {
                                 printf("INFO: tag terminated with type \"%s\"\n", currentTag->type.c_str());
+                                for(std::map<std::string,std::string>::iterator iter = candidateOpeningTag->parameters.begin(); iter != candidateOpeningTag->parameters.begin(); iter++) {
+                                    std::string key = iter->first;
+                                    std::string value =  iter->second;
+                                    printf("\t %s = %s\n", key.c_str(), value.c_str());
+                                }
                                 candidateOpeningTag->isTerminated = true;
                             }
 
@@ -190,11 +213,20 @@ public:
                         }
                     }
 
-                    printf(">\n");
+                    //printf(">\n");
                     break;
                 case ' ':
 
-                    if (currentTag != nullptr) {
+                    if (currentTag == nullptr) {
+
+                        uRmlTag* candidateParentTag = FindDeepestOpenTag();
+
+                        if (candidateParentTag != nullptr) {
+                            candidateParentTag->childText += " ";
+                        }
+
+
+                    } else {
                         // i.e in a tag
                         if (currentTag->parseStatus == TYPE) {
                             // end the type if it is being parsed
@@ -206,11 +238,36 @@ public:
 
                     break;
                 case '=':
+                    if (currentTag == nullptr) {
+
+                        uRmlTag* candidateParentTag = FindDeepestOpenTag();
+
+                        if (candidateParentTag != nullptr) {
+                            candidateParentTag->childText += "=";
+                        }
+
+
+                    } else {
+                        if (currentTag->parseStatus = KEY) {
+                            currentTag->parseStatus = EQUALS;
+                        } else {
+                            // error
+                        }
+                    }
                     printf("=");
                     break;
                 case '/':
-                    printf("/");
-                    if (currentTag != nullptr) {
+                    //printf("/");
+                    if (currentTag == nullptr) {
+
+                        uRmlTag* candidateParentTag = FindDeepestOpenTag();
+
+                        if (candidateParentTag != nullptr) {
+                            candidateParentTag->childText += "/";
+                        }
+
+
+                    } else {
                         if (currentTag->parseStatus == READY) {
                             currentTag->parseStatus = END;
                         } else if (currentTag->parseStatus == START) {
@@ -219,27 +276,73 @@ public:
                     }
                     break;
                 case '\"':
+                        if (currentTag == nullptr) {
+
+                            uRmlTag* candidateParentTag = FindDeepestOpenTag();
+
+                            if (candidateParentTag != nullptr) {
+                                candidateParentTag->childText += "\"";
+                            }
+
+                        } else {
+                            if (currentTag->parseStatus == EQUALS) {
+                                currentTag->parseStatus = VALUE;
+                            } else if (currentTag->parseStatus == VALUE) {
+                                // value has been set
+                                currentTag->parameters[currentParameterKey] = currentParameterValue;
+                                currentTag->parseStatus = READY;
+                            } else {
+                                // error
+                            }
+                            
+                        }
                     printf("\"");
                     break;
                 default:
+                    if (currentTag == nullptr) {
 
-                    if (currentTag != nullptr) {
+                        uRmlTag* candidateParentTag = FindDeepestOpenTag();
+
+                        if (candidateParentTag != nullptr) {
+                            candidateParentTag->childText += static_cast<char>(codepoint);
+                        }
+
+
+                    } else {
                         // i.e in a tag
-                        
+
+                    // this should probably be a switch
+
                         // if its for a type
                         if (currentTag->parseStatus == START) {
                             currentTag->parseStatus = TYPE;
-                            printf("%u\n", codepoint);
+                            //printf("%u\n", codepoint);
                             currentTag->type += static_cast<char>(codepoint);
                         } else if (currentTag->parseStatus == TYPE) {
-                            printf("%u\n", codepoint);
+                            //printf("%u\n", codepoint);
                             currentTag->type += static_cast<char>(codepoint);
-                        } else if (currentTag->parseStatus == START_CLOSING) {
+                        } else if (currentTag->parseStatus == READY) { 
+                            // start parameter
+                            currentParameterKey.clear();
+                            currentParameterValue.clear();
+
+                            currentParameterKey += static_cast<char>(codepoint);
+                            currentTag->parseStatus = KEY;
+                            
+                        } else if (currentTag->parseStatus == KEY) { 
+
+                            currentParameterKey += static_cast<char>(codepoint);
+
+                        } else if (currentTag->parseStatus == VALUE) {
+
+                            currentParameterValue += static_cast<char>(codepoint);
+
+                         } else if (currentTag->parseStatus == START_CLOSING) {
                             currentTag->parseStatus = TYPE_CLOSING;
-                            printf("%u\n", codepoint);
+                            //printf("%u\n", codepoint);
                             currentTag->type += static_cast<char>(codepoint);
                         } else if (currentTag->parseStatus == TYPE_CLOSING) {
-                            printf("%u\n", codepoint);
+                            //printf("%u\n", codepoint);
                             currentTag->type += static_cast<char>(codepoint);
                         }
                     }
@@ -258,9 +361,41 @@ public:
 
         }
 
+    }
+
+    static uRmlTag* FindDeepestOpenTag() {
+        uRmlTag* candidateOpenTag = nullptr;
+
+        // set candidateParentTag to the deepest of the tree that is still unterminated
+        if (tags.size() > 0 && !tags[tags.size() - 1]->isTerminated) {
+            candidateOpenTag = tags[tags.size() - 1];
+
+            while (candidateOpenTag->children.size() > 0) {
+                if (!candidateOpenTag->children[candidateOpenTag->children.size() - 1]->isTerminated) {
+                    candidateOpenTag = candidateOpenTag->children[candidateOpenTag->children.size() - 1];
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return candidateOpenTag;
+    }
+
+    static void ReportTags() {
 
     }
 
 };
+
+int uRmlParser::lineCount;
+int uRmlParser::columnCount;
+
+uRmlTag* uRmlParser::currentTag;
+std::string uRmlParser::currentParameterKey;
+std::string uRmlParser::currentParameterValue;
+
+std::vector<uRmlTag*> uRmlParser::tags;
+
 
 #endif // URMLPARSER_H
