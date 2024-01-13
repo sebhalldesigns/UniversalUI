@@ -195,13 +195,14 @@ pub fn win32_run() {
                 DispatchMessageW(&msg);
             }
 
-            // Your application logic goes here
+            if WINDOWS.with(|windows| {
+                // Insert or update an entry using the `entry` method
+                return windows.lock().unwrap().len() == 0;
 
-            // Check for exit condition or other events
-            //if should_exit() {
-                // Post a WM_QUIT message to exit the loop
-              //  PostQuitMessage(0);
-            //}
+            }) {
+                return;
+            }
+
         }
     }
 }
@@ -258,6 +259,17 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
                 Some(will_resize) => (will_resize)(uSize { width: width as f32, height: height as f32} ),
                 None =>  print_warning!("No will_resize set for window '{}'", ffi_cchar_to_str((*window_ptr).title))
             }
+
+        }
+
+        WM_DESTROY => {
+            WINDOWS.with(|windows| {
+                // Insert or update an entry using the `entry` method
+                windows.lock().unwrap().remove(&hwnd.0.clone());
+            });
+            
+            std::alloc::dealloc(window.unwrap() as *mut u8, std::alloc::Layout::new::<uWindow>());
+            // make it safe to deallocate
 
         }
 

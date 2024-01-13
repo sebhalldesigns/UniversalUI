@@ -14,7 +14,7 @@ typedef void (*uApplicationLaunchedCallback)();
 typedef bool (*uApplicationShouldQuitCallback)();
 typedef void (*uApplicationWillQuitCallback)();
 
-typedef void (*uWindowWillResizeCallback)(uSize size);
+
 
 struct uVersion {
     uint32_t major;
@@ -25,7 +25,7 @@ struct uVersion {
 
 
 struct uApplication {
-     char* title;
+    const char* title;
     const char* developer;
     uVersion version;
     uApplicationLaunchedCallback launched_callback = NULL;
@@ -33,9 +33,11 @@ struct uApplication {
     uApplicationWillQuitCallback will_quit_callback = NULL;
 };
 
+typedef void (*uWindowWillResizeCallback)(uSize size);
+
 struct uWindow {
     void* raw_handle;
-    char* title;
+    const char* title;
     uSize size;
     uWindowWillResizeCallback will_resize = NULL;
 };
