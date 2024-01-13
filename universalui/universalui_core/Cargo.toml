@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 universalui_types = { path = "../universalui_types" }
+universalui_native = { path = "../universalui_native" }

@@ -1,6 +1,6 @@
-use universalui_types::application::uApplication;
+use universalui_types::{ application::uApplication, ffi::* };
+use universalui_types::*;
 
-pub mod ffi;
 
 use ffi::*;
 
@@ -12,9 +12,21 @@ pub fn universalui_main(app: uApplication) -> i32 {
     println!("App title: {}", ffi_cchar_to_str(app.title));
     println!("App developer: {}", ffi_cchar_to_str(app.developer));
     println!("App version: {}.{}.{}", app.version.major, app.version.minor, app.version.build);
-    
-    (app.launched_callback)();
 
+    if !universalui_native::native::init() {
+        return -1;
+    }
+
+    // call app launched callback if it exists
+    match app.launched_callback {
+        Some(launched_callback) => (launched_callback)(),
+        None =>  print_warning!("No launched_callback set for app '{}'", ffi_cchar_to_str(app.title))
+    }
+
+    println!("starting loop...");
+
+    // run native events loop
+    universalui_native::native::run();
 
     return 0;
 }

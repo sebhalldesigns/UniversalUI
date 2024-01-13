@@ -1,5 +1,6 @@
+use std::{rc::Rc, cell::*, ptr::{null, null_mut}};
 
-use universalui_types::application::uApplication;
+use universalui_types::{ application::*,  ui::*, layout::*, ffi::*};
 use universalui_core::*;
 
 #[no_mangle]
@@ -8,7 +9,24 @@ pub extern "C" fn UniversalUI(app: uApplication) -> libc::c_int {
 }
 
 #[no_mangle]
-pub extern "C" fn CreateWindow(title: *const libc::c_char, width: libc::c_int, height: libc::c_int) -> libc::c_int {
-    println!("hello from rust!");
-    return 0;
+pub extern "C" fn CreateWindow(title: *mut libc::c_char, width: libc::c_float, height: libc::c_float) -> *mut uWindow {
+
+    let window: Option<*mut uWindow> = universalui_native::native::native_try_allocate_window(title, uSize { width: width, height: height});
+
+    match window {
+        Some(window) => {
+             // Get the raw pointer from the Box
+            let raw_ptr = window.clone();
+
+            // Print the memory address
+            unsafe {
+                println!("Memory Address: {} {}", raw_ptr.clone() as u64, (&((*window).will_resize) as *const _)  as u64);
+            }
+            
+            return raw_ptr;
+        }
+        None => {
+            return null_mut();
+        }
+    }
 }

@@ -5,9 +5,16 @@
 
 #include <stdint.h>
 
+struct uSize {
+    float width;
+    float height;
+};
+
 typedef void (*uApplicationLaunchedCallback)();
 typedef bool (*uApplicationShouldQuitCallback)();
 typedef void (*uApplicationWillQuitCallback)();
+
+typedef void (*uWindowWillResizeCallback)(uSize size);
 
 struct uVersion {
     uint32_t major;
@@ -15,18 +22,27 @@ struct uVersion {
     uint32_t build;    
 };
 
+
+
 struct uApplication {
-    const char* title;
+     char* title;
     const char* developer;
     uVersion version;
-    uApplicationLaunchedCallback launched_callback;
-    uApplicationShouldQuitCallback should_quit_callback;
-    uApplicationWillQuitCallback will_quit_callback;
+    uApplicationLaunchedCallback launched_callback = NULL;
+    uApplicationShouldQuitCallback should_quit_callback = NULL;
+    uApplicationWillQuitCallback will_quit_callback = NULL;
+};
+
+struct uWindow {
+    void* raw_handle;
+    char* title;
+    uSize size;
+    uWindowWillResizeCallback will_resize = NULL;
 };
 
 extern "C" int UniversalUI(uApplication app);
 
-extern "C" int CreateWindow(const char* title, int width, int height);
+extern "C" uWindow* CreateWindow(const char* title, float width, float height);
 
 
 

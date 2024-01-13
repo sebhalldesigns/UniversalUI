@@ -1,13 +1,16 @@
 
 #[derive(Default)]
 #[derive(Clone)]
+#[derive(Copy)]
+#[repr(C)]
 pub struct uSize {
-    width: f32,
-    height: f32
+    pub width: f32,
+    pub height: f32
 }
 
 #[derive(Default)]
 #[derive(Clone)]
+#[derive(Copy)]
 pub struct uColor {
     r: f32,
     g: f32,

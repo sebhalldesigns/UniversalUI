@@ -13,3 +13,4 @@ crate-type = ["cdylib", "staticlib"]      # Creates dynamic lib
 libc = "0.2.152"
 universalui_types = { path = "../universalui_types" }
 universalui_core = { path = "../universalui_core" }
+universalui_native = { path = "../universalui_native" }
