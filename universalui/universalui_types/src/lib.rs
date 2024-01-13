@@ -7,6 +7,8 @@ pub mod application;
 pub mod info;
 pub mod ffi;
 
+pub mod graphics;
+
 #[macro_export]
 macro_rules! print_info {
     ($prefix:expr) => {

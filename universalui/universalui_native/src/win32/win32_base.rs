@@ -3,12 +3,12 @@ use windows::{
     Win32::{
         Foundation::*,
         UI::WindowsAndMessaging::*,
-        System::LibraryLoader::*,
+        System::LibraryLoader::*, Graphics::Gdi::*,
     },
 };
 
-use std::{rc::Rc, cell::{RefCell, Ref, UnsafeCell}, sync::Mutex, iter::Map, collections::HashMap, borrow::{BorrowMut, Borrow}, ptr::{null, null_mut}};
-use universalui_types::{*, layout::*, ui::*, ffi::*};
+use std::{rc::Rc, cell::{RefCell, Ref, UnsafeCell}, sync::Mutex, iter::Map, collections::HashMap, borrow::{BorrowMut, Borrow}, ptr::{null, null_mut}, mem::size_of};
+use universalui_types::{*, layout::*, ui::*, ffi::*, graphics::{uPixelBuffer, uPixel}};
 use std::ffi::{c_void, c_char};
 use std::sync::*;
 use std::iter::*;
@@ -46,7 +46,7 @@ pub fn win32_init() -> bool {
                 hCursor: LoadCursorW(None, IDC_ARROW)?,
                 hInstance: instance,
                 lpszClassName: WIN32_WINDOW_CLASS_NAME,
-                style: CS_HREDRAW | CS_VREDRAW | CS_OWNDC,
+                style: CS_HREDRAW | CS_VREDRAW,
                 lpfnWndProc: Some(win32_window_procedure),
                 ..Default::default()
             };
@@ -177,7 +177,7 @@ pub fn win32_create_window(title: *mut c_char, size: uSize) -> Option<*mut uWind
 
 pub fn win32_run() {
 
-    println!(" loop...");
+   
 
     // Main message loop
     let mut msg: MSG = Default::default();
@@ -186,6 +186,8 @@ pub fn win32_run() {
         unsafe {
             // Peek and dispatch messages
             while PeekMessageW(&mut msg, HWND(0), 0, 0, PM_REMOVE).0 != 0 {
+                println!(" loop...");
+                
                 if msg.message == WM_QUIT {
                     // Exit the loop when WM_QUIT is received
                     return;
@@ -251,14 +253,16 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
             let width = LOWORD(lparam.0 as u32);
             let height = HIWORD(lparam.0 as u32);
 
-            
+            let new_size: uSize = uSize { width: width as f32, height: height as f32};
             let window_ptr = window.unwrap();
 
             // call window resize if it exists
             match (*window_ptr).will_resize {
-                Some(will_resize) => (will_resize)(uSize { width: width as f32, height: height as f32} ),
+                Some(will_resize) => (will_resize)(new_size.clone()),
                 None =>  print_warning!("No will_resize set for window '{}'", ffi_cchar_to_str((*window_ptr).title))
             }
+
+            (*window_ptr).size = new_size; 
 
         }
 
@@ -273,6 +277,65 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
 
         }
 
+        WM_PAINT => {
+
+            let size: uSize = (*window.unwrap()).size.clone();
+
+            let hwnd_dc: HDC = GetDC(hwnd);
+            let mem_dc: HDC = CreateCompatibleDC(hwnd_dc);
+
+            let bmi_header: BITMAPINFOHEADER = BITMAPINFOHEADER {
+                biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
+                biWidth: size.width as i32,
+                biHeight: -1*(size.height as i32),
+                biPlanes: 1,
+                biBitCount: 32,
+                biCompression: 0,
+                ..Default::default()
+            };
+
+
+            let bitmapInfo: BITMAPINFO = BITMAPINFO {
+                bmiHeader: bmi_header,
+                bmiColors: std::mem::zeroed()
+            };
+
+            let mut buffer: uPixelBuffer = uPixelBuffer {
+                width: size.width,
+                height: size.height,
+                pixels: Vec::new()
+            };
+
+            buffer.pixels.resize_with((buffer.width*buffer.height) as usize, || { uPixel { red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0}});
+
+            for pixel in buffer.pixels.iter_mut() {
+                pixel.red = 1.0;
+                pixel.alpha = 1.0;
+                //println!("{} {} {} {}", pixel.red, pixel.green, pixel.blue, pixel.alpha);
+            }
+
+            let buffer_ptr: *mut uPixel = &mut buffer.pixels[0];
+
+            let h_bitmap = CreateDIBSection(mem_dc, &bitmapInfo, DIB_RGB_COLORS, &mut (buffer_ptr as *mut c_void), HWND {0: 0}, 0);
+
+            // Step 3: Select the DIB into the compatible DC
+            let h_old_bitmap = SelectObject(mem_dc, h_bitmap.unwrap());
+
+            // Step 4: Manipulate the framebuffer (modify 'bits' directly)
+
+            // Step 5: Present the framebuffer to the window
+            
+            _ = BitBlt(hwnd_dc, 0, 0, size.width as i32, size.height as i32, mem_dc, 0, 0, SRCCOPY);
+            
+
+            // Step 6: Clean up resources
+            SelectObject(mem_dc, h_old_bitmap);
+            DeleteDC(mem_dc);
+            ReleaseDC(hwnd, hwnd_dc);
+
+
+
+        }
         _ => {
 
         }

@@ -33,6 +33,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "universalui_graphics"
+version = "0.1.0"
+
+[[package]]
 name = "universalui_native"
 version = "0.1.0"
 dependencies = [
