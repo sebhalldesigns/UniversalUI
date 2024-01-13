@@ -4,6 +4,10 @@ import os
 
 print(os.getcwd())
 sys.path.append('universalui/universalui_api/bindings/python/')
+
+
+
+
 from uuiPy.UniversalUI import UniversalUI
 
 def main():

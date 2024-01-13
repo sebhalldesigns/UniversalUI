@@ -1,13 +1,14 @@
 
-
+#[derive(Default)]
 #[derive(Clone)]
-pub struct USize {
+pub struct uSize {
     width: f32,
     height: f32
 }
 
+#[derive(Default)]
 #[derive(Clone)]
-pub struct UColor {
+pub struct uColor {
     r: f32,
     g: f32,
     b: f32,

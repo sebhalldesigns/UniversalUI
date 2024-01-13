@@ -13,11 +13,16 @@ name = "universalui_api"
 version = "0.1.0"
 dependencies = [
  "libc",
+ "universalui_core",
+ "universalui_types",
 ]
 
 [[package]]
 name = "universalui_core"
 version = "0.1.0"
+dependencies = [
+ "universalui_types",
+]
 
 [[package]]
 name = "universalui_native"
