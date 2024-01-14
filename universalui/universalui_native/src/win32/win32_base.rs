@@ -280,17 +280,96 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
         WM_PAINT => {
 
             let size: uSize = (*window.unwrap()).size.clone();
+            let width: i32 = size.width as i32;
+            let height: i32 = size.height as i32;
+            
+            let mut ps = PAINTSTRUCT::default();
+            let hdc_window = BeginPaint(hwnd, &mut ps);
 
-            let hwnd_dc: HDC = GetDC(hwnd);
-            let mem_dc: HDC = CreateCompatibleDC(hwnd_dc);
+            let mut buffer: uPixelBuffer = uPixelBuffer {
+                width: size.width,
+                height: size.height,
+                pixels: Vec::new()
+            };
+
+            buffer.pixels.resize_with((buffer.width*buffer.height) as usize, || { uPixel { red: 255, green: 0, blue: 255, alpha: 255 } });
+
+            for pixel in buffer.pixels.iter_mut() {
+                pixel.red = 255;
+                pixel.alpha = 255;
+                //println!("{} {} {} {}", pixel.red, pixel.green, pixel.blue, pixel.alpha);
+            }
+
+            // Create a bitmap from the buffer
+            let hbitmap = CreateBitmap(width, height, 1, 32, Some(buffer.pixels.as_ptr() as *const c_void));
+
+            // Create a compatible DC and select the bitmap into it
+            let hdc_memory = CreateCompatibleDC(hdc_window);
+            let old_bitmap = SelectObject(hdc_memory, hbitmap);
+
+            // Copy the bitmap to the window's DC
+            BitBlt(hdc_window, 0, 0, width, height, hdc_memory, 0, 0, SRCCOPY);
+
+            // Cleanup
+            SelectObject(hdc_memory, old_bitmap);
+            DeleteObject(hbitmap);
+            DeleteDC(hdc_memory);
+            EndPaint(hwnd, &ps);
+
+            /* 
+             // Create a compatible DC
+            let hdc_memory = CreateCompatibleDC(hdc_window);
+            let rect = ps.rcPaint;
+
+            // Define BITMAPINFO structure for the DIB
+            let mut bi = BITMAPINFO {
+                bmiHeader: BITMAPINFOHEADER {
+                    biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
+                    biWidth: width,
+                    biHeight: -height,// negative height to create a top-down DIB
+                    biPlanes: 1,
+                    biBitCount: 32, // RGBA 32-bit
+                    biCompression: BI_RGB.0,
+                    ..Default::default()
+                },
+                ..Default::default()
+            };
+
+             // Create a DIB Section
+            let mut bits = std::ptr::null_mut();
+            let hbitmap: HBITMAP = CreateDIBSection(hdc_memory, &bi, DIB_RGB_COLORS, &mut bits, HWND {0: 0}, 0).unwrap();
+
+            // Obtain a pointer to the pixel buffer
+            let buffer = std::slice::from_raw_parts_mut(bits as *mut u32, (width * height) as usize);
+
+            // Modify the pixel buffer (RGBA 32-bit format)
+            for y in 0..height {
+                for x in 0..width {
+                    let offset = (y * width + x) as usize;
+                    // Set pixel data (ARGB format, alpha set to 255)
+                    buffer[offset] = 0xFF00FF00; // example: green color
+                }
+            }
+
+             // Select the bitmap into the DC and perform the drawing
+            let old_bitmap = SelectObject(hdc_memory, hbitmap);
+            BitBlt(hdc_window, 0, 0, width, height, hdc_memory, 0, 0, SRCCOPY);
+            SelectObject(hdc_memory, old_bitmap);
+
+            // Cleanup
+            DeleteObject(hbitmap);
+            DeleteDC(hdc_memory);
+            EndPaint(hwnd, &ps);
+            */
+            /* 
 
             let bmi_header: BITMAPINFOHEADER = BITMAPINFOHEADER {
                 biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
-                biWidth: size.width as i32,
-                biHeight: -1*(size.height as i32),
+                biWidth: width,
+                biHeight: -height,
                 biPlanes: 1,
                 biBitCount: 32,
-                biCompression: 0,
+                biCompression: BI_RGB.0,
                 ..Default::default()
             };
 
@@ -306,11 +385,11 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
                 pixels: Vec::new()
             };
 
-            buffer.pixels.resize_with((buffer.width*buffer.height) as usize, || { uPixel { red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0}});
+            buffer.pixels.resize_with((buffer.width*buffer.height) as usize, || { uPixel { red: 255, green: 255, blue: 255, alpha: 255 } });
 
             for pixel in buffer.pixels.iter_mut() {
-                pixel.red = 1.0;
-                pixel.alpha = 1.0;
+                pixel.red = 255;
+                pixel.alpha = 255;
                 //println!("{} {} {} {}", pixel.red, pixel.green, pixel.blue, pixel.alpha);
             }
 
@@ -333,7 +412,7 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
             DeleteDC(mem_dc);
             ReleaseDC(hwnd, hwnd_dc);
 
-
+            */
 
         }
         _ => {
