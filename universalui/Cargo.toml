@@ -1,6 +1,8 @@
 [workspace]
 
 members = [
+    "rml-parser", # example test
+
     "universalui_types", # contains type defintions
     "universalui_native", # defines a native interface
     "universalui_graphics", # defines graphics stuff

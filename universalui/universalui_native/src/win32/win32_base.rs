@@ -23,6 +23,10 @@ thread_local! {
         let mut map = HashMap::new();
         Mutex::new(map)
     };
+
+    static UNIVERSALUI: Mutex<UniversalUI> = {
+        Mutex::new(UniversalUI::new())
+    }
 }
 
 
@@ -154,6 +158,21 @@ pub fn win32_create_window(title: *mut c_char, size: uSize) -> Option<*mut uWind
 
     // Print the memory address
     println!("Memory Address: {}", raw_ptr as u64);
+    /* 
+    return UNIVERSALUI.with(|universalui| {
+        match universalui.lock().unwrap().TrySetWindow(window_handle.0, window.clone()) {
+            Some(window) => {
+                return Some(window.as_ref().get_mut().unwrap() as *mut uWindow);
+            },
+            None => {
+                return None;
+            }
+        }
+
+
+    });*/
+
+    
 
     // Access the thread-local variable
     return WINDOWS.with(|windows| {
@@ -316,103 +335,7 @@ unsafe extern "system" fn win32_window_procedure(hwnd: HWND, message: u32, wpara
             DeleteDC(hdc_memory);
             EndPaint(hwnd, &ps);
 
-            /* 
-             // Create a compatible DC
-            let hdc_memory = CreateCompatibleDC(hdc_window);
-            let rect = ps.rcPaint;
 
-            // Define BITMAPINFO structure for the DIB
-            let mut bi = BITMAPINFO {
-                bmiHeader: BITMAPINFOHEADER {
-                    biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
-                    biWidth: width,
-                    biHeight: -height,// negative height to create a top-down DIB
-                    biPlanes: 1,
-                    biBitCount: 32, // RGBA 32-bit
-                    biCompression: BI_RGB.0,
-                    ..Default::default()
-                },
-                ..Default::default()
-            };
-
-             // Create a DIB Section
-            let mut bits = std::ptr::null_mut();
-            let hbitmap: HBITMAP = CreateDIBSection(hdc_memory, &bi, DIB_RGB_COLORS, &mut bits, HWND {0: 0}, 0).unwrap();
-
-            // Obtain a pointer to the pixel buffer
-            let buffer = std::slice::from_raw_parts_mut(bits as *mut u32, (width * height) as usize);
-
-            // Modify the pixel buffer (RGBA 32-bit format)
-            for y in 0..height {
-                for x in 0..width {
-                    let offset = (y * width + x) as usize;
-                    // Set pixel data (ARGB format, alpha set to 255)
-                    buffer[offset] = 0xFF00FF00; // example: green color
-                }
-            }
-
-             // Select the bitmap into the DC and perform the drawing
-            let old_bitmap = SelectObject(hdc_memory, hbitmap);
-            BitBlt(hdc_window, 0, 0, width, height, hdc_memory, 0, 0, SRCCOPY);
-            SelectObject(hdc_memory, old_bitmap);
-
-            // Cleanup
-            DeleteObject(hbitmap);
-            DeleteDC(hdc_memory);
-            EndPaint(hwnd, &ps);
-            */
-            /* 
-
-            let bmi_header: BITMAPINFOHEADER = BITMAPINFOHEADER {
-                biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
-                biWidth: width,
-                biHeight: -height,
-                biPlanes: 1,
-                biBitCount: 32,
-                biCompression: BI_RGB.0,
-                ..Default::default()
-            };
-
-
-            let bitmapInfo: BITMAPINFO = BITMAPINFO {
-                bmiHeader: bmi_header,
-                bmiColors: std::mem::zeroed()
-            };
-
-            let mut buffer: uPixelBuffer = uPixelBuffer {
-                width: size.width,
-                height: size.height,
-                pixels: Vec::new()
-            };
-
-            buffer.pixels.resize_with((buffer.width*buffer.height) as usize, || { uPixel { red: 255, green: 255, blue: 255, alpha: 255 } });
-
-            for pixel in buffer.pixels.iter_mut() {
-                pixel.red = 255;
-                pixel.alpha = 255;
-                //println!("{} {} {} {}", pixel.red, pixel.green, pixel.blue, pixel.alpha);
-            }
-
-            let buffer_ptr: *mut uPixel = &mut buffer.pixels[0];
-
-            let h_bitmap = CreateDIBSection(mem_dc, &bitmapInfo, DIB_RGB_COLORS, &mut (buffer_ptr as *mut c_void), HWND {0: 0}, 0);
-
-            // Step 3: Select the DIB into the compatible DC
-            let h_old_bitmap = SelectObject(mem_dc, h_bitmap.unwrap());
-
-            // Step 4: Manipulate the framebuffer (modify 'bits' directly)
-
-            // Step 5: Present the framebuffer to the window
-            
-            _ = BitBlt(hwnd_dc, 0, 0, size.width as i32, size.height as i32, mem_dc, 0, 0, SRCCOPY);
-            
-
-            // Step 6: Clean up resources
-            SelectObject(mem_dc, h_old_bitmap);
-            DeleteDC(mem_dc);
-            ReleaseDC(hwnd, hwnd_dc);
-
-            */
 
         }
         _ => {
