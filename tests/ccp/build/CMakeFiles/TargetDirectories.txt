@@ -1,3 +1,0 @@
-C:/Users/sebam/Documents/UniversalUI/tests/ccp/build/CMakeFiles/universalui.dir
-C:/Users/sebam/Documents/UniversalUI/tests/ccp/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/sebam/Documents/UniversalUI/tests/ccp/build/CMakeFiles/ZERO_CHECK.dir

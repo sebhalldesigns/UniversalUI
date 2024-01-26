@@ -1,1 +1,0 @@
-std::result::Result<MutexGuard<'_, HashMap<Foundation::HWND, Rc<RefCell<universalui_types::ui::uWindow>>>>, PoisonError<MutexGuard<'_, HashMap<Foundation::HWND, Rc<RefCell<universalui_types::ui::uWindow>>>>>>
