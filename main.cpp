@@ -141,11 +141,11 @@ int main() {
 
     MyApp app;
 
-    uRmlParser::ParseFile("../../main.xml");
+    //uRmlParser::ParseFile("../../main.xml");
 
-    return 0;
+    
     //myfont = new uFont("./font.ttf");
-    //return app.Run();
+    return app.Run();
 
-
+return 0;
 }
