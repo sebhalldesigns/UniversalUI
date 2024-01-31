@@ -4,7 +4,11 @@ cmake_minimum_required(VERSION 3.5)
 project(UniversalUI)
 add_definitions(-w)
 
-if(PLATFORM STREQUAL "ios")
+if (EMSCRIPTEN)
+
+    message("Configuring UniversalUI for Web...")
+
+elseif (PLATFORM STREQUAL "ios")
     
     message("Configuring UniversalUI for iOS...")
 
@@ -72,6 +76,10 @@ elseif(PLATFORM STREQUAL "macos")
 
 elseif(WIN32)
 
+message("Configuring UniversalUI for Win32...")
+
+
+    add_subdirectory(GLAL)
     add_subdirectory(Graphics)
     add_subdirectory(Core)
 
