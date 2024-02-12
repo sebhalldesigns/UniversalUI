@@ -28,4 +28,4 @@ a lightweight application development framework
 UniversalUI contains three different rendering systems which can be combined with each other.
 - **CSR** (Core Software Renderer) - a lightweight cross-platform software renderer focusing on compatibility and simplicity. Runs on any device regardless of GPU and graphics support and relies purely on low-level windowing APIs (Win32, X11 etc).
 - **AHR** (Accelerated Hardware Renderer) - a cross-platform GPU renderer that focuses on performance and reducing CPU load.
-- **GP3R** (General Purpose 3D Renderer) - a cross-platform 3D renderer targeting high flexibility and compatibility.
+- **GP3R** (General Purpose 3D Renderer) - a cross-platform 3D renderer targeting high flexibility and compatibility. 
