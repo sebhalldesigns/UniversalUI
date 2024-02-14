@@ -14,7 +14,7 @@ a lightweight application development framework
 - **CCR** (Core Component Renderer) - a lightweight cross-platform 2D rendering system for non web platforms.
 - **GP3R** (General Purpose 3D Renderer) - a cross-platform 3D renderer targeting high flexibility and compatibility.
 ### Other
-- **RML** (Reduced Markup Language) - an XML-style markup language with a reduced syntax for faster and simpler parsing.
+- **RML** (Reduced Markup Language) - an XML-style markup language with a reduced syntax for faster and simpler parsing. 
 
 
 ## Notes
