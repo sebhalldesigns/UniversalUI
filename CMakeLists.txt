@@ -12,6 +12,8 @@ if (WIN32)
 
     #find_package(GSP-System)
 
+    add_subdirectory(Core)
+
     add_executable(UniversalUI main.cpp)
 
 
@@ -25,11 +27,17 @@ if (WIN32)
     )
 
     target_link_libraries(
-        UniversalUI ${CMAKE_SOURCE_DIR}/../GSP/src/build/GSP-Graphics/Debug/GSP-Graphics.lib 
+        UniversalUI 
+        UniversalUI-Core
+        ${CMAKE_SOURCE_DIR}/../GSP/src/build/GSP-Graphics/Debug/GSP-Graphics.lib 
         ${CMAKE_SOURCE_DIR}/../GSP/src/build/GSP-System/Debug/GSP-System.lib
         ${GSP_GRAPHICS_LIBRARIES}
     
     )
-    target_include_directories(UniversalUI PRIVATE  ${CMAKE_SOURCE_DIR}/../GSP/src/GSP-System/include  ${CMAKE_SOURCE_DIR}/../GSP/src/GSP-Graphics/include)
+    target_include_directories(UniversalUI PRIVATE  
+    ${CMAKE_SOURCE_DIR}/../GSP/src/GSP-System/include  
+    ${CMAKE_SOURCE_DIR}/../GSP/src/GSP-Graphics/include
+    Core/include/
+    )
 
 endif()
