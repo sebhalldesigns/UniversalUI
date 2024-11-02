@@ -12,7 +12,13 @@
 #include <Log/ULog.hpp> 
 #include <Window/UWindow.hpp>
 
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_sdl2.h>
+#include <imgui/backends/imgui_impl_sdlrenderer2.h>
+
 static bool running = true;
+
+float counter = 0;
 
 static void Render(UWindow *uWindow)
 {
@@ -27,6 +33,21 @@ static void Render(UWindow *uWindow)
 
     SDL_RenderFillRect(uWindow->SdlRenderer, &rect);
 
+    // Start the ImGui frame
+    ImGui_ImplSDLRenderer2_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    // Create ImGui UI elements
+    ImGui::Begin("Hello, world!");
+    ImGui::Text("This is some useful text.");
+    ImGui::SliderFloat("float", &counter, 0.0f, 1.0f);
+    ImGui::End();
+
+    // Rendering
+    ImGui::Render();
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), uWindow->SdlRenderer);
+
     SDL_RenderPresent(uWindow->SdlRenderer);
 }
 
@@ -35,8 +56,16 @@ static void EventLoop(void *window)
     SDL_Event event;
 
     UWindow *uWindow = (UWindow*)window;
+
+
     
     while (SDL_PollEvent(&event)) {
+
+        
+     if (ImGui_ImplSDL2_ProcessEvent(&event)) {
+        //return 0; // Event handled by ImGui
+        Render(uWindow);
+    }
 
         switch (event.type)
         {
@@ -67,6 +96,11 @@ static void EventLoop(void *window)
 static int EventFilter(void *window, SDL_Event *event) 
 {
     UWindow *uWindow = (UWindow*)window;
+
+    if (ImGui_ImplSDL2_ProcessEvent(event)) {
+        //return 0; // Event handled by ImGui
+        Render(uWindow);
+    }
 
 
     if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
@@ -101,6 +135,14 @@ int UApplication::Run(UApplicationDelegate *delegate)
         return -1;
     }
 
+     // Initialize ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplSDL2_InitForSDLRenderer(window->SdlWindow, window->SdlRenderer);
+    ImGui_ImplSDLRenderer2_Init(window->SdlRenderer);
+
     delegate->ApplicationDidFinishLaunching(this, window);
 
     Render(window);
@@ -117,7 +159,10 @@ int UApplication::Run(UApplicationDelegate *delegate)
         }
     #endif
 
-
+    // Cleanup
+    ImGui_ImplSDLRenderer2_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
 
     delegate->ApplicationWillTerminate(this);
 
