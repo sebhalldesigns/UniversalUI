@@ -20,6 +20,8 @@ static bool running = true;
 
 float counter = 0;
 
+static bool open = true;
+
 static void Render(UWindow *uWindow)
 {
     ULog::Info("Render");
@@ -36,13 +38,41 @@ static void Render(UWindow *uWindow)
     // Start the ImGui frame
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
+
     ImGui::NewFrame();
 
-    // Create ImGui UI elements
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
-    ImGui::SliderFloat("float", &counter, 0.0f, 1.0f);
+    static bool use_work_area = false;
+    static ImGuiWindowFlags window_flags = 
+        ImGuiWindowFlags_AlwaysAutoResize |
+        //ImGuiWindowFlags_DockNodeHost |
+        ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoMouseInputs |
+        ImGuiWindowFlags_NoDecoration  | 
+        ImGuiWindowFlags_NoBackground  | 
+        ImGuiWindowFlags_NoMove | 
+        ImGuiWindowFlags_NoSavedSettings;
+
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+    ImGui::Begin("Example: Fullscreen window", &open, window_flags);
+    
+        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGui::DockSpace(dockspace_id);
+
+        ImGui::Begin("Project Explorer");
+        ImGui::Text("File 1");
+        ImGui::Text("File 2");
+        ImGui::End();
+    
     ImGui::End();
+
+    ImGui::PopStyleVar(3);
 
     // Rendering
     ImGui::Render();
@@ -97,15 +127,16 @@ static int EventFilter(void *window, SDL_Event *event)
 {
     UWindow *uWindow = (UWindow*)window;
 
-    if (ImGui_ImplSDL2_ProcessEvent(event)) {
+    /*if () {
         //return 0; // Event handled by ImGui
         Render(uWindow);
-    }
+    }*/
 
 
     if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
         printf("Window size changed to %d x %d\n", event->window.data1, event->window.data2);
         SDL_RenderSetViewport(uWindow->SdlRenderer, nullptr);
+        ImGui_ImplSDL2_ProcessEvent(event);
         Render(uWindow);
     }
 
@@ -139,7 +170,16 @@ int UApplication::Run(UApplicationDelegate *delegate)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
     ImGui::StyleColorsDark();
+ImGuiStyle& style = ImGui::GetStyle();
+style.WindowRounding = 5.0f;
+style.FrameRounding = 4.0f;
+// Customize colors as needed, e.g.:
+style.Colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
+style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+
     ImGui_ImplSDL2_InitForSDLRenderer(window->SdlWindow, window->SdlRenderer);
     ImGui_ImplSDLRenderer2_Init(window->SdlRenderer);
 
