@@ -3,7 +3,7 @@
 UWindow::UWindow()
 {
 
-    Size = { 800, 600 };
+    //Size = { 800, 600 };
 
     SdlWindow = SDL_CreateWindow("UniversalUI Window",
                                  SDL_WINDOWPOS_CENTERED,
@@ -21,6 +21,7 @@ UWindow::~UWindow()
     SDL_DestroyWindow(SdlWindow);
 }
 
+/*
 USize UWindow::GetSize()
 {
     return Size;
@@ -30,3 +31,4 @@ void UWindow::SetSize(USize size)
 {
     Size = size;
 }
+*/

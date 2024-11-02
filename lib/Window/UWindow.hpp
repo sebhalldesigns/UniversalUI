@@ -10,7 +10,7 @@ class UWindow
 private:
 
 
-    USize Size = { 800, 600 };
+    //USize Size;
     
 public:
 
@@ -20,10 +20,10 @@ public:
     UWindow();
     ~UWindow();
 
-    void 
+    
 
-    USize GetSize();
-    void SetSize(USize size);
+    //USize GetSize();
+    //void SetSize(USize size);
 
     friend class UApplication;
 };

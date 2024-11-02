@@ -12,7 +12,23 @@
 #include <Log/ULog.hpp> 
 #include <Window/UWindow.hpp>
 
-static int running = 0;
+static bool running = true;
+
+static void Render(UWindow *uWindow)
+{
+    ULog::Info("Render");
+
+    SDL_SetRenderDrawColor(uWindow->SdlRenderer, 0, 0, 255, 255); // Blue background
+    SDL_RenderClear(uWindow->SdlRenderer);
+
+    SDL_SetRenderDrawColor(uWindow->SdlRenderer, 255, 255, 255, 255); // White rectangles
+
+    SDL_Rect rect = { 10, 10, 100, 100 };
+
+    SDL_RenderFillRect(uWindow->SdlRenderer, &rect);
+
+    SDL_RenderPresent(uWindow->SdlRenderer);
+}
 
 static void EventLoop(void *window)
 {
@@ -21,33 +37,44 @@ static void EventLoop(void *window)
     UWindow *uWindow = (UWindow*)window;
     
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            running = 0;
-        } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-            ULog::Info("Window resized to %d x %d", event.window.data1, event.window.data2);
-            
-            SDL_SetWindowSize(uWindow->SdlWindow, event.window.data1, event.window.data2);
-            SDL_RenderSetViewport(uWindow->SdlRenderer, nullptr);
 
-            SDL_SetRenderDrawColor(uWindow->SdlRenderer, 0, 0, 255, 255); // Blue background
-            SDL_RenderClear(uWindow->SdlRenderer);
+        switch (event.type)
+        {
+            case SDL_QUIT:
+            {
+                running = false;
+            } break;
 
-            SDL_SetRenderDrawColor(uWindow->SdlRenderer, 255, 255, 255, 255); // White rectangles
+            case SDL_WINDOWEVENT:
+            {
+                #ifdef __EMSCRIPTEN__
+ 
+                    if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                        ULog::Info("Window resized to %d x %d", event.window.data1, event.window.data2);
+                        SDL_SetWindowSize(uWindow->SdlWindow, event.window.data1, event.window.data2);
+                        SDL_RenderSetViewport(uWindow->SdlRenderer, nullptr);
+                        Render(uWindow);
+                    }
+                #endif
 
-            SDL_Rect rect = { 10, 10, 100, 100 };
-
-            SDL_RenderFillRect(uWindow->SdlRenderer, &rect);
-
-            SDL_RenderPresent(uWindow->SdlRenderer);
+            } break;
 
         }
     }
    
 }
 
-static int EventFilter(void *app, SDL_Event *event) 
+static int EventFilter(void *window, SDL_Event *event) 
 {
-    //printf("Event %d\n", event->type);
+    UWindow *uWindow = (UWindow*)window;
+
+
+    if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+        printf("Window size changed to %d x %d\n", event->window.data1, event->window.data2);
+        SDL_RenderSetViewport(uWindow->SdlRenderer, nullptr);
+        Render(uWindow);
+    }
+
     return 1;
 }
 
@@ -76,16 +103,17 @@ int UApplication::Run(UApplicationDelegate *delegate)
 
     delegate->ApplicationDidFinishLaunching(this, window);
 
+    Render(window);
 
     #ifdef __EMSCRIPTEN__
         emscripten_set_main_loop_arg(EventLoop, window, -1, true);
     #else
 
-        SDL_SetEventFilter(EventFilter, this);
+        SDL_SetEventFilter(EventFilter, window);
         SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
     
         while (running) {
-            EventLoop(this);
+            EventLoop(window);
         }
     #endif
 
