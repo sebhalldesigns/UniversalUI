@@ -13,6 +13,7 @@
 #include <Window/UWindow.hpp>
 
 #include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
 #include <imgui/backends/imgui_impl_sdl2.h>
 #include <imgui/backends/imgui_impl_sdlrenderer2.h>
 
@@ -26,14 +27,8 @@ static void Render(UWindow *uWindow)
 {
     ULog::Info("Render");
 
-    SDL_SetRenderDrawColor(uWindow->SdlRenderer, 0, 0, 255, 255); // Blue background
+    SDL_SetRenderDrawColor(uWindow->SdlRenderer, 0, 0, 0, 255); // Blue background
     SDL_RenderClear(uWindow->SdlRenderer);
-
-    SDL_SetRenderDrawColor(uWindow->SdlRenderer, 255, 255, 255, 255); // White rectangles
-
-    SDL_Rect rect = { 10, 10, 100, 100 };
-
-    SDL_RenderFillRect(uWindow->SdlRenderer, &rect);
 
     // Start the ImGui frame
     ImGui_ImplSDLRenderer2_NewFrame();
@@ -41,38 +36,36 @@ static void Render(UWindow *uWindow)
 
     ImGui::NewFrame();
 
-    static bool use_work_area = false;
-    static ImGuiWindowFlags window_flags = 
-        ImGuiWindowFlags_AlwaysAutoResize |
-        //ImGuiWindowFlags_DockNodeHost |
-        ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoMouseInputs |
-        ImGuiWindowFlags_NoDecoration  | 
-        ImGuiWindowFlags_NoBackground  | 
-        ImGuiWindowFlags_NoMove | 
-        ImGuiWindowFlags_NoSavedSettings;
+    ImGuiID dockspace_id = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+    static bool init = true;
+    ImGuiID dock_id_left, dock_id_right;
+    ImGuiID dock_id_top_right, dock_id_bottom_right;
+    if (init) {
+        init = false;
+        ImGui::DockBuilderRemoveNode(dockspace_id);
+        ImGui::DockBuilderAddNode(dockspace_id);
+        ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetMainViewport()->Size);
 
-    ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->Pos);
-    ImGui::SetNextWindowSize(viewport->Size);
-    ImGui::SetNextWindowViewport(viewport->ID);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    	ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.75f, &dock_id_left, &dock_id_right);
+        ImGui::DockBuilderSplitNode(dock_id_right, ImGuiDir_Down, 0.5f, &dock_id_top_right, &dock_id_bottom_right);
+        ImGui::DockBuilderDockWindow("Window_1", dock_id_left);
+        ImGui::DockBuilderDockWindow("Window_2", dock_id_top_right);
+        ImGui::DockBuilderDockWindow("Window_3", dock_id_bottom_right);
 
-    ImGui::Begin("Example: Fullscreen window", &open, window_flags);
-    
-        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-        ImGui::DockSpace(dockspace_id);
-
-        ImGui::Begin("Project Explorer");
-        ImGui::Text("File 1");
-        ImGui::Text("File 2");
-        ImGui::End();
-    
+        ImGui::DockBuilderFinish(dockspace_id);
+    }
+    ImGui::Begin("Window_1");
+    ImGui::Text("Text 1");
+    ImGui::End();
+    ImGui::Begin("Window_2");
+    ImGui::Text("Text 2");
+    ImGui::End();
+        ImGui::Begin("Window_3");
+    ImGui::Text("Text 3");
     ImGui::End();
 
-    ImGui::PopStyleVar(3);
+
+    // ImGui::PopStyleVar(3);
 
     // Rendering
     ImGui::Render();
