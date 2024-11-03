@@ -3,6 +3,7 @@
 
 #include <Geometry/USize.hpp>
 #include <SDL2/SDL.h>
+#include <imgui/imgui.h>
 
 class UWindow
 {
@@ -16,6 +17,7 @@ public:
 
     SDL_Window* SdlWindow;
     SDL_Renderer* SdlRenderer;
+    ImGuiContext* ImGuiContext;
 
     UWindow();
     ~UWindow();

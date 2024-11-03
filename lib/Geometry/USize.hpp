@@ -1,10 +1,14 @@
 #ifndef USIZE_HPP
 #define USIZE_HPP
 
-struct USize
+class USize
 {
-    float width;
-    float height;
+public:
+    float Width;
+    float Height;
+
+    USize();
+    USize(float width, float height) : Width(width), Height(height) {}
 };
 
 #endif // USIZE_HPP

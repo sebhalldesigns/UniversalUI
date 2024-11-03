@@ -9,6 +9,7 @@
 
 #include <cstdio>
 #include <random>
+#include <chrono>
 
 #include <Log/ULog.hpp> 
 #include <Window/UWindow.hpp>
@@ -29,21 +30,14 @@ ImFont* customFont = nullptr;
 static void Render(UWindow *uWindow)
 {
     ULog::Info("Render");
+    auto start = std::chrono::high_resolution_clock::now();
 
     SDL_SetRenderDrawColor(uWindow->SdlRenderer, 0, 0, 0, 255); // Blue background
     SDL_RenderClear(uWindow->SdlRenderer);
 
-    // Start the ImGui frame
-    ImGui_ImplSDLRenderer2_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-
-    ImGui::NewFrame();
-
-    if (customFont)
-        ImGui::PushFont(customFont);
-
+   
     // Number of windows to create
-    const int numWindows = 25;
+    const int numWindows = 5;
 
     // Random number generator
     std::random_device rd;
@@ -52,6 +46,17 @@ static void Render(UWindow *uWindow)
     std::uniform_real_distribution<> disY(0.0, 1200.0); // Assuming window height is 600
 
     for (int i = 0; i < numWindows; ++i) {
+
+         // Start the ImGui frame
+        ImGui_ImplSDLRenderer2_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+
+        ImGui::NewFrame();
+
+        if (customFont)
+            ImGui::PushFont(customFont);
+
+
         ImGui::SetNextWindowPos(ImVec2(disX(gen), disY(gen)), ImGuiCond_Once);
         ImGui::SetNextWindowSize(ImVec2(500, 250), ImGuiCond_Once);
         ImGui::Begin(("Window " + std::to_string(i)).c_str()); // Create a window with a unique title
@@ -84,19 +89,23 @@ static void Render(UWindow *uWindow)
         draw_list->AddLine(ImVec2(p.x, p.y), ImVec2(p.x + canvas_size.x, p.y + canvas_size.y), IM_COL32(0, 0, 255, 255), 2.0f);
 
         ImGui::End();
+
+         // Pop custom font
+        if (customFont)
+            ImGui::PopFont();
+
+        // Rendering
+        ImGui::Render();
+        ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), uWindow->SdlRenderer);
     }
 
-
-
-     // Pop custom font
-    if (customFont)
-        ImGui::PopFont();
-
-    // Rendering
-    ImGui::Render();
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), uWindow->SdlRenderer);
+   
 
     SDL_RenderPresent(uWindow->SdlRenderer);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    ULog::Info("Render time: %f seconds", elapsed.count());
 }
 
 static void EventLoop(void *window)
@@ -164,7 +173,7 @@ static int EventFilter(void *window, SDL_Event *event)
 
 
 
-int UApplication::Run(UApplicationDelegate *delegate)
+int UApplication::Run()
 {
 
     ULog::Info("UApplication starting...");
@@ -173,6 +182,13 @@ int UApplication::Run(UApplicationDelegate *delegate)
         ULog::Error("Failed to initialize SDL: %s", SDL_GetError());
         return -1;
     }
+
+    #ifndef __EMSCRIPTEN__
+        std::vector<UWindowCreateInfo> windowCreationList = applicationDelegate->ApplicationWillCreateWindows(this);
+    #else
+
+        
+    #endif
     
 
     UWindow* window = new UWindow();
@@ -203,12 +219,12 @@ style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 
     io.Fonts->AddFontDefault(); // Load default font
 
-    customFont = io.Fonts->AddFontFromFileTTF("./JetBrainsMono-Regular.ttf", 18.0f);
+    //customFont = io.Fonts->AddFontFromFileTTF("./JetBrainsMono-Regular.ttf", 18.0f);
     if (!customFont) {
         ULog::Error("Failed to load custom font!");
     }
 
-    delegate->ApplicationDidFinishLaunching(this, window);
+    applicationDelegate->ApplicationDidFinishLaunching(this, window);
 
     Render(window);
 
@@ -229,7 +245,7 @@ style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
-    delegate->ApplicationWillTerminate(this);
+    applicationDelegate->ApplicationWillTerminate(this);
 
     delete window;
     SDL_Quit();

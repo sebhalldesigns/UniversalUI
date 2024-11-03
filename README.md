@@ -10,3 +10,6 @@ ImGui doesn't really offer the functionality we want so here is the plan:
 - Imgui used for rendering.
 
 For now will ditch attempts at a retained-mode GUI for simplicity.
+
+A 'view' will be a herirarchichal element with layout properties such as size and position, removing the graphical requirements.
+Drawing simply occurs in a call to all draw functions.
