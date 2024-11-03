@@ -8,7 +8,7 @@ UWindow::UWindow()
     SdlWindow = SDL_CreateWindow("UniversalUI Window",
                                  SDL_WINDOWPOS_CENTERED,
                                  SDL_WINDOWPOS_CENTERED,
-                                 800, 600,
+                                 3000, 1200,
                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     SdlRenderer = SDL_CreateRenderer(SdlWindow, -1, SDL_RENDERER_ACCELERATED);
 

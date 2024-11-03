@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>
 
 #include <cstdio>
+#include <random>
 
 #include <Log/ULog.hpp> 
 #include <Window/UWindow.hpp>
@@ -23,6 +24,8 @@ float counter = 0;
 
 static bool open = true;
 
+ImFont* customFont = nullptr;
+
 static void Render(UWindow *uWindow)
 {
     ULog::Info("Render");
@@ -36,36 +39,58 @@ static void Render(UWindow *uWindow)
 
     ImGui::NewFrame();
 
-    ImGuiID dockspace_id = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
-    static bool init = true;
-    ImGuiID dock_id_left, dock_id_right;
-    ImGuiID dock_id_top_right, dock_id_bottom_right;
-    if (init) {
-        init = false;
-        ImGui::DockBuilderRemoveNode(dockspace_id);
-        ImGui::DockBuilderAddNode(dockspace_id);
-        ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetMainViewport()->Size);
+    if (customFont)
+        ImGui::PushFont(customFont);
 
-    	ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.75f, &dock_id_left, &dock_id_right);
-        ImGui::DockBuilderSplitNode(dock_id_right, ImGuiDir_Down, 0.5f, &dock_id_top_right, &dock_id_bottom_right);
-        ImGui::DockBuilderDockWindow("Window_1", dock_id_left);
-        ImGui::DockBuilderDockWindow("Window_2", dock_id_top_right);
-        ImGui::DockBuilderDockWindow("Window_3", dock_id_bottom_right);
+    // Number of windows to create
+    const int numWindows = 25;
 
-        ImGui::DockBuilderFinish(dockspace_id);
+    // Random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> disX(0.0, 3000.0); // Assuming window width is 800
+    std::uniform_real_distribution<> disY(0.0, 1200.0); // Assuming window height is 600
+
+    for (int i = 0; i < numWindows; ++i) {
+        ImGui::SetNextWindowPos(ImVec2(disX(gen), disY(gen)), ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(500, 250), ImGuiCond_Once);
+        ImGui::Begin(("Window " + std::to_string(i)).c_str()); // Create a window with a unique title
+        ImVec2 windowSize = ImGui::GetWindowSize();
+        std::string longText = "This is some really long and useful text that spans across the window to test the text wrapping and alignment functionality in ImGui. \n";
+        longText = longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText + longText;
+        ImVec2 textSize = ImGui::CalcTextSize(longText.c_str());
+
+        ImGui::SetCursorPosX((windowSize.x - textSize.x) / 2); // Center text horizontally
+        ImGui::SetCursorPosY((windowSize.y - textSize.y) / 2); // Center text vertically
+
+        ImGui::TextWrapped(longText.c_str()); // Display the text
+
+        textSize = ImGui::CalcTextSize("This is some useful text.");
+        ImGui::SetCursorPosY((windowSize.y - textSize.y) / 2); // Center text vertically
+        ImGui::Text("This is some useful text."); // Display the text
+
+        // Draw vector graphics
+        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        ImVec2 canvas_size = ImGui::GetContentRegionAvail();
+
+        // Draw a red rectangle
+        draw_list->AddRectFilled(ImVec2(p.x, p.y), ImVec2(p.x + canvas_size.x, p.y + canvas_size.y), IM_COL32(255, 0, 0, 255));
+
+        // Draw a green circle
+        draw_list->AddCircle(ImVec2(p.x + canvas_size.x / 2, p.y + canvas_size.y / 2), 50.0f, IM_COL32(0, 255, 0, 255), 32, 2.0f);
+
+        // Draw a blue line
+        draw_list->AddLine(ImVec2(p.x, p.y), ImVec2(p.x + canvas_size.x, p.y + canvas_size.y), IM_COL32(0, 0, 255, 255), 2.0f);
+
+        ImGui::End();
     }
-    ImGui::Begin("Window_1");
-    ImGui::Text("Text 1");
-    ImGui::End();
-    ImGui::Begin("Window_2");
-    ImGui::Text("Text 2");
-    ImGui::End();
-        ImGui::Begin("Window_3");
-    ImGui::Text("Text 3");
-    ImGui::End();
 
 
-    // ImGui::PopStyleVar(3);
+
+     // Pop custom font
+    if (customFont)
+        ImGui::PopFont();
 
     // Rendering
     ImGui::Render();
@@ -175,6 +200,13 @@ style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 
     ImGui_ImplSDL2_InitForSDLRenderer(window->SdlWindow, window->SdlRenderer);
     ImGui_ImplSDLRenderer2_Init(window->SdlRenderer);
+
+    io.Fonts->AddFontDefault(); // Load default font
+
+    customFont = io.Fonts->AddFontFromFileTTF("./JetBrainsMono-Regular.ttf", 18.0f);
+    if (!customFont) {
+        ULog::Error("Failed to load custom font!");
+    }
 
     delegate->ApplicationDidFinishLaunching(this, window);
 
